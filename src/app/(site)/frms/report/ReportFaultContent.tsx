@@ -98,7 +98,7 @@ export function ReportFaultContent() {
   if (referenceId) {
     return (
       <PageTransition>
-        <section className="flex min-h-[70vh] items-center justify-center py-16">
+        <section className="flex min-h-[70vh] items-center justify-center py-16 bg-surface-1">
           <motion.div
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
@@ -109,12 +109,12 @@ export function ReportFaultContent() {
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
               transition={{ delay: 0.2, type: "spring" }}
-              className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-green-100"
+              className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-2xl bg-emerald-50"
             >
               <CheckCircle className="h-10 w-10 text-green-500" />
             </motion.div>
 
-            <h2 className="font-serif text-2xl font-bold text-gray-900">
+            <h2 className="font-heading text-2xl font-bold text-gray-900">
               Report Submitted!
             </h2>
             <p className="mt-2 text-gray-500">
@@ -176,21 +176,21 @@ export function ReportFaultContent() {
 
   return (
     <PageTransition>
-      {/* Header */}
-      <section className="bg-white py-16 md:py-20 text-center">
-        <div className="container-custom">
+      {/* Page Hero */}
+      <section className="page-hero text-center">
+        <div className="relative container-custom">
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="section-label mb-3"
+            className="font-mono text-xs uppercase tracking-widest text-electric mb-1"
           >
-            Fault Reporting
+            Home / FRMS / Report
           </motion.p>
           <motion.h1
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="font-serif text-3xl font-extrabold text-gray-900 sm:text-4xl"
+            className="font-heading text-3xl font-bold text-white sm:text-4xl md:text-5xl"
           >
             Report a Fault
           </motion.h1>
@@ -198,7 +198,7 @@ export function ReportFaultContent() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.2 }}
-            className="mx-auto mt-3 max-w-lg text-gray-500"
+            className="mx-auto mt-4 max-w-lg text-navy-200"
           >
             Submit maintenance and facility issues for quick resolution by our team.
           </motion.p>
@@ -206,7 +206,7 @@ export function ReportFaultContent() {
       </section>
 
       {/* Form */}
-      <section className="pb-16 md:pb-24">
+      <section className="py-12 md:py-16 bg-surface-1">
         <div className="container-custom">
           <div className="mx-auto max-w-2xl">
             {/* Step Indicator */}
@@ -266,11 +266,11 @@ export function ReportFaultContent() {
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -20 }}
                 transition={{ duration: 0.3 }}
-                className="rounded-xl border border-gray-100 bg-white p-6 shadow-sm sm:p-8"
+                className="rounded-xl border border-surface-3 bg-surface-0 p-6 shadow-sm sm:p-8"
               >
                 {currentStep === 0 && (
                   <div className="space-y-5">
-                    <h3 className="font-serif text-lg font-bold text-gray-900">
+                    <h3 className="font-heading text-lg font-bold text-gray-900">
                       Personal Information
                     </h3>
                     <div>
@@ -316,7 +316,7 @@ export function ReportFaultContent() {
 
                 {currentStep === 1 && (
                   <div className="space-y-5">
-                    <h3 className="font-serif text-lg font-bold text-gray-900">
+                    <h3 className="font-heading text-lg font-bold text-gray-900">
                       Fault Details
                     </h3>
                     <div>
@@ -387,7 +387,7 @@ export function ReportFaultContent() {
                           </button>
                         </div>
                       ) : (
-                        <label className="block rounded-lg border-2 border-dashed border-gray-200 p-6 text-center hover:border-blue-300 transition-colors cursor-pointer">
+                        <label className="block rounded-xl border-2 border-dashed border-surface-3 p-6 text-center hover:border-electric transition-colors cursor-pointer">
                           {uploading ? (
                             <Loader2 className="mx-auto h-8 w-8 text-blue-400 animate-spin" />
                           ) : (
@@ -439,10 +439,10 @@ export function ReportFaultContent() {
 
                 {currentStep === 2 && (
                   <div className="space-y-5">
-                    <h3 className="font-serif text-lg font-bold text-gray-900">
+                    <h3 className="font-heading text-lg font-bold text-gray-900">
                       Review Your Report
                     </h3>
-                    <div className="space-y-3 rounded-lg bg-gray-50 p-4">
+                    <div className="space-y-3 rounded-xl bg-surface-1 p-4">
                       {[
                         { label: "Name", value: form.name },
                         { label: "Email", value: form.email },

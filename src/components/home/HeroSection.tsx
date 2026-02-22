@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, Users, Calendar, Award } from "lucide-react";
 
 interface Slide {
   id: string;
@@ -21,8 +21,8 @@ const fallbackSlides: Slide[] = [
     id: "fb-1",
     type: "video",
     mediaUrl: "https://assets.mixkit.co/videos/41658/41658-720.mp4",
-    title: "Empowering the Future of",
-    highlight: "Technology & Innovation",
+    title: "Shaping the Future of",
+    highlight: "Computing Excellence",
     subtitle:
       "The official body representing the brilliant minds of the Department of Computer Science at Redeemer\u2019s University.",
     duration: 10,
@@ -73,13 +73,18 @@ const fallbackSlides: Slide[] = [
   },
 ];
 
+const floatingStats = [
+  { icon: Users, value: "500+", label: "Members" },
+  { icon: Calendar, value: "25+", label: "Events" },
+  { icon: Award, value: "15+", label: "Awards" },
+];
+
 export function HeroSection() {
   const [slides, setSlides] = useState<Slide[]>(fallbackSlides);
   const [current, setCurrent] = useState(0);
   const [direction, setDirection] = useState(1);
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  // Fetch carousel slides from API
   useEffect(() => {
     fetch("/api/carousel")
       .then((res) => res.json())
@@ -101,7 +106,6 @@ export function HeroSection() {
     setCurrent((prev) => (prev - 1 + slides.length) % slides.length);
   }, [slides.length]);
 
-  // Auto-advance based on current slide's duration
   useEffect(() => {
     if (slides.length === 0) return;
     const slide = slides[current];
@@ -110,7 +114,6 @@ export function HeroSection() {
     return () => clearTimeout(timer);
   }, [current, nextSlide, slides]);
 
-  // Play video when slide changes
   useEffect(() => {
     if (slides[current]?.type === "video" && videoRef.current) {
       videoRef.current.currentTime = 0;
@@ -118,130 +121,207 @@ export function HeroSection() {
     }
   }, [current, slides]);
 
-  const imageVariants = {
-    enter: (dir: number) => ({
-      x: dir > 0 ? "100%" : "-100%",
-      opacity: 0,
-    }),
-    center: { x: 0, opacity: 1 },
-    exit: (dir: number) => ({
-      x: dir > 0 ? "-100%" : "100%",
-      opacity: 0,
-    }),
-  };
-
   if (slides.length === 0) return null;
-
   const currentSlide = slides[current];
   if (!currentSlide) return null;
 
   return (
-    <section className="relative h-[80vh] min-h-[600px] overflow-hidden bg-navy-900">
-      {/* Background slides */}
+    <section className="relative h-screen min-h-[700px] overflow-hidden bg-midnight">
+      {/* Dot-grid overlay */}
+      <div className="absolute inset-0 bg-grid-dots-light opacity-30 z-[1] pointer-events-none" />
+
+      {/* Floating decorative elements */}
+      <div className="absolute inset-0 z-[1] pointer-events-none overflow-hidden">
+        {/* Code brackets */}
+        <motion.div
+          animate={{ y: [-10, 10, -10] }}
+          transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute top-[15%] left-[8%] text-white/[0.04] font-mono text-8xl font-bold select-none"
+        >
+          {"</>"}
+        </motion.div>
+        <motion.div
+          animate={{ y: [10, -10, 10] }}
+          transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute top-[60%] right-[6%] text-white/[0.04] font-mono text-7xl font-bold select-none"
+        >
+          {"{ }"}
+        </motion.div>
+        <motion.div
+          animate={{ y: [-8, 12, -8] }}
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute bottom-[25%] left-[15%] text-white/[0.03] font-mono text-6xl font-bold select-none"
+        >
+          01
+        </motion.div>
+      </div>
+
+      {/* Background slides with Ken Burns effect */}
       <AnimatePresence initial={false} custom={direction} mode="wait">
         <motion.div
           key={current}
-          custom={direction}
-          variants={imageVariants}
-          initial="enter"
-          animate="center"
-          exit="exit"
-          transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.8, ease: "easeInOut" }}
           className="absolute inset-0"
         >
           {currentSlide.type === "video" ? (
-            <video
+            <motion.video
               ref={videoRef}
               src={currentSlide.mediaUrl}
               autoPlay
               muted
               playsInline
               loop
+              initial={{ scale: 1 }}
+              animate={{ scale: 1.08 }}
+              transition={{ duration: 8, ease: "linear" }}
               className="absolute inset-0 h-full w-full object-cover"
             />
           ) : (
-            <Image
-              src={currentSlide.mediaUrl}
-              alt={currentSlide.highlight}
-              fill
-              priority
-              className="object-cover"
-              sizes="100vw"
-            />
+            <motion.div
+              initial={{ scale: 1 }}
+              animate={{ scale: 1.08 }}
+              transition={{ duration: 8, ease: "linear" }}
+              className="absolute inset-0"
+            >
+              <Image
+                src={currentSlide.mediaUrl}
+                alt={currentSlide.highlight}
+                fill
+                priority
+                className="object-cover"
+                sizes="100vw"
+              />
+            </motion.div>
           )}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-black/30" />
+          {/* Gradient overlays */}
+          <div className="absolute inset-0 bg-gradient-to-t from-midnight via-midnight/50 to-midnight/30" />
+          <div className="absolute inset-0 bg-gradient-to-r from-midnight/40 to-transparent" />
         </motion.div>
       </AnimatePresence>
 
       {/* Text content */}
-      <div className="relative z-10 flex h-full items-center justify-center">
-        <div className="container-custom text-center">
+      <div className="relative z-10 flex h-full items-center">
+        <div className="container-custom w-full">
           <AnimatePresence mode="wait">
             <motion.div
               key={current}
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.5 }}
+              className="max-w-3xl"
             >
-              <p className="mb-4 text-sm font-semibold uppercase tracking-[0.2em] text-white/70">
-                Established 2005
-              </p>
-              <h1 className="mx-auto max-w-4xl font-serif text-4xl font-extrabold leading-tight text-white sm:text-5xl md:text-6xl">
+              <motion.p
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1, duration: 0.5 }}
+                className="mb-5 font-mono text-xs font-medium uppercase tracking-[0.25em] text-electric"
+              >
+                Welcome to RUNACOS
+              </motion.p>
+
+              <motion.h1
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2, duration: 0.6 }}
+                className="font-heading text-4xl font-bold leading-[1.1] text-white sm:text-5xl md:text-6xl lg:text-7xl"
+              >
                 {currentSlide.title}{" "}
-                <span className="text-blue-400">
+                <span className="bg-gradient-to-r from-electric to-cyan bg-clip-text text-transparent">
                   {currentSlide.highlight}
                 </span>
-              </h1>
-              <p className="mx-auto mt-6 max-w-2xl text-base text-white/80 sm:text-lg">
+              </motion.h1>
+
+              <motion.p
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.35, duration: 0.5 }}
+                className="mt-6 max-w-xl text-base text-white/70 sm:text-lg leading-relaxed"
+              >
                 {currentSlide.subtitle}
-              </p>
-              <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
-                <motion.div
-                  whileHover={{ scale: 1.03 }}
-                  whileTap={{ scale: 0.98 }}
+              </motion.p>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5, duration: 0.5 }}
+                className="mt-8 flex flex-wrap items-center gap-4"
+              >
+                <Link
+                  href="/membership"
+                  className="inline-flex items-center rounded-xl bg-gradient-accent px-6 py-3.5 text-sm font-medium text-white shadow-lg shadow-electric/20 transition-all duration-200 hover:shadow-electric/40 hover:scale-[1.02] active:scale-[0.98]"
                 >
-                  <Link
-                    href="/constitution"
-                    className="inline-flex items-center rounded-lg bg-white px-6 py-3 text-base font-semibold text-navy-800 transition-colors hover:bg-gray-100"
-                  >
-                    Read Our Constitution
-                  </Link>
-                </motion.div>
-                <motion.div
-                  whileHover={{ scale: 1.03 }}
-                  whileTap={{ scale: 0.98 }}
+                  Become a Member
+                </Link>
+                <Link
+                  href="/about"
+                  className="inline-flex items-center rounded-xl border border-white/20 bg-white/5 backdrop-blur-sm px-6 py-3.5 text-sm font-medium text-white transition-all duration-200 hover:bg-white/10 hover:border-white/30"
                 >
-                  <Link
-                    href="/executives"
-                    className="inline-flex items-center rounded-lg border-2 border-white/30 px-6 py-3 text-base font-semibold text-white transition-colors hover:border-white hover:bg-white/10"
-                  >
-                    Meet the Executives
-                  </Link>
-                </motion.div>
-              </div>
+                  Explore RUNACOS
+                </Link>
+              </motion.div>
             </motion.div>
           </AnimatePresence>
+
+          {/* Floating stat pills */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.7, duration: 0.6 }}
+            className="absolute bottom-28 right-8 hidden lg:flex gap-3"
+          >
+            {floatingStats.map((stat, i) => (
+              <motion.div
+                key={stat.label}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.8 + i * 0.1 }}
+                className="flex items-center gap-3 rounded-xl bg-white/10 backdrop-blur-md border border-white/10 px-4 py-3"
+              >
+                <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-electric/20">
+                  <stat.icon className="h-4 w-4 text-electric" />
+                </div>
+                <div>
+                  <div className="font-mono text-sm font-bold text-white">{stat.value}</div>
+                  <div className="text-[10px] text-white/50">{stat.label}</div>
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
         </div>
       </div>
 
-      {/* Previous / Next arrows */}
+      {/* Navigation arrows */}
       <button
         onClick={prevSlide}
-        className="absolute left-4 top-1/2 z-20 -translate-y-1/2 flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-sm transition-colors hover:bg-white/20 sm:left-6 sm:h-12 sm:w-12"
+        className="absolute left-4 top-1/2 z-20 -translate-y-1/2 flex h-11 w-11 items-center justify-center rounded-xl bg-white/5 text-white/60 backdrop-blur-sm border border-white/10 transition-all hover:bg-white/10 hover:text-white sm:left-6"
         aria-label="Previous slide"
       >
-        <ChevronLeft className="h-5 w-5 sm:h-6 sm:w-6" />
+        <ChevronLeft className="h-5 w-5" />
       </button>
       <button
         onClick={nextSlide}
-        className="absolute right-4 top-1/2 z-20 -translate-y-1/2 flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-sm transition-colors hover:bg-white/20 sm:right-6 sm:h-12 sm:w-12"
+        className="absolute right-4 top-1/2 z-20 -translate-y-1/2 flex h-11 w-11 items-center justify-center rounded-xl bg-white/5 text-white/60 backdrop-blur-sm border border-white/10 transition-all hover:bg-white/10 hover:text-white sm:right-6"
         aria-label="Next slide"
       >
-        <ChevronRight className="h-5 w-5 sm:h-6 sm:w-6" />
+        <ChevronRight className="h-5 w-5" />
       </button>
 
-      {/* Indicator dots */}
+      {/* Progress bar at bottom */}
+      <div className="absolute bottom-0 left-0 z-20 h-[3px] w-full bg-white/5">
+        <motion.div
+          key={current}
+          initial={{ width: "0%" }}
+          animate={{ width: "100%" }}
+          transition={{ duration: currentSlide.duration, ease: "linear" }}
+          className="h-full bg-gradient-to-r from-electric to-cyan"
+        />
+      </div>
+
+      {/* Slide indicators */}
       <div className="absolute bottom-6 left-1/2 z-20 flex -translate-x-1/2 gap-2">
         {slides.map((_, i) => (
           <button
@@ -250,25 +330,14 @@ export function HeroSection() {
               setDirection(i > current ? 1 : -1);
               setCurrent(i);
             }}
-            className={`h-2 rounded-full transition-all duration-300 ${
+            className={`h-1.5 rounded-full transition-all duration-300 ${
               i === current
-                ? "w-8 bg-white"
-                : "w-2 bg-white/40 hover:bg-white/60"
+                ? "w-8 bg-electric"
+                : "w-1.5 bg-white/30 hover:bg-white/50"
             }`}
             aria-label={`Go to slide ${i + 1}`}
           />
         ))}
-      </div>
-
-      {/* Progress bar */}
-      <div className="absolute bottom-0 left-0 z-20 h-1 w-full bg-white/10">
-        <motion.div
-          key={current}
-          initial={{ width: "0%" }}
-          animate={{ width: "100%" }}
-          transition={{ duration: currentSlide.duration, ease: "linear" }}
-          className="h-full bg-blue-400"
-        />
       </div>
     </section>
   );

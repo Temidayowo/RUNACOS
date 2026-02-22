@@ -66,18 +66,18 @@ export default function CreateNewsPage() {
       <div className="flex items-center gap-4">
         <Link
           href="/admin/news"
-          className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
+          className="p-2 text-gray-400 hover:text-gray-600 hover:bg-surface-1 rounded-lg transition-colors"
         >
           <ArrowLeft className="w-5 h-5" />
         </Link>
         <div>
-          <h1 className="text-2xl font-bold font-merriweather text-gray-900">Create News</h1>
+          <h1 className="text-2xl font-bold font-heading text-gray-900">Create News</h1>
           <p className="text-sm text-gray-500 mt-1">Add a new news article or announcement</p>
         </div>
       </div>
 
       {/* Form */}
-      <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow-sm p-6 space-y-6">
+      <form onSubmit={handleSubmit} className="bg-surface-0 rounded-xl border border-surface-3 p-6 space-y-6">
         {/* Title */}
         <div>
           <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-1">
@@ -91,7 +91,7 @@ export default function CreateNewsPage() {
             value={form.title}
             onChange={handleChange}
             placeholder="Enter article title"
-            className="w-full px-4 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-navy-800/20 focus:border-navy-800"
+            className="w-full px-4 py-2 border border-surface-3 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-navy-800/20 focus:border-navy-800"
           />
         </div>
 
@@ -108,7 +108,7 @@ export default function CreateNewsPage() {
             value={form.excerpt}
             onChange={handleChange}
             placeholder="Brief summary of the article"
-            className="w-full px-4 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-navy-800/20 focus:border-navy-800 resize-vertical"
+            className="w-full px-4 py-2 border border-surface-3 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-navy-800/20 focus:border-navy-800 resize-vertical"
           />
         </div>
 
@@ -125,7 +125,7 @@ export default function CreateNewsPage() {
             value={form.content}
             onChange={handleChange}
             placeholder="Full article content"
-            className="w-full px-4 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-navy-800/20 focus:border-navy-800 resize-vertical"
+            className="w-full px-4 py-2 border border-surface-3 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-navy-800/20 focus:border-navy-800 resize-vertical"
           />
         </div>
 
@@ -141,7 +141,7 @@ export default function CreateNewsPage() {
               required
               value={form.category}
               onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-navy-800/20 focus:border-navy-800 bg-white"
+              className="w-full px-4 py-2 border border-surface-3 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-navy-800/20 focus:border-navy-800 bg-white"
             >
               <option value="General">General</option>
               {FORM_CATEGORIES.map((cat) => (
@@ -163,7 +163,7 @@ export default function CreateNewsPage() {
               value={form.author}
               onChange={handleChange}
               placeholder="Author name"
-              className="w-full px-4 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-navy-800/20 focus:border-navy-800"
+              className="w-full px-4 py-2 border border-surface-3 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-navy-800/20 focus:border-navy-800"
             />
           </div>
         </div>
@@ -181,7 +181,7 @@ export default function CreateNewsPage() {
               value={form.coverImage}
               onChange={handleChange}
               placeholder="https://example.com/image.jpg"
-              className="w-full px-4 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-navy-800/20 focus:border-navy-800"
+              className="w-full px-4 py-2 border border-surface-3 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-navy-800/20 focus:border-navy-800"
             />
           </div>
           <div>
@@ -193,7 +193,7 @@ export default function CreateNewsPage() {
               name="status"
               value={form.status}
               onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-navy-800/20 focus:border-navy-800 bg-white"
+              className="w-full px-4 py-2 border border-surface-3 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-navy-800/20 focus:border-navy-800 bg-white"
             >
               <option value="DRAFT">Draft</option>
               <option value="PUBLISHED">Published</option>
@@ -202,7 +202,7 @@ export default function CreateNewsPage() {
         </div>
 
         {/* Actions */}
-        <div className="flex items-center justify-end gap-3 pt-4 border-t border-gray-100">
+        <div className="flex items-center justify-end gap-3 pt-4 border-t border-surface-3">
           <Link
             href="/admin/news"
             className="px-4 py-2.5 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"

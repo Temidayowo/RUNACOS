@@ -5,7 +5,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { NewsCard } from "@/components/news/NewsCard";
 import {
-  AnimateOnScroll,
   StaggerContainer,
   StaggerItem,
   PageTransition,
@@ -38,34 +37,33 @@ export function NewsContent() {
 
   return (
     <PageTransition>
-      {/* Header */}
-      <section className="bg-white py-16 md:py-20 text-center">
-        <div className="container-custom">
-          <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="section-label mb-3">
-            Departmental Updates
+      {/* Page Hero */}
+      <section className="page-hero text-center">
+        <div className="relative container-custom">
+          <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="font-mono text-xs uppercase tracking-widest text-electric mb-1">
+            Home / News
           </motion.p>
           <motion.h1
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="font-serif text-3xl font-extrabold text-gray-900 sm:text-4xl md:text-5xl"
+            className="font-heading text-3xl font-bold text-white sm:text-4xl md:text-5xl"
           >
-            News &amp; Announcements
+            News & Updates
           </motion.h1>
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.2 }}
-            className="mx-auto mt-4 max-w-2xl text-gray-500"
+            className="mx-auto mt-4 max-w-2xl text-navy-200"
           >
-            Stay informed with the latest updates from the Department of Computer Science,
-            student achievements, upcoming academic events, and association notices.
+            Stay informed with the latest from the Department and RUNACOS.
           </motion.p>
         </div>
       </section>
 
       {/* Filters */}
-      <section className="border-b border-gray-100">
+      <section className="bg-surface-0 border-b border-surface-3 sticky top-[72px] z-30 backdrop-blur-xl bg-white/90">
         <div className="container-custom">
           <motion.div
             initial={{ opacity: 0, y: 10 }}
@@ -75,26 +73,24 @@ export function NewsContent() {
           >
             <div className="flex flex-wrap gap-2">
               {NEWS_CATEGORIES.map((cat) => (
-                <motion.button
+                <button
                   key={cat}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
                   onClick={() => { setActiveCategory(cat); setCurrentPage(1); }}
                   className={activeCategory === cat ? "pill-tab-active" : "pill-tab-inactive"}
                 >
                   {cat}
-                </motion.button>
+                </button>
               ))}
             </div>
-            <div className="flex items-center gap-2 text-sm text-gray-500">
-              Sort by: <span className="font-medium text-gray-700">Newest First</span>
+            <div className="flex items-center gap-2 text-xs text-gray-400 font-mono">
+              Sort: <span className="font-medium text-gray-600">Latest</span>
             </div>
           </motion.div>
         </div>
       </section>
 
       {/* Grid */}
-      <section className="py-12 md:py-16">
+      <section className="py-12 md:py-16 bg-surface-1">
         <div className="container-custom">
           <AnimatePresence mode="wait">
             <motion.div
@@ -125,18 +121,18 @@ export function NewsContent() {
               <button
                 onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
                 disabled={currentPage === 1}
-                className="flex h-9 items-center gap-1 rounded-lg px-3 text-sm text-gray-600 hover:bg-gray-100 disabled:text-gray-300 disabled:hover:bg-transparent"
+                className="flex h-9 items-center gap-1 rounded-lg px-3 text-sm text-gray-600 hover:bg-surface-2 disabled:text-gray-300 disabled:hover:bg-transparent transition-colors"
               >
-                <ChevronLeft className="h-4 w-4" /> Previous
+                <ChevronLeft className="h-4 w-4" /> Prev
               </button>
               {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
                 <button
                   key={page}
                   onClick={() => setCurrentPage(page)}
-                  className={`flex h-9 w-9 items-center justify-center rounded-lg text-sm font-medium transition-colors ${
+                  className={`flex h-9 w-9 items-center justify-center rounded-lg font-mono text-sm font-medium transition-colors ${
                     currentPage === page
                       ? "bg-navy-800 text-white"
-                      : "text-gray-600 hover:bg-gray-100"
+                      : "text-gray-600 hover:bg-surface-2"
                   }`}
                 >
                   {page}
@@ -145,7 +141,7 @@ export function NewsContent() {
               <button
                 onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
                 disabled={currentPage === totalPages}
-                className="flex h-9 items-center gap-1 rounded-lg px-3 text-sm text-gray-600 hover:bg-gray-100 disabled:text-gray-300 disabled:hover:bg-transparent"
+                className="flex h-9 items-center gap-1 rounded-lg px-3 text-sm text-gray-600 hover:bg-surface-2 disabled:text-gray-300 disabled:hover:bg-transparent transition-colors"
               >
                 Next <ChevronRight className="h-4 w-4" />
               </button>

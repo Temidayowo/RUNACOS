@@ -99,7 +99,7 @@ export default function EditArticlePage() {
             <div className="h-4 bg-gray-200 rounded w-32 mt-2 animate-pulse" />
           </div>
         </div>
-        <div className="bg-white rounded-lg shadow-sm p-6 space-y-5">
+        <div className="bg-surface-0 rounded-xl border border-surface-3 p-6 space-y-5">
           {[...Array(6)].map((_, i) => (
             <div key={i} className="space-y-2 animate-pulse">
               <div className="h-4 bg-gray-200 rounded w-24" />
@@ -121,12 +121,12 @@ export default function EditArticlePage() {
       >
         <Link
           href="/admin/articles"
-          className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
+          className="p-2 text-gray-400 hover:text-gray-600 hover:bg-surface-1 rounded-lg transition-colors"
         >
           <ArrowLeft className="w-5 h-5" />
         </Link>
         <div>
-          <h1 className="text-2xl font-bold font-merriweather text-gray-900">Edit Article</h1>
+          <h1 className="text-2xl font-bold font-heading text-gray-900">Edit Article</h1>
           <p className="text-gray-500 text-sm mt-1">Update article details</p>
         </div>
       </motion.div>
@@ -137,7 +137,7 @@ export default function EditArticlePage() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.1 }}
         onSubmit={handleSubmit}
-        className="bg-white rounded-lg shadow-sm p-6 space-y-5"
+        className="bg-surface-0 rounded-xl border border-surface-3 p-6 space-y-5"
       >
         {/* Title */}
         <div>
@@ -260,7 +260,7 @@ export default function EditArticlePage() {
         </div>
 
         {/* Actions */}
-        <div className="flex items-center justify-end gap-3 pt-4 border-t border-gray-100">
+        <div className="flex items-center justify-end gap-3 pt-4 border-t border-surface-3">
           <Link
             href="/admin/articles"
             className="px-4 py-2.5 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"

@@ -100,7 +100,7 @@ export default function AdminPastQuestionsPage() {
         className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
       >
         <div>
-          <h1 className="text-2xl font-bold font-merriweather text-gray-900">Past Questions</h1>
+          <h1 className="text-2xl font-bold font-heading text-gray-900">Past Questions</h1>
           <p className="text-gray-500 text-sm mt-1">Manage past question papers and resources</p>
         </div>
         <Link
@@ -117,7 +117,7 @@ export default function AdminPastQuestionsPage() {
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.1 }}
-        className="bg-white rounded-lg shadow-sm p-4"
+        className="bg-surface-0 rounded-xl border border-surface-3 p-4"
       >
         <div className="flex flex-col sm:flex-row gap-3">
           <form onSubmit={handleSearch} className="flex-1 flex gap-2">
@@ -176,7 +176,7 @@ export default function AdminPastQuestionsPage() {
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.2 }}
-        className="bg-white rounded-lg shadow-sm overflow-hidden"
+        className="bg-surface-0 rounded-xl border border-surface-3 overflow-hidden"
       >
         {loading ? (
           <div className="p-8">
@@ -209,7 +209,7 @@ export default function AdminPastQuestionsPage() {
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className="border-b border-gray-100">
+                <tr className="border-b border-surface-3">
                   <th className="text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Title
                   </th>
@@ -230,14 +230,14 @@ export default function AdminPastQuestionsPage() {
                   </th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-50">
+              <tbody className="divide-y divide-surface-3">
                 {questions.map((pq, i) => (
                   <motion.tr
                     key={pq.id}
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: i * 0.03 }}
-                    className="hover:bg-gray-50 transition-colors"
+                    className="hover:bg-surface-1 transition-colors"
                   >
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-3">
@@ -268,7 +268,7 @@ export default function AdminPastQuestionsPage() {
                       <div className="flex items-center justify-end gap-2">
                         <button
                           onClick={() => router.push(`/admin/past-questions/${pq.id}/edit`)}
-                          className="p-2 text-gray-400 hover:text-navy-800 hover:bg-gray-100 rounded-lg transition-colors"
+                          className="p-2 text-gray-400 hover:text-navy-800 hover:bg-surface-1 rounded-lg transition-colors"
                           title="Edit"
                         >
                           <Pencil className="w-4 h-4" />
@@ -291,7 +291,7 @@ export default function AdminPastQuestionsPage() {
 
         {/* Pagination */}
         {pagination && pagination.totalPages > 1 && (
-          <div className="flex items-center justify-between px-6 py-4 border-t border-gray-100">
+          <div className="flex items-center justify-between px-6 py-4 border-t border-surface-3">
             <p className="text-sm text-gray-500">
               Showing {(pagination.page - 1) * pagination.limit + 1} to{" "}
               {Math.min(pagination.page * pagination.limit, pagination.total)} of{" "}

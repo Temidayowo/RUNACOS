@@ -85,7 +85,7 @@ function VerifyContent() {
 
   return (
     <PageTransition>
-      <section className="flex min-h-[70vh] items-center justify-center py-16">
+      <section className="flex min-h-[70vh] items-center justify-center py-16 bg-surface-1">
         <div className="container-custom">
           <div className="mx-auto max-w-xl text-center">
             {status === "loading" && (
@@ -95,7 +95,7 @@ function VerifyContent() {
                 className="flex flex-col items-center gap-4"
               >
                 <Loader2 className="h-12 w-12 text-navy-600 animate-spin" />
-                <h2 className="font-serif text-xl font-bold text-gray-900">
+                <h2 className="font-heading text-xl font-bold text-gray-900">
                   Verifying Payment...
                 </h2>
                 <p className="text-gray-500">
@@ -110,10 +110,10 @@ function VerifyContent() {
                 animate={{ scale: 1, opacity: 1 }}
                 className="flex flex-col items-center gap-4"
               >
-                <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-red-100">
+                <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-2xl bg-rose-50">
                   <XCircle className="h-10 w-10 text-red-500" />
                 </div>
-                <h2 className="font-serif text-2xl font-bold text-gray-900">
+                <h2 className="font-heading text-2xl font-bold text-gray-900">
                   Payment Verification Failed
                 </h2>
                 <p className="text-gray-500">
@@ -142,13 +142,13 @@ function VerifyContent() {
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
                   transition={{ delay: 0.2, type: "spring" }}
-                  className="flex h-20 w-20 items-center justify-center rounded-full bg-green-100"
+                  className="flex h-20 w-20 items-center justify-center rounded-2xl bg-emerald-50"
                 >
                   <CheckCircle className="h-10 w-10 text-green-500" />
                 </motion.div>
 
                 <div>
-                  <h2 className="font-serif text-2xl font-bold text-gray-900">
+                  <h2 className="font-heading text-2xl font-bold text-gray-900">
                     Welcome to RUNACOS!
                   </h2>
                   <p className="mt-2 text-gray-500">
@@ -224,8 +224,8 @@ export default function VerifyPage() {
   return (
     <Suspense
       fallback={
-        <div className="flex min-h-[70vh] items-center justify-center">
-          <Loader2 className="h-8 w-8 animate-spin text-navy-600" />
+        <div className="flex min-h-[70vh] items-center justify-center bg-surface-1">
+          <Loader2 className="h-8 w-8 animate-spin text-electric" />
         </div>
       }
     >

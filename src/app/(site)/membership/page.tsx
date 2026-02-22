@@ -190,21 +190,21 @@ export default function MembershipPage() {
 
   return (
     <PageTransition>
-      {/* Header */}
-      <section className="bg-white py-16 md:py-20 text-center">
-        <div className="container-custom">
+      {/* Page Hero */}
+      <section className="page-hero text-center">
+        <div className="relative container-custom">
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="section-label mb-3"
+            className="font-mono text-xs uppercase tracking-widest text-electric mb-1"
           >
-            Membership Registration
+            Home / Membership
           </motion.p>
           <motion.h1
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="font-serif text-3xl font-extrabold text-gray-900 sm:text-4xl"
+            className="font-heading text-3xl font-bold text-white sm:text-4xl md:text-5xl"
           >
             Join RUNACOS
           </motion.h1>
@@ -212,7 +212,7 @@ export default function MembershipPage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.2 }}
-            className="mx-auto mt-3 max-w-lg text-gray-500"
+            className="mx-auto mt-4 max-w-lg text-navy-200"
           >
             Become an official member of the Redeemer&apos;s University Association
             of Computer Science Students.
@@ -221,7 +221,7 @@ export default function MembershipPage() {
       </section>
 
       {/* Form */}
-      <section className="pb-16 md:pb-24">
+      <section className="py-12 md:py-16 bg-surface-1">
         <div className="container-custom">
           <div className="mx-auto max-w-2xl">
             {/* Step Indicator */}
@@ -273,12 +273,12 @@ export default function MembershipPage() {
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -20 }}
                 transition={{ duration: 0.3 }}
-                className="rounded-xl border border-gray-100 bg-white p-6 shadow-sm sm:p-8"
+                className="rounded-xl border border-surface-3 bg-surface-0 p-6 shadow-sm sm:p-8"
               >
                 {/* Step 1: Personal Info */}
                 {currentStep === 0 && (
                   <div className="space-y-5">
-                    <h3 className="font-serif text-lg font-bold text-gray-900">
+                    <h3 className="font-heading text-lg font-bold text-gray-900">
                       Personal Information
                     </h3>
                     <div className="grid gap-5 sm:grid-cols-2">
@@ -376,7 +376,7 @@ export default function MembershipPage() {
                 {/* Step 2: Academic Details */}
                 {currentStep === 1 && (
                   <div className="space-y-5">
-                    <h3 className="font-serif text-lg font-bold text-gray-900">
+                    <h3 className="font-heading text-lg font-bold text-gray-900">
                       Academic Details
                     </h3>
                     <div className="grid gap-5 sm:grid-cols-2">
@@ -456,7 +456,7 @@ export default function MembershipPage() {
                 {/* Step 3: Passport Photo */}
                 {currentStep === 2 && (
                   <div className="space-y-5">
-                    <h3 className="font-serif text-lg font-bold text-gray-900">
+                    <h3 className="font-heading text-lg font-bold text-gray-900">
                       Passport Photograph
                     </h3>
                     <p className="text-sm text-gray-500">
@@ -483,7 +483,7 @@ export default function MembershipPage() {
                         </button>
                       </div>
                     ) : (
-                      <label className="block cursor-pointer rounded-xl border-2 border-dashed border-gray-200 p-10 text-center transition-colors hover:border-blue-300">
+                      <label className="block cursor-pointer rounded-xl border-2 border-dashed border-surface-3 p-10 text-center transition-colors hover:border-electric">
                         {uploading ? (
                           <Loader2 className="mx-auto h-12 w-12 text-blue-400 animate-spin" />
                         ) : (
@@ -538,7 +538,7 @@ export default function MembershipPage() {
                 {/* Step 4: Review & Pay */}
                 {currentStep === 3 && (
                   <div className="space-y-5">
-                    <h3 className="font-serif text-lg font-bold text-gray-900">
+                    <h3 className="font-heading text-lg font-bold text-gray-900">
                       Review & Proceed to Payment
                     </h3>
 
@@ -553,7 +553,7 @@ export default function MembershipPage() {
                           />
                         </div>
                       )}
-                      <div className="flex-1 space-y-3 rounded-lg bg-gray-50 p-4 w-full">
+                      <div className="flex-1 space-y-3 rounded-xl bg-surface-1 p-4 w-full">
                         {[
                           { label: "Full Name", value: `${form.firstName} ${form.lastName}` },
                           { label: "Email", value: form.email },

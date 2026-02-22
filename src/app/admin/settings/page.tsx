@@ -169,7 +169,7 @@ export default function SettingsPage() {
     return (
       <div className="space-y-6">
         <div className="h-8 bg-gray-200 rounded w-32 animate-pulse" />
-        <div className="bg-white rounded-lg shadow-sm p-6 space-y-4">
+        <div className="bg-surface-0 rounded-xl border border-surface-3 p-6 space-y-4">
           <div className="h-5 bg-gray-200 rounded w-48 animate-pulse" />
           <div className="h-4 bg-gray-200 rounded w-64 animate-pulse" />
           <div className="h-4 bg-gray-200 rounded w-40 animate-pulse" />
@@ -182,7 +182,7 @@ export default function SettingsPage() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold font-merriweather text-gray-900">Settings</h1>
+        <h1 className="text-2xl font-bold font-heading text-gray-900">Settings</h1>
         <p className="text-gray-500 text-sm mt-1">View site information and account details</p>
       </div>
 
@@ -192,15 +192,15 @@ export default function SettingsPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="bg-white rounded-lg shadow-sm"
+          className="bg-surface-0 rounded-xl border border-surface-3"
         >
-          <div className="px-6 py-4 border-b border-gray-100">
+          <div className="px-6 py-4 border-b border-surface-3">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 bg-navy-800 rounded-lg flex items-center justify-center">
                 <Settings className="w-5 h-5 text-white" />
               </div>
               <div>
-                <h2 className="text-lg font-semibold font-merriweather text-gray-900">
+                <h2 className="text-lg font-semibold font-heading text-gray-900">
                   Site Information
                 </h2>
                 <p className="text-xs text-gray-500">General information about the site</p>
@@ -243,15 +243,15 @@ export default function SettingsPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="bg-white rounded-lg shadow-sm"
+          className="bg-surface-0 rounded-xl border border-surface-3"
         >
-          <div className="px-6 py-4 border-b border-gray-100">
+          <div className="px-6 py-4 border-b border-surface-3">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 bg-navy-800 rounded-lg flex items-center justify-center">
                 <Users className="w-5 h-5 text-white" />
               </div>
               <div>
-                <h2 className="text-lg font-semibold font-merriweather text-gray-900">
+                <h2 className="text-lg font-semibold font-heading text-gray-900">
                   Your Account
                 </h2>
                 <p className="text-xs text-gray-500">Currently logged-in user details</p>
@@ -272,7 +272,7 @@ export default function SettingsPage() {
                     <p className="text-lg font-semibold text-gray-900">{session.user.name}</p>
                     <span
                       className={cn(
-                        "inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium mt-1",
+                        "inline-flex items-center px-2.5 py-0.5 rounded-md font-mono text-xs font-medium mt-1",
                         (session.user as any).role === "ADMIN"
                           ? "bg-blue-100 text-blue-700"
                           : "bg-gray-100 text-gray-700"
@@ -284,7 +284,7 @@ export default function SettingsPage() {
                 </div>
 
                 {/* Details */}
-                <div className="border-t border-gray-100 pt-4 space-y-4">
+                <div className="border-t border-surface-3 pt-4 space-y-4">
                   <div>
                     <label className="block text-xs font-medium text-gray-500 uppercase tracking-wider mb-1">
                       Full Name
@@ -330,15 +330,15 @@ export default function SettingsPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="bg-white rounded-lg shadow-sm"
+          className="bg-surface-0 rounded-xl border border-surface-3"
         >
-          <div className="px-6 py-4 border-b border-gray-100">
+          <div className="px-6 py-4 border-b border-surface-3">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 bg-navy-800 rounded-lg flex items-center justify-center">
                 <CreditCard className="w-5 h-5 text-white" />
               </div>
               <div>
-                <h2 className="text-lg font-semibold font-merriweather text-gray-900">
+                <h2 className="text-lg font-semibold font-heading text-gray-900">
                   Membership Fee
                 </h2>
                 <p className="text-xs text-gray-500">
@@ -397,15 +397,15 @@ export default function SettingsPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.35 }}
-          className="bg-white rounded-lg shadow-sm"
+          className="bg-surface-0 rounded-xl border border-surface-3"
         >
-          <div className="px-6 py-4 border-b border-gray-100">
+          <div className="px-6 py-4 border-b border-surface-3">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 bg-navy-800 rounded-lg flex items-center justify-center">
                 <Calendar className="w-5 h-5 text-white" />
               </div>
               <div>
-                <h2 className="text-lg font-semibold font-merriweather text-gray-900">
+                <h2 className="text-lg font-semibold font-heading text-gray-900">
                   Academic Session
                 </h2>
                 <p className="text-xs text-gray-500">
@@ -465,15 +465,15 @@ export default function SettingsPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
-          className="bg-white rounded-lg shadow-sm"
+          className="bg-surface-0 rounded-xl border border-surface-3"
         >
-          <div className="px-6 py-4 border-b border-gray-100">
+          <div className="px-6 py-4 border-b border-surface-3">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 bg-navy-800 rounded-lg flex items-center justify-center">
                 <Image className="w-5 h-5 text-white" />
               </div>
               <div>
-                <h2 className="text-lg font-semibold font-merriweather text-gray-900">
+                <h2 className="text-lg font-semibold font-heading text-gray-900">
                   Badge Template
                 </h2>
                 <p className="text-xs text-gray-500">
@@ -485,7 +485,7 @@ export default function SettingsPage() {
           <div className="p-6">
             {badgeTemplateUrl ? (
               <div className="space-y-4">
-                <div className="relative inline-block rounded-lg overflow-hidden border border-gray-200">
+                <div className="relative inline-block rounded-lg overflow-hidden border border-surface-3">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={badgeTemplateUrl}
@@ -519,7 +519,7 @@ export default function SettingsPage() {
                 </div>
               </div>
             ) : (
-              <label className="block cursor-pointer rounded-xl border-2 border-dashed border-gray-200 p-8 text-center transition-colors hover:border-blue-300 max-w-sm">
+              <label className="block cursor-pointer rounded-xl border-2 border-dashed border-surface-3 p-8 text-center transition-colors hover:border-blue-300 max-w-sm">
                 {uploadingBadge ? (
                   <Loader2 className="mx-auto h-10 w-10 text-blue-400 animate-spin" />
                 ) : (

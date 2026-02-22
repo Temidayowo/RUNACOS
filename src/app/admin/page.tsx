@@ -64,9 +64,9 @@ export default function AdminDashboard() {
       <div className="space-y-6">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {[...Array(4)].map((_, i) => (
-            <div key={i} className="bg-white rounded-lg p-6 shadow-sm animate-pulse">
-              <div className="h-4 bg-gray-200 rounded w-24 mb-3" />
-              <div className="h-8 bg-gray-200 rounded w-16" />
+            <div key={i} className="bg-surface-0 rounded-xl p-6 border border-surface-3 animate-pulse">
+              <div className="h-4 bg-surface-2 rounded w-24 mb-3" />
+              <div className="h-8 bg-surface-2 rounded w-16" />
             </div>
           ))}
         </div>
@@ -77,10 +77,10 @@ export default function AdminDashboard() {
   if (!data) return null;
 
   const faultCards = [
-    { label: "Total Faults", value: data.faults.total, icon: Bug, color: "bg-blue-500" },
-    { label: "Open", value: data.faults.open, icon: AlertCircle, color: "bg-red-500" },
-    { label: "In Progress", value: data.faults.inProgress, icon: Clock, color: "bg-yellow-500" },
-    { label: "Resolved", value: data.faults.resolved, icon: CheckCircle, color: "bg-green-500" },
+    { label: "Total Faults", value: data.faults.total, icon: Bug, color: "bg-electric" },
+    { label: "Open", value: data.faults.open, icon: AlertCircle, color: "bg-rose-500" },
+    { label: "In Progress", value: data.faults.inProgress, icon: Clock, color: "bg-amber-500" },
+    { label: "Resolved", value: data.faults.resolved, icon: CheckCircle, color: "bg-emerald-500" },
   ];
 
   const contentCards = [
@@ -93,7 +93,7 @@ export default function AdminDashboard() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold font-merriweather text-gray-900">Dashboard</h1>
+        <h1 className="text-2xl font-bold font-heading text-gray-900">Dashboard</h1>
         <p className="text-gray-500 text-sm mt-1">Welcome back! Here&apos;s an overview of your system.</p>
       </div>
 
@@ -107,15 +107,15 @@ export default function AdminDashboard() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.1 }}
-              className="bg-white rounded-lg p-6 shadow-sm"
+              className="bg-surface-0 rounded-xl p-6 border border-surface-3 hover:shadow-card-hover transition-all"
             >
               <div className="flex items-center justify-between mb-3">
                 <span className="text-sm font-medium text-gray-500">{card.label}</span>
-                <div className={cn("w-10 h-10 rounded-lg flex items-center justify-center", card.color)}>
+                <div className={cn("w-10 h-10 rounded-xl flex items-center justify-center", card.color)}>
                   <Icon className="w-5 h-5 text-white" />
                 </div>
               </div>
-              <p className="text-3xl font-bold text-gray-900">
+              <p className="text-3xl font-bold font-mono text-gray-900">
                 <AnimatedCounter value={card.value} />
               </p>
             </motion.div>
@@ -127,7 +127,7 @@ export default function AdminDashboard() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Content Stats */}
         <div className="lg:col-span-2">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Content Overview</h2>
+          <h2 className="text-lg font-semibold font-heading text-gray-900 mb-4">Content Overview</h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {contentCards.map((card, i) => {
               const Icon = card.icon;
@@ -140,10 +140,10 @@ export default function AdminDashboard() {
                 >
                   <Link
                     href={card.href}
-                    className="block bg-white rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow"
+                    className="block bg-surface-0 rounded-xl p-4 border border-surface-3 hover:shadow-card-hover transition-all"
                   >
-                    <Icon className="w-6 h-6 text-navy-800 mb-2" />
-                    <p className="text-2xl font-bold text-gray-900">
+                    <Icon className="w-6 h-6 text-electric mb-2" />
+                    <p className="text-2xl font-bold font-mono text-gray-900">
                       <AnimatedCounter value={card.value} />
                     </p>
                     <p className="text-sm text-gray-500">{card.label}</p>
@@ -157,24 +157,28 @@ export default function AdminDashboard() {
           <div className="grid grid-cols-2 gap-4 mt-4">
             <Link
               href="/admin/users"
-              className="bg-white rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow"
+              className="bg-surface-0 rounded-xl p-4 border border-surface-3 hover:shadow-card-hover transition-all"
             >
               <div className="flex items-center gap-3">
-                <Users className="w-5 h-5 text-navy-800" />
+                <div className="w-10 h-10 rounded-xl bg-electric/10 flex items-center justify-center">
+                  <Users className="w-5 h-5 text-electric" />
+                </div>
                 <div>
-                  <p className="text-xl font-bold text-gray-900">{data.users}</p>
+                  <p className="text-xl font-bold font-mono text-gray-900">{data.users}</p>
                   <p className="text-sm text-gray-500">Total Users</p>
                 </div>
               </div>
             </Link>
             <Link
               href="/admin/contact"
-              className="bg-white rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow"
+              className="bg-surface-0 rounded-xl p-4 border border-surface-3 hover:shadow-card-hover transition-all"
             >
               <div className="flex items-center gap-3">
-                <MessageSquare className="w-5 h-5 text-navy-800" />
+                <div className="w-10 h-10 rounded-xl bg-rose-50 flex items-center justify-center">
+                  <MessageSquare className="w-5 h-5 text-rose-500" />
+                </div>
                 <div>
-                  <p className="text-xl font-bold text-gray-900">{data.unreadContacts}</p>
+                  <p className="text-xl font-bold font-mono text-gray-900">{data.unreadContacts}</p>
                   <p className="text-sm text-gray-500">Unread Messages</p>
                 </div>
               </div>
@@ -185,12 +189,12 @@ export default function AdminDashboard() {
         {/* Recent Faults */}
         <div>
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-semibold text-gray-900">Recent Faults</h2>
-            <Link href="/admin/frms" className="text-sm text-blue-500 hover:underline">
+            <h2 className="text-lg font-semibold font-heading text-gray-900">Recent Faults</h2>
+            <Link href="/admin/frms" className="text-sm text-electric hover:underline font-medium">
               View All
             </Link>
           </div>
-          <div className="bg-white rounded-lg shadow-sm divide-y">
+          <div className="bg-surface-0 rounded-xl border border-surface-3 divide-y divide-surface-3">
             {data.recentFaults.length === 0 ? (
               <p className="p-4 text-sm text-gray-500">No fault reports yet</p>
             ) : (
@@ -200,16 +204,16 @@ export default function AdminDashboard() {
                   <Link
                     key={fault.id}
                     href={`/admin/frms/${fault.id}`}
-                    className="block p-4 hover:bg-gray-50 transition-colors"
+                    className="block p-4 hover:bg-surface-1 transition-colors"
                   >
                     <div className="flex items-center justify-between mb-1">
                       <span className="text-xs font-mono text-gray-500">{fault.referenceId}</span>
                       <span
                         className={cn(
-                          "text-xs px-2 py-0.5 rounded-full font-medium",
-                          statusInfo.color === "red" && "bg-red-100 text-red-700",
-                          statusInfo.color === "yellow" && "bg-yellow-100 text-yellow-700",
-                          statusInfo.color === "green" && "bg-green-100 text-green-700",
+                          "text-xs px-2 py-0.5 rounded-md font-mono font-medium",
+                          statusInfo.color === "red" && "bg-rose-50 text-rose-700",
+                          statusInfo.color === "yellow" && "bg-amber-50 text-amber-700",
+                          statusInfo.color === "green" && "bg-emerald-50 text-emerald-700",
                           statusInfo.color === "gray" && "bg-gray-100 text-gray-700"
                         )}
                       >
@@ -218,7 +222,7 @@ export default function AdminDashboard() {
                     </div>
                     <p className="text-sm font-medium text-gray-900 truncate">{fault.location}</p>
                     <p className="text-xs text-gray-500 mt-0.5">
-                      {fault.category?.name} &middot; {formatDateShort(fault.createdAt)}
+                      {fault.category?.name} &middot; <span className="font-mono">{formatDateShort(fault.createdAt)}</span>
                     </p>
                   </Link>
                 );

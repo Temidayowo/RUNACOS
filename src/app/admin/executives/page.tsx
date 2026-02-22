@@ -224,7 +224,7 @@ export default function ExecutivesAdmin() {
         <div className="h-8 bg-gray-200 rounded w-48 animate-pulse" />
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {[...Array(4)].map((_, i) => (
-            <div key={i} className="bg-white rounded-lg p-6 shadow-sm animate-pulse">
+            <div key={i} className="bg-surface-0 rounded-xl border border-surface-3 p-6 animate-pulse">
               <div className="h-20 w-20 bg-gray-200 rounded-full mx-auto mb-4" />
               <div className="h-4 bg-gray-200 rounded w-24 mx-auto mb-2" />
               <div className="h-3 bg-gray-200 rounded w-16 mx-auto" />
@@ -240,7 +240,7 @@ export default function ExecutivesAdmin() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold font-merriweather text-gray-900">
+          <h1 className="text-2xl font-bold font-heading text-gray-900">
             Executive Council
           </h1>
           <p className="text-gray-500 text-sm mt-1">
@@ -259,7 +259,7 @@ export default function ExecutivesAdmin() {
 
       {/* Executive Cards */}
       {executives.length === 0 ? (
-        <div className="bg-white rounded-lg shadow-sm p-12 text-center">
+        <div className="bg-surface-0 rounded-xl border border-surface-3 p-12 text-center">
           <UserPlus className="mx-auto h-12 w-12 text-gray-300 mb-3" />
           <p className="text-gray-500 font-medium">No executives added yet</p>
           <p className="text-sm text-gray-400 mt-1">
@@ -275,7 +275,7 @@ export default function ExecutivesAdmin() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               className={cn(
-                "bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden",
+                "bg-surface-0 rounded-xl border border-surface-3 overflow-hidden",
                 !exec.active && "opacity-50"
               )}
             >
@@ -303,7 +303,7 @@ export default function ExecutivesAdmin() {
                 <div className="absolute top-2 right-2">
                   <span
                     className={cn(
-                      "text-xs px-2 py-0.5 rounded-full font-medium",
+                      "text-xs px-2 py-0.5 rounded-md font-mono font-medium",
                       exec.active
                         ? "bg-green-100 text-green-700"
                         : "bg-gray-100 text-gray-500"
@@ -317,19 +317,19 @@ export default function ExecutivesAdmin() {
               {/* Info */}
               <div className="p-4">
                 <h3 className="font-semibold text-gray-900">{exec.name}</h3>
-                <p className="text-sm text-blue-600">{exec.position}</p>
+                <p className="text-sm text-electric">{exec.position}</p>
                 {exec.email && (
                   <p className="text-xs text-gray-400 mt-1 truncate">{exec.email}</p>
                 )}
               </div>
 
               {/* Actions */}
-              <div className="flex items-center justify-between border-t border-gray-50 px-3 py-2">
+              <div className="flex items-center justify-between border-t border-surface-3 px-3 py-2">
                 <div className="flex gap-1">
                   <button
                     onClick={() => handleReorder(exec.id, "up")}
                     disabled={idx === 0}
-                    className="p-1.5 rounded hover:bg-gray-100 text-gray-400 disabled:opacity-30"
+                    className="p-1.5 rounded hover:bg-surface-1 text-gray-400 disabled:opacity-30"
                     title="Move up"
                   >
                     <ArrowUp className="w-3.5 h-3.5" />
@@ -337,7 +337,7 @@ export default function ExecutivesAdmin() {
                   <button
                     onClick={() => handleReorder(exec.id, "down")}
                     disabled={idx === executives.length - 1}
-                    className="p-1.5 rounded hover:bg-gray-100 text-gray-400 disabled:opacity-30"
+                    className="p-1.5 rounded hover:bg-surface-1 text-gray-400 disabled:opacity-30"
                     title="Move down"
                   >
                     <ArrowDown className="w-3.5 h-3.5" />
@@ -347,7 +347,7 @@ export default function ExecutivesAdmin() {
                   <button
                     onClick={() => handleToggle(exec.id, exec.active)}
                     className={cn(
-                      "p-1.5 rounded hover:bg-gray-100",
+                      "p-1.5 rounded hover:bg-surface-1",
                       exec.active ? "text-green-500" : "text-gray-300"
                     )}
                     title={exec.active ? "Hide" : "Show"}
@@ -356,7 +356,7 @@ export default function ExecutivesAdmin() {
                   </button>
                   <button
                     onClick={() => openEdit(exec)}
-                    className="p-1.5 rounded hover:bg-gray-100 text-blue-500"
+                    className="p-1.5 rounded hover:bg-surface-1 text-electric"
                     title="Edit"
                   >
                     <Edit2 className="w-3.5 h-3.5" />
@@ -390,11 +390,11 @@ export default function ExecutivesAdmin() {
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.95, opacity: 0 }}
               onClick={(e) => e.stopPropagation()}
-              className="bg-white rounded-xl shadow-xl w-full max-w-lg max-h-[90vh] overflow-y-auto"
+              className="bg-surface-0 rounded-xl shadow-xl w-full max-w-lg max-h-[90vh] overflow-y-auto"
             >
               {/* Modal Header */}
-              <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
-                <h2 className="text-lg font-semibold font-merriweather text-gray-900">
+              <div className="flex items-center justify-between px-6 py-4 border-b border-surface-3">
+                <h2 className="text-lg font-semibold font-heading text-gray-900">
                   {editingId ? "Edit Executive" : "Add Executive"}
                 </h2>
                 <button
@@ -566,7 +566,7 @@ export default function ExecutivesAdmin() {
               </div>
 
               {/* Modal Footer */}
-              <div className="flex justify-end gap-3 px-6 py-4 border-t border-gray-100">
+              <div className="flex justify-end gap-3 px-6 py-4 border-t border-surface-3">
                 <button
                   onClick={() => setShowModal(false)}
                   className="btn-secondary text-sm"

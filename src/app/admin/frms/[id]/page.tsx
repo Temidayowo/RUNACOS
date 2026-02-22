@@ -72,7 +72,7 @@ const statusTimelineClasses: Record<string, string> = {
   red: "bg-red-500",
   yellow: "bg-yellow-500",
   green: "bg-green-500",
-  gray: "bg-gray-500",
+  gray: "bg-surface-10",
 };
 
 export default function FaultDetailPage() {
@@ -189,7 +189,7 @@ export default function FaultDetailPage() {
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2 space-y-6">
-            <div className="bg-white rounded-lg shadow-sm p-6 animate-pulse">
+            <div className="bg-surface-0 rounded-xl border border-surface-3 p-6 animate-pulse">
               <div className="h-4 bg-gray-200 rounded w-32 mb-4" />
               <div className="space-y-3">
                 {[...Array(5)].map((_, i) => (
@@ -198,7 +198,7 @@ export default function FaultDetailPage() {
               </div>
             </div>
           </div>
-          <div className="bg-white rounded-lg shadow-sm p-6 animate-pulse">
+          <div className="bg-surface-0 rounded-xl border border-surface-3 p-6 animate-pulse">
             <div className="h-4 bg-gray-200 rounded w-32 mb-4" />
             <div className="space-y-3">
               {[...Array(4)].map((_, i) => (
@@ -216,7 +216,7 @@ export default function FaultDetailPage() {
       <div className="flex flex-col items-center justify-center py-20">
         <Bug className="w-12 h-12 text-gray-300 mb-4" />
         <p className="text-gray-500">Fault report not found</p>
-        <Link href="/admin/frms" className="mt-3 text-sm text-blue-500 hover:underline">
+        <Link href="/admin/frms" className="mt-3 text-sm text-electric hover:underline">
           Back to all faults
         </Link>
       </div>
@@ -236,12 +236,12 @@ export default function FaultDetailPage() {
         <div className="flex items-center gap-3">
           <Link
             href="/admin/frms"
-            className="flex items-center justify-center w-9 h-9 rounded-lg bg-white shadow-sm border border-gray-200 hover:bg-gray-50 transition-colors"
+            className="flex items-center justify-center w-9 h-9 rounded-xl bg-surface-0 border border-surface-3 hover:bg-surface-1 transition-colors"
           >
             <ArrowLeft className="w-4 h-4 text-gray-600" />
           </Link>
           <div>
-            <h1 className="text-2xl font-bold font-merriweather text-gray-900">
+            <h1 className="text-2xl font-bold font-heading text-gray-900">
               {fault.referenceId}
             </h1>
             <p className="text-gray-500 text-sm mt-0.5">
@@ -251,7 +251,7 @@ export default function FaultDetailPage() {
         </div>
         <span
           className={cn(
-            "inline-flex items-center self-start text-sm px-3 py-1.5 rounded-full font-medium",
+            "inline-flex items-center self-start text-sm px-3 py-1.5 rounded-md font-mono font-medium",
             statusBadgeClasses[currentStatusInfo.color]
           )}
         >
@@ -267,9 +267,9 @@ export default function FaultDetailPage() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="bg-white rounded-lg shadow-sm"
+            className="bg-surface-0 rounded-xl border border-surface-3"
           >
-            <div className="px-6 py-4 border-b border-gray-100">
+            <div className="px-6 py-4 border-b border-surface-3">
               <h2 className="text-lg font-semibold text-gray-900">Fault Details</h2>
             </div>
             <div className="p-6 space-y-5">
@@ -292,7 +292,7 @@ export default function FaultDetailPage() {
                     </p>
                     <a
                       href={`mailto:${fault.email}`}
-                      className="text-sm text-blue-600 hover:underline mt-0.5 block"
+                      className="text-sm text-electric hover:underline mt-0.5 block"
                     >
                       {fault.email}
                     </a>
@@ -358,7 +358,7 @@ export default function FaultDetailPage() {
                       href={fault.fileUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 text-sm text-blue-600 hover:underline mt-1"
+                      className="inline-flex items-center gap-1.5 text-sm text-electric hover:underline mt-1"
                     >
                       View Attachment
                       <ArrowRight className="w-3 h-3" />
@@ -385,7 +385,7 @@ export default function FaultDetailPage() {
 
               {/* Admin Notes (read-only display) */}
               {fault.adminNotes && (
-                <div className="bg-gray-50 rounded-lg p-4 border border-gray-100">
+                <div className="bg-surface-1 rounded-lg p-4 border border-surface-3">
                   <p className="text-xs text-gray-500 uppercase tracking-wider font-medium mb-1">
                     Admin Notes
                   </p>
@@ -402,9 +402,9 @@ export default function FaultDetailPage() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="bg-white rounded-lg shadow-sm"
+            className="bg-surface-0 rounded-xl border border-surface-3"
           >
-            <div className="px-6 py-4 border-b border-gray-100">
+            <div className="px-6 py-4 border-b border-surface-3">
               <h2 className="text-lg font-semibold text-gray-900">Status Timeline</h2>
             </div>
             <div className="p-6">
@@ -449,7 +449,7 @@ export default function FaultDetailPage() {
                                 Status changed to{" "}
                                 <span
                                   className={cn(
-                                    "inline-flex items-center text-xs px-2 py-0.5 rounded-full font-medium",
+                                    "inline-flex items-center text-xs px-2 py-0.5 rounded-md font-mono font-medium",
                                     statusBadgeClasses[entryStatusInfo.color]
                                   )}
                                 >
@@ -485,9 +485,9 @@ export default function FaultDetailPage() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className="bg-white rounded-lg shadow-sm sticky top-24"
+            className="bg-surface-0 rounded-xl border border-surface-3 sticky top-24"
           >
-            <div className="px-6 py-4 border-b border-gray-100">
+            <div className="px-6 py-4 border-b border-surface-3">
               <h2 className="text-lg font-semibold text-gray-900">Update Fault</h2>
             </div>
             <form onSubmit={handleUpdate} className="p-6 space-y-5">
@@ -525,7 +525,7 @@ export default function FaultDetailPage() {
                   id="status"
                   value={newStatus}
                   onChange={(e) => setNewStatus(e.target.value as FaultStatus)}
-                  className="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-navy-800 focus:border-transparent bg-white"
+                  className="w-full border border-surface-3 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-navy-800 focus:border-transparent bg-white"
                 >
                   {(Object.keys(FAULT_STATUSES) as FaultStatus[]).map((key) => (
                     <option key={key} value={key}>
@@ -553,7 +553,7 @@ export default function FaultDetailPage() {
                     value={statusNote}
                     onChange={(e) => setStatusNote(e.target.value)}
                     placeholder="Optional note about this status change..."
-                    className="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-navy-800 focus:border-transparent"
+                    className="w-full border border-surface-3 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-navy-800 focus:border-transparent"
                   />
                 </motion.div>
               )}
@@ -570,7 +570,7 @@ export default function FaultDetailPage() {
                   id="assignedStaff"
                   value={assignedStaffId}
                   onChange={(e) => setAssignedStaffId(e.target.value)}
-                  className="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-navy-800 focus:border-transparent bg-white"
+                  className="w-full border border-surface-3 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-navy-800 focus:border-transparent bg-white"
                 >
                   <option value="">Unassigned</option>
                   {users.map((user) => (
@@ -595,7 +595,7 @@ export default function FaultDetailPage() {
                   onChange={(e) => setAdminNotes(e.target.value)}
                   rows={4}
                   placeholder="Internal notes about this fault..."
-                  className="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-navy-800 focus:border-transparent resize-none"
+                  className="w-full border border-surface-3 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-navy-800 focus:border-transparent resize-none"
                 />
               </div>
 

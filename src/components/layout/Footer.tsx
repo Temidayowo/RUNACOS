@@ -3,49 +3,56 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
-import { Facebook, Twitter, Instagram, Linkedin, MapPin, Mail, Phone } from "lucide-react";
-import { FOOTER_QUICK_LINKS, FOOTER_RESOURCES } from "@/lib/constants";
+import { Twitter, Instagram, Linkedin, Mail, MapPin, Clock } from "lucide-react";
+import { FOOTER_QUICK_LINKS, FOOTER_RESOURCES, FOOTER_CONNECT, SITE_VERSION } from "@/lib/constants";
 import { AnimateOnScroll, fadeUp } from "@/components/ui/MotionWrapper";
 
 export function Footer() {
   const pathname = usePathname();
 
-  // Don't render footer on admin pages
   if (pathname?.startsWith("/admin")) return null;
 
   return (
-    <footer className="bg-navy-900 text-gray-300">
-      <div className="container-custom py-16">
-        <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
+    <footer className="relative bg-navy-900 text-gray-300 overflow-hidden">
+      {/* Dot grid overlay */}
+      <div className="absolute inset-0 bg-grid-dots-light pointer-events-none opacity-30" />
+
+      <div className="relative container-custom pt-16 pb-8">
+        <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-12">
           {/* Brand Column */}
-          <AnimateOnScroll variants={fadeUp} delay={0}>
+          <AnimateOnScroll variants={fadeUp} delay={0} className="lg:col-span-4">
             <div>
-              <div className="flex items-center gap-3 mb-4">
-                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-navy-700">
-                  <span className="text-lg font-bold text-white">R</span>
+              <div className="flex items-center gap-3 mb-5">
+                <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-white/10 backdrop-blur-sm">
+                  <span className="text-lg font-bold text-white font-heading">R</span>
                 </div>
                 <div>
-                  <div className="text-sm font-bold text-white">RUNACOS</div>
+                  <div className="text-sm font-bold text-white font-heading tracking-wide">
+                    RUNACOS
+                  </div>
+                  <div className="text-[10px] font-mono uppercase tracking-widest text-navy-300">
+                    Redeemer&apos;s University
+                  </div>
                 </div>
               </div>
-              <p className="text-sm leading-relaxed text-gray-400 mb-6">
-                The official Association of Computer Science Students at
-                Redeemer&apos;s University, fostering innovation, academic
-                excellence, and technological advancement.
+              <p className="text-sm leading-relaxed text-navy-200 mb-6 max-w-xs">
+                The official Association of Computer Science Students —
+                fostering innovation, academic excellence, and technological
+                advancement.
               </p>
-              <div className="flex gap-3">
+              <div className="flex gap-2.5">
                 {[
-                  { icon: Facebook, href: "#", label: "Facebook" },
                   { icon: Twitter, href: "#", label: "Twitter" },
                   { icon: Instagram, href: "#", label: "Instagram" },
                   { icon: Linkedin, href: "#", label: "LinkedIn" },
+                  { icon: Mail, href: "mailto:info@runacos.org", label: "Email" },
                 ].map(({ icon: Icon, href, label }) => (
                   <motion.a
                     key={label}
                     href={href}
-                    whileHover={{ scale: 1.1, backgroundColor: "#2563EB" }}
+                    whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.95 }}
-                    className="flex h-9 w-9 items-center justify-center rounded-full bg-navy-700 text-gray-300 transition-colors hover:text-white"
+                    className="flex h-9 w-9 items-center justify-center rounded-lg bg-white/5 text-navy-300 transition-all duration-200 hover:bg-electric hover:text-white"
                     aria-label={label}
                   >
                     <Icon className="h-4 w-4" />
@@ -56,9 +63,9 @@ export function Footer() {
           </AnimateOnScroll>
 
           {/* Quick Links */}
-          <AnimateOnScroll variants={fadeUp} delay={0.1}>
+          <AnimateOnScroll variants={fadeUp} delay={0.1} className="lg:col-span-2">
             <div>
-              <h4 className="mb-4 text-sm font-semibold text-white">
+              <h4 className="mb-4 text-xs font-mono font-semibold uppercase tracking-widest text-white/60">
                 Quick Links
               </h4>
               <ul className="space-y-2.5">
@@ -66,7 +73,7 @@ export function Footer() {
                   <li key={link.label}>
                     <Link
                       href={link.href}
-                      className="text-sm text-gray-400 transition-colors hover:text-white"
+                      className="text-sm text-navy-200 transition-colors hover:text-white link-hover-underline inline-block"
                     >
                       {link.label}
                     </Link>
@@ -77,9 +84,9 @@ export function Footer() {
           </AnimateOnScroll>
 
           {/* Resources */}
-          <AnimateOnScroll variants={fadeUp} delay={0.2}>
+          <AnimateOnScroll variants={fadeUp} delay={0.15} className="lg:col-span-2">
             <div>
-              <h4 className="mb-4 text-sm font-semibold text-white">
+              <h4 className="mb-4 text-xs font-mono font-semibold uppercase tracking-widest text-white/60">
                 Resources
               </h4>
               <ul className="space-y-2.5">
@@ -87,7 +94,7 @@ export function Footer() {
                   <li key={link.label}>
                     <Link
                       href={link.href}
-                      className="text-sm text-gray-400 transition-colors hover:text-white"
+                      className="text-sm text-navy-200 transition-colors hover:text-white link-hover-underline inline-block"
                     >
                       {link.label}
                     </Link>
@@ -98,65 +105,69 @@ export function Footer() {
           </AnimateOnScroll>
 
           {/* Contact */}
-          <AnimateOnScroll variants={fadeUp} delay={0.3}>
+          <AnimateOnScroll variants={fadeUp} delay={0.2} className="lg:col-span-4">
             <div>
-              <h4 className="mb-4 text-sm font-semibold text-white">
-                Contact Us
+              <h4 className="mb-4 text-xs font-mono font-semibold uppercase tracking-widest text-white/60">
+                Get in Touch
               </h4>
               <ul className="space-y-3">
-                <li className="flex items-start gap-2.5">
-                  <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-blue-400" />
-                  <span className="text-sm text-gray-400">
-                    Department of Computer Science,
-                    <br />
-                    College of Natural Sciences,
-                    <br />
+                <li className="flex items-start gap-3">
+                  <div className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-electric/10">
+                    <MapPin className="h-3.5 w-3.5 text-electric" />
+                  </div>
+                  <span className="text-sm text-navy-200">
+                    Department of Computer Science,<br />
                     Redeemer&apos;s University, Ede
                   </span>
                 </li>
-                <li className="flex items-center gap-2.5">
-                  <Mail className="h-4 w-4 shrink-0 text-blue-400" />
+                <li className="flex items-center gap-3">
+                  <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-electric/10">
+                    <Mail className="h-3.5 w-3.5 text-electric" />
+                  </div>
                   <a
                     href="mailto:info@runacos.org"
-                    className="text-sm text-gray-400 hover:text-white transition-colors"
+                    className="text-sm font-mono text-navy-200 hover:text-white transition-colors"
                   >
                     info@runacos.org
                   </a>
                 </li>
-                <li className="flex items-center gap-2.5">
-                  <Phone className="h-4 w-4 shrink-0 text-blue-400" />
-                  <a
-                    href="tel:+2348001234567"
-                    className="text-sm text-gray-400 hover:text-white transition-colors"
-                  >
-                    +234 800 RUNACOS
-                  </a>
+                <li className="flex items-center gap-3">
+                  <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-electric/10">
+                    <Clock className="h-3.5 w-3.5 text-electric" />
+                  </div>
+                  <span className="text-sm text-navy-200">
+                    Mon - Fri: <span className="font-mono">9:00 AM - 5:00 PM</span>
+                  </span>
                 </li>
               </ul>
             </div>
           </AnimateOnScroll>
         </div>
-      </div>
 
-      {/* Bottom Bar */}
-      <div className="border-t border-navy-700">
-        <div className="container-custom flex flex-col items-center justify-between gap-3 py-5 sm:flex-row">
-          <p className="text-xs text-gray-500">
-            &copy; {new Date().getFullYear()} RUNACOS. All rights reserved.
+        {/* Circuit-trace divider */}
+        <div className="my-8 h-px bg-gradient-to-r from-transparent via-navy-600/30 to-transparent" />
+
+        {/* Bottom Bar */}
+        <div className="flex flex-col items-center justify-between gap-3 sm:flex-row">
+          <p className="text-xs text-navy-400">
+            &copy; {new Date().getFullYear()} RUNACOS &middot; Redeemer&apos;s University
           </p>
-          <div className="flex gap-4">
+          <div className="flex items-center gap-4">
             <Link
               href="/privacy-policy"
-              className="text-xs text-gray-500 hover:text-gray-300 transition-colors"
+              className="text-xs text-navy-400 hover:text-navy-200 transition-colors"
             >
-              Privacy Policy
+              Privacy
             </Link>
             <Link
               href="/terms-of-service"
-              className="text-xs text-gray-500 hover:text-gray-300 transition-colors"
+              className="text-xs text-navy-400 hover:text-navy-200 transition-colors"
             >
-              Terms of Use
+              Terms
             </Link>
+            <span className="text-[10px] font-mono text-navy-500">
+              v{SITE_VERSION}
+            </span>
           </div>
         </div>
       </div>

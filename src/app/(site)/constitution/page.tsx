@@ -40,21 +40,21 @@ const sections = [
 export default function ConstitutionPage() {
   return (
     <PageTransition>
-      {/* Header */}
-      <section className="bg-white py-16 md:py-20 text-center">
-        <div className="container-custom">
+      {/* Hero */}
+      <section className="page-hero text-center">
+        <div className="relative container-custom">
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="section-label mb-3"
+            className="font-mono text-xs uppercase tracking-widest text-electric mb-1"
           >
-            Our Constitution
+            Home / Constitution
           </motion.p>
           <motion.h1
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="font-serif text-3xl font-extrabold text-gray-900 sm:text-4xl"
+            className="font-heading text-3xl font-bold text-white sm:text-4xl md:text-5xl"
           >
             RUNACOS Constitution
           </motion.h1>
@@ -62,7 +62,7 @@ export default function ConstitutionPage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.2 }}
-            className="mx-auto mt-3 max-w-lg text-gray-500"
+            className="mx-auto mt-4 max-w-2xl text-navy-200"
           >
             The guiding principles and rules that govern the Redeemer&apos;s
             University Association of Computer Science Students.
@@ -80,13 +80,13 @@ export default function ConstitutionPage() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.1 * i }}
-                className="rounded-xl border border-gray-100 bg-white p-6 shadow-sm sm:p-8"
+                className="rounded-xl border border-surface-3 bg-surface-0 p-6 shadow-sm sm:p-8"
               >
                 <div className="mb-4 flex items-center gap-3">
                   <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-navy-50">
                     <section.icon className="h-5 w-5 text-navy-600" />
                   </div>
-                  <h2 className="font-serif text-lg font-bold text-gray-900">
+                  <h2 className="font-heading text-lg font-bold text-gray-900">
                     {section.title}
                   </h2>
                 </div>

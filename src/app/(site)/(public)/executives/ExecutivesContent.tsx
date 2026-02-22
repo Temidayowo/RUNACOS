@@ -43,70 +43,120 @@ export function ExecutivesContent() {
       .catch(() => {});
   }, []);
 
+  const president = executives[0];
+  const otherExecs = executives.slice(1);
+
   return (
     <PageTransition>
-      {/* Header */}
-      <section className="bg-white py-16 md:py-20 text-center">
-        <div className="container-custom">
-          <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="section-label mb-3">
-            Leadership
+      {/* Page Hero */}
+      <section className="page-hero text-center">
+        <div className="relative container-custom">
+          <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="font-mono text-xs uppercase tracking-widest text-electric mb-1">
+            Home / Executives
           </motion.p>
           <motion.h1
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="font-serif text-4xl font-extrabold text-gray-900 sm:text-5xl"
+            className="font-heading text-3xl font-bold text-white sm:text-4xl md:text-5xl"
           >
-            Meet Our Executives
+            Meet Our Executive Council
           </motion.h1>
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.2 }}
-            className="mx-auto mt-4 max-w-lg text-gray-500"
+            className="mx-auto mt-4 max-w-lg text-navy-200"
           >
-            The dedicated leaders steering RUNACOS towards excellence and innovation.
+            The student leaders driving RUNACOS forward.
           </motion.p>
         </div>
       </section>
 
-      {/* Grid */}
-      <section className="pb-16 md:pb-24">
-        <div className="container-custom">
-          <StaggerContainer className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4" staggerDelay={0.08}>
-            {executives.map((exec) => (
+      {/* President Spotlight */}
+      {president && (
+        <section className="py-12 md:py-16 bg-surface-0">
+          <div className="container-custom">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="relative overflow-hidden rounded-2xl border border-surface-3 bg-surface-1 p-8 md:p-10"
+            >
+              {/* Gradient accent */}
+              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-electric to-cyan" />
+
+              <div className="flex flex-col items-center gap-6 md:flex-row md:gap-10">
+                {/* Photo */}
+                <div className="relative h-36 w-36 shrink-0 overflow-hidden rounded-2xl ring-4 ring-electric/10">
+                  {president.image ? (
+                    <Image src={president.image} alt={president.name} fill className="object-cover" sizes="144px" />
+                  ) : (
+                    <div className="flex h-full items-center justify-center bg-gradient-hero">
+                      <span className="text-4xl font-bold text-white/60 font-heading">
+                        {president.name.split(" ").map(n => n[0]).join("")}
+                      </span>
+                    </div>
+                  )}
+                </div>
+
+                <div className="text-center md:text-left">
+                  <span className="badge-keyword mb-2 inline-block">President</span>
+                  <h2 className="font-heading text-2xl font-bold text-gray-900 md:text-3xl">{president.name}</h2>
+                  <p className="mt-1 text-sm text-gray-500">Department of Computer Science</p>
+                  <div className="mt-4 flex justify-center gap-2 md:justify-start">
+                    {[
+                      { Icon: Linkedin, href: "#" },
+                      { Icon: Twitter, href: "#" },
+                      { Icon: Mail, href: president.email ? `mailto:${president.email}` : "#" },
+                    ].map(({ Icon, href }, i) => (
+                      <motion.a
+                        key={i}
+                        href={href}
+                        whileHover={{ scale: 1.1 }}
+                        className="flex h-9 w-9 items-center justify-center rounded-lg bg-surface-2 text-gray-400 hover:bg-electric hover:text-white transition-colors"
+                      >
+                        <Icon className="h-4 w-4" />
+                      </motion.a>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </section>
+      )}
+
+      {/* Executive Grid */}
+      <section className="relative py-12 md:py-16 bg-surface-1">
+        <div className="absolute inset-0 bg-grid-dots pointer-events-none" />
+        <div className="relative container-custom">
+          <StaggerContainer className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4" staggerDelay={0.06}>
+            {otherExecs.map((exec) => (
               <StaggerItem key={exec.id}>
                 <motion.div
-                  whileHover={{ y: -6 }}
-                  className="group text-center"
+                  whileHover={{ y: -4 }}
+                  className="group rounded-xl border border-surface-3 bg-surface-0 p-6 text-center transition-all hover:shadow-card-hover"
                 >
                   {/* Photo */}
-                  <div className="relative mx-auto mb-4 h-32 w-32 overflow-hidden rounded-full ring-4 ring-transparent transition-all group-hover:ring-navy-200">
+                  <div className="relative mx-auto mb-4 h-28 w-28 overflow-hidden rounded-2xl ring-2 ring-transparent transition-all group-hover:ring-electric/20">
                     {exec.image ? (
-                      <Image
-                        src={exec.image}
-                        alt={exec.name}
-                        fill
-                        className="object-cover"
-                        sizes="128px"
-                      />
+                      <Image src={exec.image} alt={exec.name} fill className="object-cover" sizes="112px" />
                     ) : (
-                      <div className="flex h-full items-center justify-center bg-gradient-to-br from-navy-800 to-navy-600">
-                        <span className="text-3xl font-bold text-white/60">
+                      <div className="flex h-full items-center justify-center bg-gradient-hero">
+                        <span className="text-2xl font-bold text-white/60 font-heading">
                           {exec.name.split(" ").map(n => n[0]).join("")}
                         </span>
                       </div>
                     )}
                   </div>
-                  <h3 className="font-serif text-lg font-bold text-gray-900 group-hover:text-navy-800 transition-colors">
+                  <h3 className="font-heading text-sm font-semibold text-gray-900 group-hover:text-navy-800 transition-colors">
                     {exec.name}
                   </h3>
-                  <p className="text-sm text-blue-600">{exec.position}</p>
-                  <div className="mt-3 flex justify-center gap-2">
+                  <p className="mt-0.5 text-xs text-electric">{exec.position}</p>
+                  <div className="mt-3 flex justify-center gap-1.5">
                     {[
-                      ...(exec.email
-                        ? [{ Icon: Mail, href: `mailto:${exec.email}` }]
-                        : []),
+                      ...(exec.email ? [{ Icon: Mail, href: `mailto:${exec.email}` }] : []),
                       { Icon: Linkedin, href: "#" },
                       { Icon: Twitter, href: "#" },
                       ...(!exec.email ? [{ Icon: Mail, href: "#" }] : []),
@@ -115,10 +165,9 @@ export function ExecutivesContent() {
                         key={i}
                         href={href}
                         whileHover={{ scale: 1.15 }}
-                        whileTap={{ scale: 0.9 }}
-                        className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 text-gray-400 hover:bg-navy-800 hover:text-white transition-colors"
+                        className="flex h-7 w-7 items-center justify-center rounded-md bg-surface-2 text-gray-400 hover:bg-navy-800 hover:text-white transition-colors"
                       >
-                        <Icon className="h-3.5 w-3.5" />
+                        <Icon className="h-3 w-3" />
                       </motion.a>
                     ))}
                   </div>

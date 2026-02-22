@@ -77,7 +77,7 @@ export default function CardPage() {
       <PageTransition>
         <div className="flex min-h-[70vh] flex-col items-center justify-center gap-4 py-16">
           <AlertCircle className="h-12 w-12 text-red-400" />
-          <h2 className="font-serif text-xl font-bold text-gray-900">
+          <h2 className="font-heading text-xl font-bold text-gray-900">
             {error || "Card not found"}
           </h2>
           <Link href="/" className="btn-primary">
@@ -96,7 +96,7 @@ export default function CardPage() {
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="font-serif text-2xl font-bold text-gray-900 mb-8"
+              className="font-heading text-2xl font-bold text-gray-900 mb-8"
             >
               Your Membership Card
             </motion.h1>

@@ -19,11 +19,11 @@ export function ArticleDetailContent() {
 
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
               <span className="badge-blue mb-3">Tutorial</span>
-              <h1 className="font-serif text-3xl font-extrabold text-gray-900 sm:text-4xl">Article Title</h1>
+              <h1 className="font-heading text-3xl font-extrabold text-gray-900 sm:text-4xl">Article Title</h1>
               <div className="mt-4 flex flex-wrap items-center gap-4 text-sm text-gray-500">
-                <span className="flex items-center gap-1.5"><Calendar className="h-4 w-4" /> October 10, 2024</span>
+                <span className="flex items-center gap-1.5"><Calendar className="h-4 w-4" /> <span className="font-mono">October 10, 2024</span></span>
                 <span className="flex items-center gap-1.5"><User className="h-4 w-4" /> Author Name</span>
-                <span className="flex items-center gap-1.5"><Clock className="h-4 w-4" /> 5 min read</span>
+                <span className="flex items-center gap-1.5"><Clock className="h-4 w-4" /> <span className="font-mono">5 min read</span></span>
               </div>
             </motion.div>
 

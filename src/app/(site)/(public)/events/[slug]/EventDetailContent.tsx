@@ -28,7 +28,7 @@ export function EventDetailContent() {
 
             <div className="mt-8 grid gap-8 lg:grid-cols-[1fr_300px]">
               <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
-                <h1 className="font-serif text-3xl font-extrabold text-gray-900 sm:text-4xl">Event Title</h1>
+                <h1 className="font-heading text-3xl font-extrabold text-gray-900 sm:text-4xl">Event Title</h1>
                 <div className="prose-custom mt-6">
                   <p>Event description and details would appear here, fetched from the database.</p>
                   <p>This would include the full event information, agenda, speaker bios, and any other relevant details.</p>
@@ -47,13 +47,13 @@ export function EventDetailContent() {
                   { icon: MapPin, label: "Location", value: "Main Auditorium, RUN" },
                   { icon: Users, label: "Capacity", value: "200 seats" },
                 ].map((item) => (
-                  <div key={item.label} className="flex items-start gap-3 rounded-lg border border-gray-100 bg-white p-4 shadow-sm">
+                  <div key={item.label} className="flex items-start gap-3 rounded-xl border border-surface-3 bg-surface-0 p-4 shadow-sm">
                     <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-navy-50">
                       <item.icon className="h-4 w-4 text-navy-800" />
                     </div>
                     <div>
                       <p className="text-xs text-gray-400">{item.label}</p>
-                      <p className="text-sm font-medium text-gray-900">{item.value}</p>
+                      <p className="text-sm font-mono font-medium text-gray-900">{item.value}</p>
                     </div>
                   </div>
                 ))}

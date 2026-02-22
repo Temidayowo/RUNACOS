@@ -3,10 +3,9 @@
 import { useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { MapPin, Clock, Calendar } from "lucide-react";
+import { MapPin, Clock, Calendar, ArrowRight } from "lucide-react";
 import { format } from "date-fns";
 import {
-  AnimateOnScroll,
   StaggerContainer,
   StaggerItem,
   PageTransition,
@@ -29,49 +28,50 @@ export function EventsContent() {
 
   return (
     <PageTransition>
-      <section className="bg-white py-16 md:py-20 text-center">
-        <div className="container-custom">
-          <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="section-label mb-3">
-            What&apos;s Happening
+      {/* Page Hero */}
+      <section className="page-hero text-center">
+        <div className="relative container-custom">
+          <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="font-mono text-xs uppercase tracking-widest text-electric mb-1">
+            Home / Events
           </motion.p>
           <motion.h1
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="font-serif text-3xl font-extrabold text-gray-900 sm:text-4xl md:text-5xl"
+            className="font-heading text-3xl font-bold text-white sm:text-4xl md:text-5xl"
           >
-            Events &amp; Activities
+            Events & Activities
           </motion.h1>
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.2 }}
-            className="mx-auto mt-4 max-w-2xl text-gray-500"
+            className="mx-auto mt-4 max-w-2xl text-navy-200"
           >
             Discover workshops, seminars, hackathons, and social activities organized by RUNACOS.
           </motion.p>
         </div>
       </section>
 
-      <section className="border-b border-gray-100">
+      {/* Tabs */}
+      <section className="bg-surface-0 border-b border-surface-3 sticky top-[72px] z-30 backdrop-blur-xl bg-white/90">
         <div className="container-custom">
           <div className="flex gap-2 py-4">
             {(["upcoming", "past"] as const).map((t) => (
-              <motion.button
+              <button
                 key={t}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
                 onClick={() => setTab(t)}
                 className={tab === t ? "pill-tab-active" : "pill-tab-inactive"}
               >
-                {t === "upcoming" ? "Upcoming Events" : "Past Events"}
-              </motion.button>
+                {t === "upcoming" ? "Upcoming" : "Past Events"}
+              </button>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="py-12 md:py-16">
+      {/* Events List */}
+      <section className="py-12 md:py-16 bg-surface-1">
         <div className="container-custom">
           <AnimatePresence mode="wait">
             <motion.div
@@ -81,9 +81,10 @@ export function EventsContent() {
               exit={{ opacity: 0, y: -20 }}
             >
               {filtered.length === 0 ? (
-                <div className="py-16 text-center text-gray-400">
-                  <Calendar className="mx-auto mb-3 h-12 w-12" />
-                  <p className="text-lg font-medium">No {tab} events</p>
+                <div className="py-20 text-center">
+                  <Calendar className="mx-auto mb-3 h-12 w-12 text-gray-300" />
+                  <p className="text-lg font-heading font-semibold text-gray-400">No {tab} events</p>
+                  <p className="mt-1 text-sm text-gray-400">Check back soon for updates.</p>
                 </div>
               ) : (
                 <StaggerContainer className="space-y-4">
@@ -91,24 +92,40 @@ export function EventsContent() {
                     <StaggerItem key={event.id}>
                       <Link href={`/events/${event.slug}`}>
                         <motion.div
-                          whileHover={{ x: 4, boxShadow: "0 4px 12px rgba(0,0,0,0.08)" }}
-                          className="flex overflow-hidden rounded-lg border border-gray-100 bg-white shadow-sm transition-all"
+                          whileHover={{ y: -2, boxShadow: "0 8px 30px rgba(59,130,246,0.08)" }}
+                          className="group flex overflow-hidden rounded-xl border border-surface-3 bg-surface-0 transition-all"
                         >
-                          <div className="flex w-24 shrink-0 flex-col items-center justify-center bg-navy-800 text-white sm:w-28">
-                            <span className="text-3xl font-bold">{format(new Date(event.eventDate), "dd")}</span>
-                            <span className="text-xs uppercase tracking-wider">{format(new Date(event.eventDate), "MMM yyyy")}</span>
+                          {/* Date Block */}
+                          <div className="flex w-20 shrink-0 flex-col items-center justify-center bg-navy-800 text-white sm:w-24">
+                            <span className="font-mono text-xs uppercase tracking-wider text-navy-300">
+                              {format(new Date(event.eventDate), "MMM")}
+                            </span>
+                            <span className="font-heading text-2xl font-bold sm:text-3xl">
+                              {format(new Date(event.eventDate), "dd")}
+                            </span>
+                            <span className="font-mono text-[10px] text-navy-400">
+                              {format(new Date(event.eventDate), "yyyy")}
+                            </span>
                           </div>
-                          <div className="flex-1 p-5">
-                            <h3 className="font-serif text-lg font-bold text-gray-900">{event.title}</h3>
-                            <p className="mt-1 text-sm text-gray-500 line-clamp-1">{event.description}</p>
-                            <div className="mt-3 flex flex-wrap gap-4">
-                              <span className="flex items-center gap-1.5 text-xs text-gray-400">
-                                <MapPin className="h-3 w-3" /> {event.location}
-                              </span>
-                              <span className="flex items-center gap-1.5 text-xs text-gray-400">
-                                <Clock className="h-3 w-3" /> {format(new Date(event.eventDate), "h:mm a")}
-                              </span>
+
+                          {/* Content */}
+                          <div className="flex flex-1 items-center justify-between p-4 sm:p-5">
+                            <div className="flex-1">
+                              <h3 className="font-heading text-base font-semibold text-gray-900 group-hover:text-navy-800 transition-colors sm:text-lg">
+                                {event.title}
+                              </h3>
+                              <p className="mt-1 text-sm text-gray-500 line-clamp-1">{event.description}</p>
+                              <div className="mt-2 flex flex-wrap gap-4">
+                                <span className="flex items-center gap-1.5 text-xs text-gray-400">
+                                  <MapPin className="h-3 w-3" /> {event.location}
+                                </span>
+                                <span className="flex items-center gap-1.5 text-xs text-gray-400">
+                                  <Clock className="h-3 w-3" />
+                                  <span className="font-mono">{format(new Date(event.eventDate), "h:mm a")}</span>
+                                </span>
+                              </div>
                             </div>
+                            <ArrowRight className="hidden sm:block h-4 w-4 text-gray-300 transition-all group-hover:text-electric group-hover:translate-x-1" />
                           </div>
                         </motion.div>
                       </Link>

@@ -87,7 +87,7 @@ export default function AdminArticlesPage() {
     return (
       <span
         className={cn(
-          "inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium",
+          "inline-flex items-center px-2.5 py-0.5 rounded-md font-mono text-xs font-medium",
           info.color === "green" && "bg-green-100 text-green-700",
           info.color === "gray" && "bg-gray-100 text-gray-700",
           info.color === "yellow" && "bg-yellow-100 text-yellow-700"
@@ -107,7 +107,7 @@ export default function AdminArticlesPage() {
         className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
       >
         <div>
-          <h1 className="text-2xl font-bold font-merriweather text-gray-900">Articles</h1>
+          <h1 className="text-2xl font-bold font-heading text-gray-900">Articles</h1>
           <p className="text-gray-500 text-sm mt-1">Manage all articles and blog posts</p>
         </div>
         <Link
@@ -124,7 +124,7 @@ export default function AdminArticlesPage() {
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.1 }}
-        className="bg-white rounded-lg shadow-sm p-4"
+        className="bg-surface-0 rounded-xl border border-surface-3 p-4"
       >
         <div className="flex flex-col sm:flex-row gap-3">
           <form onSubmit={handleSearch} className="flex-1 flex gap-2">
@@ -135,7 +135,7 @@ export default function AdminArticlesPage() {
                 placeholder="Search articles..."
                 value={searchInput}
                 onChange={(e) => setSearchInput(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-navy-800/20 focus:border-navy-800"
+                className="w-full pl-10 pr-4 py-2 border border-surface-3 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-navy-800/20 focus:border-navy-800"
               />
             </div>
             <button
@@ -151,7 +151,7 @@ export default function AdminArticlesPage() {
               setPage(1);
               setStatus(e.target.value);
             }}
-            className="px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-navy-800/20 focus:border-navy-800 bg-white"
+            className="px-3 py-2 border border-surface-3 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-navy-800/20 focus:border-navy-800 bg-white"
           >
             <option value="">All Statuses</option>
             {Object.entries(CONTENT_STATUSES).map(([key, val]) => (
@@ -168,7 +168,7 @@ export default function AdminArticlesPage() {
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.2 }}
-        className="bg-white rounded-lg shadow-sm overflow-hidden"
+        className="bg-surface-0 rounded-xl border border-surface-3 overflow-hidden"
       >
         {loading ? (
           <div className="p-8">
@@ -200,7 +200,7 @@ export default function AdminArticlesPage() {
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className="border-b border-gray-100">
+                <tr className="border-b border-surface-3">
                   <th className="text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Title
                   </th>
@@ -221,14 +221,14 @@ export default function AdminArticlesPage() {
                   </th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-50">
+              <tbody className="divide-y divide-surface-3">
                 {articles.map((article, i) => (
                   <motion.tr
                     key={article.id}
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: i * 0.03 }}
-                    className="hover:bg-gray-50 transition-colors"
+                    className="hover:bg-surface-1 transition-colors"
                   >
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-3">
@@ -258,7 +258,7 @@ export default function AdminArticlesPage() {
                       <div className="flex items-center justify-end gap-2">
                         <button
                           onClick={() => router.push(`/admin/articles/${article.id}/edit`)}
-                          className="p-2 text-gray-400 hover:text-navy-800 hover:bg-gray-100 rounded-lg transition-colors"
+                          className="p-2 text-gray-400 hover:text-navy-800 hover:bg-surface-1 rounded-lg transition-colors"
                           title="Edit"
                         >
                           <Pencil className="w-4 h-4" />
@@ -281,7 +281,7 @@ export default function AdminArticlesPage() {
 
         {/* Pagination */}
         {pagination && pagination.totalPages > 1 && (
-          <div className="flex items-center justify-between px-6 py-4 border-t border-gray-100">
+          <div className="flex items-center justify-between px-6 py-4 border-t border-surface-3">
             <p className="text-sm text-gray-500">
               Showing {(pagination.page - 1) * pagination.limit + 1} to{" "}
               {Math.min(pagination.page * pagination.limit, pagination.total)} of{" "}

@@ -68,12 +68,12 @@ export default function CreateArticlePage() {
       >
         <Link
           href="/admin/articles"
-          className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
+          className="p-2 text-gray-400 hover:text-gray-600 hover:bg-surface-1 rounded-lg transition-colors"
         >
           <ArrowLeft className="w-5 h-5" />
         </Link>
         <div>
-          <h1 className="text-2xl font-bold font-merriweather text-gray-900">Create Article</h1>
+          <h1 className="text-2xl font-bold font-heading text-gray-900">Create Article</h1>
           <p className="text-gray-500 text-sm mt-1">Add a new article or blog post</p>
         </div>
       </motion.div>
@@ -84,7 +84,7 @@ export default function CreateArticlePage() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.1 }}
         onSubmit={handleSubmit}
-        className="bg-white rounded-lg shadow-sm p-6 space-y-5"
+        className="bg-surface-0 rounded-xl border border-surface-3 p-6 space-y-5"
       >
         {/* Title */}
         <div>
@@ -99,7 +99,7 @@ export default function CreateArticlePage() {
             value={form.title}
             onChange={handleChange}
             placeholder="Enter article title"
-            className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-navy-800/20 focus:border-navy-800"
+            className="w-full px-4 py-2.5 border border-surface-3 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-navy-800/20 focus:border-navy-800"
           />
         </div>
 
@@ -116,7 +116,7 @@ export default function CreateArticlePage() {
             value={form.excerpt}
             onChange={handleChange}
             placeholder="Brief summary of the article"
-            className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-navy-800/20 focus:border-navy-800 resize-none"
+            className="w-full px-4 py-2.5 border border-surface-3 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-navy-800/20 focus:border-navy-800 resize-none"
           />
         </div>
 
@@ -133,7 +133,7 @@ export default function CreateArticlePage() {
             value={form.content}
             onChange={handleChange}
             placeholder="Write the full article content here..."
-            className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-navy-800/20 focus:border-navy-800 resize-y"
+            className="w-full px-4 py-2.5 border border-surface-3 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-navy-800/20 focus:border-navy-800 resize-y"
           />
         </div>
 
@@ -150,7 +150,7 @@ export default function CreateArticlePage() {
               value={form.category}
               onChange={handleChange}
               placeholder="e.g. Technology, Research"
-              className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-navy-800/20 focus:border-navy-800"
+              className="w-full px-4 py-2.5 border border-surface-3 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-navy-800/20 focus:border-navy-800"
             />
           </div>
           <div>
@@ -165,7 +165,7 @@ export default function CreateArticlePage() {
               value={form.author}
               onChange={handleChange}
               placeholder="Author name"
-              className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-navy-800/20 focus:border-navy-800"
+              className="w-full px-4 py-2.5 border border-surface-3 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-navy-800/20 focus:border-navy-800"
             />
           </div>
         </div>
@@ -182,7 +182,7 @@ export default function CreateArticlePage() {
             value={form.coverImage}
             onChange={handleChange}
             placeholder="https://example.com/image.jpg"
-            className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-navy-800/20 focus:border-navy-800"
+            className="w-full px-4 py-2.5 border border-surface-3 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-navy-800/20 focus:border-navy-800"
           />
         </div>
 
@@ -196,7 +196,7 @@ export default function CreateArticlePage() {
             name="status"
             value={form.status}
             onChange={handleChange}
-            className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-navy-800/20 focus:border-navy-800 bg-white"
+            className="w-full px-4 py-2.5 border border-surface-3 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-navy-800/20 focus:border-navy-800 bg-white"
           >
             <option value="DRAFT">Draft</option>
             <option value="PUBLISHED">Published</option>
@@ -204,7 +204,7 @@ export default function CreateArticlePage() {
         </div>
 
         {/* Actions */}
-        <div className="flex items-center justify-end gap-3 pt-4 border-t border-gray-100">
+        <div className="flex items-center justify-end gap-3 pt-4 border-t border-surface-3">
           <Link
             href="/admin/articles"
             className="px-4 py-2.5 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"

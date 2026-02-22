@@ -181,9 +181,9 @@ export default function UsersPage() {
           <div className="h-8 bg-gray-200 rounded w-32 animate-pulse" />
           <div className="h-10 bg-gray-200 rounded w-28 animate-pulse" />
         </div>
-        <div className="bg-white rounded-lg shadow-sm">
+        <div className="bg-surface-0 rounded-xl border border-surface-3">
           {[...Array(5)].map((_, i) => (
-            <div key={i} className="flex items-center gap-4 p-4 border-b border-gray-100">
+            <div key={i} className="flex items-center gap-4 p-4 border-b border-surface-3">
               <div className="w-10 h-10 bg-gray-200 rounded-full animate-pulse" />
               <div className="flex-1 space-y-2">
                 <div className="h-4 bg-gray-200 rounded w-40 animate-pulse" />
@@ -201,7 +201,7 @@ export default function UsersPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold font-merriweather text-gray-900">Users</h1>
+          <h1 className="text-2xl font-bold font-heading text-gray-900">Users</h1>
           <p className="text-gray-500 text-sm mt-1">
             Manage admin and staff accounts ({users.length} total)
           </p>
@@ -216,7 +216,7 @@ export default function UsersPage() {
       </div>
 
       {/* Search */}
-      <div className="bg-white rounded-lg shadow-sm p-4">
+      <div className="bg-surface-0 rounded-xl border border-surface-3 p-4">
         <div className="relative">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
           <input
@@ -230,7 +230,7 @@ export default function UsersPage() {
       </div>
 
       {/* Users List */}
-      <div className="bg-white rounded-lg shadow-sm overflow-hidden">
+      <div className="bg-surface-0 rounded-xl border border-surface-3 overflow-hidden">
         {users.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-16 px-4">
             <Users className="w-12 h-12 text-gray-300 mb-3" />
@@ -242,7 +242,7 @@ export default function UsersPage() {
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className="border-b border-gray-100 bg-gray-50/50">
+                <tr className="border-b border-surface-3 bg-surface-1">
                   <th className="text-left text-xs font-medium text-gray-500 uppercase tracking-wider px-6 py-3">
                     User
                   </th>
@@ -260,14 +260,14 @@ export default function UsersPage() {
                   </th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-100">
+              <tbody className="divide-y divide-surface-3">
                 {users.map((user, i) => (
                   <motion.tr
                     key={user.id}
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: i * 0.05 }}
-                    className="hover:bg-gray-50/50 transition-colors"
+                    className="hover:bg-surface-1 transition-colors"
                   >
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-3">
@@ -288,7 +288,7 @@ export default function UsersPage() {
                     <td className="px-6 py-4">
                       <span
                         className={cn(
-                          "inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium",
+                          "inline-flex items-center px-2.5 py-0.5 rounded-md font-mono text-xs font-medium",
                           user.role === "ADMIN"
                             ? "bg-blue-100 text-blue-700"
                             : "bg-gray-100 text-gray-700"
@@ -306,7 +306,7 @@ export default function UsersPage() {
                       <div className="flex items-center justify-end gap-1">
                         <button
                           onClick={() => openEditModal(user)}
-                          className="p-2 text-gray-400 hover:text-navy-800 hover:bg-gray-100 rounded-lg transition-colors"
+                          className="p-2 text-gray-400 hover:text-navy-800 hover:bg-surface-1 rounded-lg transition-colors"
                           title="Edit user"
                         >
                           <Pencil className="w-4 h-4" />
@@ -346,12 +346,12 @@ export default function UsersPage() {
               className="fixed inset-0 z-50 flex items-center justify-center p-4"
             >
               <div
-                className="bg-white rounded-lg shadow-xl w-full max-w-md"
+                className="bg-surface-0 rounded-xl shadow-xl w-full max-w-md"
                 onClick={(e) => e.stopPropagation()}
               >
                 {/* Modal Header */}
-                <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
-                  <h2 className="text-lg font-semibold font-merriweather text-gray-900">
+                <div className="flex items-center justify-between px-6 py-4 border-b border-surface-3">
+                  <h2 className="text-lg font-semibold font-heading text-gray-900">
                     {editingUser ? "Edit User" : "Add New User"}
                   </h2>
                   <button
@@ -427,7 +427,7 @@ export default function UsersPage() {
                     <button
                       type="button"
                       onClick={closeModal}
-                      className="px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
+                      className="px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-surface-1 rounded-lg transition-colors"
                     >
                       Cancel
                     </button>

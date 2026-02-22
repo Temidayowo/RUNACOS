@@ -29,12 +29,12 @@ export function NewsDetailContent() {
               transition={{ delay: 0.1 }}
             >
               <span className="badge-blue mb-3">Academics</span>
-              <h1 className="font-serif text-3xl font-extrabold text-gray-900 sm:text-4xl">
+              <h1 className="font-heading text-3xl font-extrabold text-gray-900 sm:text-4xl">
                 News Article
               </h1>
               <div className="mt-4 flex flex-wrap items-center gap-4 text-sm text-gray-500">
                 <span className="flex items-center gap-1.5">
-                  <Calendar className="h-4 w-4" /> October 15, 2024
+                  <Calendar className="h-4 w-4" /> <span className="font-mono">October 15, 2024</span>
                 </span>
                 <span className="flex items-center gap-1.5">
                   <User className="h-4 w-4" /> RUNACOS Admin
@@ -82,7 +82,7 @@ export function NewsDetailContent() {
             </motion.div>
 
             {/* Divider */}
-            <div className="my-12 border-t border-gray-200" />
+            <div className="my-12 border-t border-surface-3" />
 
             {/* Related */}
             <motion.div
@@ -90,7 +90,7 @@ export function NewsDetailContent() {
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
             >
-              <h3 className="mb-6 font-serif text-xl font-bold text-gray-900">Related News</h3>
+              <h3 className="mb-6 font-heading text-xl font-bold text-gray-900">Related News</h3>
               <p className="text-sm text-gray-500">Related articles will appear here.</p>
             </motion.div>
           </div>

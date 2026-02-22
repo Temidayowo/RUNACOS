@@ -2,6 +2,7 @@ export const SITE_NAME = "RUNACOS";
 export const SITE_DESCRIPTION =
   "The Redeemer's University Association of Computer Science Students";
 export const SITE_URL = process.env.NEXTAUTH_URL || "https://runacos.org";
+export const SITE_VERSION = "2.0.0";
 
 export const FAULT_STATUSES = {
   OPEN: { label: "Open", color: "red" },
@@ -36,26 +37,34 @@ export const ITEMS_PER_PAGE = 9;
 export const NAV_LINKS = [
   { label: "Home", href: "/" },
   { label: "About", href: "/about" },
+  { label: "News", href: "/news" },
+  { label: "Events", href: "/events" },
+  { label: "Articles", href: "/articles" },
+  { label: "Past Questions", href: "/past-questions" },
   { label: "Executives", href: "/executives" },
-  { label: "News & Events", href: "/news" },
-  { label: "Resources", href: "/past-questions" },
   { label: "Contact", href: "/contact" },
 ] as const;
 
 export const FOOTER_QUICK_LINKS = [
+  { label: "Home", href: "/" },
   { label: "About Us", href: "/about" },
-  { label: "Executive Council", href: "/executives" },
-  { label: "News & Events", href: "/news" },
-  { label: "Academic Calendar", href: "/events" },
-  { label: "Student Portal", href: "#" },
+  { label: "News", href: "/news" },
+  { label: "Events", href: "/events" },
+  { label: "Contact", href: "/contact" },
 ] as const;
 
 export const FOOTER_RESOURCES = [
-  { label: "Department Handbook", href: "#" },
   { label: "Past Questions", href: "/past-questions" },
-  { label: "Project Database", href: "#" },
-  { label: "e-Library Access", href: "#" },
-  { label: "Course Materials", href: "#" },
+  { label: "Articles", href: "/articles" },
+  { label: "Constitution", href: "/constitution" },
+  { label: "FRMS", href: "/frms/report" },
+] as const;
+
+export const FOOTER_CONNECT = [
+  { label: "Twitter / X", href: "#" },
+  { label: "Instagram", href: "#" },
+  { label: "LinkedIn", href: "#" },
+  { label: "Email Us", href: "mailto:info@runacos.org" },
 ] as const;
 
 export const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/gif", "image/webp"];

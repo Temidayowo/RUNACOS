@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { Search, FileText, Download, Calendar, BookOpen } from "lucide-react";
 import { cn, formatFileSize } from "@/lib/utils";
 import { PQ_DEPARTMENTS, ITEMS_PER_PAGE } from "@/lib/constants";
+import { PageTransition } from "@/components/ui/MotionWrapper";
 
 interface PastQuestion {
   id: string;
@@ -86,77 +87,70 @@ export function PastQuestionsContent() {
   };
 
   return (
-    <div className="min-h-screen bg-white">
-      {/* Header */}
-      <section className="py-16 md:py-24 bg-white">
-        <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
+    <PageTransition>
+      {/* Page Hero */}
+      <section className="page-hero text-center">
+        <div className="relative container-custom">
+          <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="font-mono text-xs uppercase tracking-widest text-electric mb-1">
+            Home / Past Questions
+          </motion.p>
+          <motion.h1
+            initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
+            transition={{ delay: 0.1 }}
+            className="font-heading text-3xl font-bold text-white sm:text-4xl md:text-5xl"
           >
-            <span className="text-blue-500 text-xs font-semibold tracking-[3px] uppercase">
-              Academic Resources
-            </span>
-            <h1 className="mt-4 text-3xl md:text-4xl lg:text-5xl font-extrabold font-merriweather text-gray-900">
-              Past Questions
-            </h1>
-            <p className="mt-4 text-gray-500 text-lg max-w-2xl mx-auto">
-              Access previous exam questions and study materials to help you prepare.
-            </p>
-          </motion.div>
+            Past Questions Repository
+          </motion.h1>
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2 }}
+            className="mx-auto mt-4 max-w-2xl text-navy-200"
+          >
+            Access previous exam questions to prepare better.
+          </motion.p>
         </div>
       </section>
 
       {/* Filters */}
-      <section className="pb-8">
-        <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+      <section className="bg-surface-0 border-b border-surface-3 sticky top-[72px] z-30 backdrop-blur-xl bg-white/90">
+        <div className="container-custom py-4">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="bg-gray-50 rounded-lg p-4 md:p-6"
+            transition={{ delay: 0.3 }}
           >
-            <form onSubmit={handleSearch} className="space-y-4">
+            <form onSubmit={handleSearch} className="space-y-3">
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                 <input
                   type="text"
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                   placeholder="Search by title, course, or department..."
-                  className="w-full pl-10 pr-4 py-3 bg-white border border-gray-200 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none"
+                  className="input-field pl-10"
                 />
               </div>
               <div className="flex flex-wrap gap-3">
                 <select
                   value={department}
-                  onChange={(e) => {
-                    setDepartment(e.target.value);
-                    setPage(1);
-                  }}
-                  className="px-4 py-2 bg-white border border-gray-200 rounded-lg text-sm focus:border-blue-500 outline-none"
+                  onChange={(e) => { setDepartment(e.target.value); setPage(1); }}
+                  className="rounded-xl border-[1.5px] border-surface-3 bg-surface-0 px-4 py-2.5 text-sm focus:border-electric focus:outline-none focus:ring-[3px] focus:ring-electric/10 transition-all"
                 >
                   <option value="">All Departments</option>
                   {PQ_DEPARTMENTS.map((dept) => (
-                    <option key={dept} value={dept}>
-                      {dept}
-                    </option>
+                    <option key={dept} value={dept}>{dept}</option>
                   ))}
                 </select>
                 <select
                   value={year}
-                  onChange={(e) => {
-                    setYear(e.target.value);
-                    setPage(1);
-                  }}
-                  className="px-4 py-2 bg-white border border-gray-200 rounded-lg text-sm focus:border-blue-500 outline-none"
+                  onChange={(e) => { setYear(e.target.value); setPage(1); }}
+                  className="rounded-xl border-[1.5px] border-surface-3 bg-surface-0 px-4 py-2.5 text-sm font-mono focus:border-electric focus:outline-none focus:ring-[3px] focus:ring-electric/10 transition-all"
                 >
                   <option value="">All Years</option>
                   {years.map((y) => (
-                    <option key={y} value={y}>
-                      {y}
-                    </option>
+                    <option key={y} value={y}>{y}</option>
                   ))}
                 </select>
               </div>
@@ -166,24 +160,24 @@ export function PastQuestionsContent() {
       </section>
 
       {/* Results */}
-      <section className="pb-16 md:pb-24">
-        <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+      <section className="py-12 md:py-16 bg-surface-1">
+        <div className="container-custom">
           {loading ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {[...Array(6)].map((_, i) => (
-                <div key={i} className="bg-white border border-gray-100 rounded-lg p-6 animate-pulse">
-                  <div className="w-12 h-12 bg-gray-200 rounded-lg mb-4" />
-                  <div className="h-5 bg-gray-200 rounded w-3/4 mb-2" />
-                  <div className="h-4 bg-gray-200 rounded w-1/2 mb-4" />
-                  <div className="h-4 bg-gray-200 rounded w-1/3" />
+                <div key={i} className="rounded-xl border border-surface-3 bg-surface-0 p-6">
+                  <div className="w-12 h-12 skeleton rounded-xl mb-4" />
+                  <div className="h-5 skeleton w-3/4 mb-2" />
+                  <div className="h-4 skeleton w-1/2 mb-4" />
+                  <div className="h-4 skeleton w-1/3" />
                 </div>
               ))}
             </div>
           ) : questions.length === 0 ? (
-            <div className="text-center py-16">
-              <BookOpen className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">No past questions found</h3>
-              <p className="text-gray-500">Try adjusting your search or filters.</p>
+            <div className="text-center py-20">
+              <BookOpen className="w-12 h-12 text-gray-300 mx-auto mb-4" />
+              <h3 className="font-heading text-lg font-semibold text-gray-400 mb-1">No past questions found</h3>
+              <p className="text-sm text-gray-400">Try adjusting your search or filters.</p>
             </div>
           ) : (
             <>
@@ -191,46 +185,46 @@ export function PastQuestionsContent() {
                 {questions.map((pq, i) => (
                   <motion.div
                     key={pq.id}
-                    initial={{ opacity: 0, y: 40 }}
+                    initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: i * 0.1 }}
-                    className="bg-white border border-gray-100 rounded-lg shadow-sm hover:shadow-md hover:-translate-y-1 transition-all p-6"
+                    transition={{ duration: 0.4, delay: i * 0.08 }}
+                    className="group rounded-xl border border-surface-3 bg-surface-0 p-6 transition-all hover:-translate-y-1 hover:shadow-card-hover"
                   >
                     <div className="flex items-start justify-between mb-4">
-                      <div className="w-12 h-12 bg-red-50 rounded-lg flex items-center justify-center">
-                        <FileText className="w-6 h-6 text-red-500" />
+                      <div className="w-11 h-11 bg-rose-50 rounded-xl flex items-center justify-center">
+                        <FileText className="w-5 h-5 text-rose-500" />
                       </div>
-                      <span className="text-xs font-medium bg-blue-100 text-blue-700 px-2 py-1 rounded-full">
+                      <span className="badge-keyword font-mono">
                         {getFileIcon(pq.fileType)}
                       </span>
                     </div>
 
-                    <h3 className="font-bold font-merriweather text-navy-800 mb-1 line-clamp-2">
+                    <h3 className="font-heading font-semibold text-navy-800 mb-1.5 line-clamp-2 text-sm">
                       {pq.title}
                     </h3>
 
-                    <div className="space-y-1 text-sm text-gray-500 mb-4">
+                    <div className="space-y-1 text-xs text-gray-500 mb-4">
                       <p className="flex items-center gap-1.5">
-                        <BookOpen className="w-3.5 h-3.5" />
-                        {pq.course}
+                        <BookOpen className="w-3 h-3 text-gray-400" />
+                        <span className="font-mono">{pq.course}</span>
                       </p>
                       <p>{pq.department}</p>
                       <p className="flex items-center gap-1.5">
-                        <Calendar className="w-3.5 h-3.5" />
-                        {pq.year}
+                        <Calendar className="w-3 h-3 text-gray-400" />
+                        <span className="font-mono">{pq.year}</span>
                       </p>
                     </div>
 
-                    <div className="flex items-center justify-between pt-4 border-t border-gray-100">
-                      <div className="flex items-center gap-1 text-xs text-gray-400">
-                        <Download className="w-3.5 h-3.5" />
-                        {pq.downloads} downloads &middot; {formatFileSize(pq.fileSize)}
+                    <div className="flex items-center justify-between pt-4 border-t border-surface-3">
+                      <div className="flex items-center gap-1 text-[10px] font-mono text-gray-400">
+                        <Download className="w-3 h-3" />
+                        {pq.downloads} &middot; {formatFileSize(pq.fileSize)}
                       </div>
                       <button
                         onClick={() => handleDownload(pq)}
-                        className="inline-flex items-center gap-1.5 text-sm font-medium text-blue-500 hover:text-blue-600 transition-colors"
+                        className="inline-flex items-center gap-1.5 text-xs font-medium text-electric hover:text-blue-700 transition-colors"
                       >
-                        <Download className="w-4 h-4" />
+                        <Download className="w-3.5 h-3.5" />
                         Download
                       </button>
                     </div>
@@ -244,7 +238,7 @@ export function PastQuestionsContent() {
                   <button
                     onClick={() => setPage((p) => Math.max(1, p - 1))}
                     disabled={page === 1}
-                    className="px-4 py-2 text-sm text-gray-600 hover:bg-gray-100 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="px-4 py-2 text-sm text-gray-600 hover:bg-surface-2 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                   >
                     Previous
                   </button>
@@ -253,10 +247,8 @@ export function PastQuestionsContent() {
                       key={p}
                       onClick={() => setPage(p)}
                       className={cn(
-                        "w-9 h-9 rounded-lg text-sm font-medium transition-colors",
-                        p === page
-                          ? "bg-navy-800 text-white"
-                          : "text-gray-600 hover:bg-gray-100"
+                        "w-9 h-9 rounded-lg font-mono text-sm font-medium transition-colors",
+                        p === page ? "bg-navy-800 text-white" : "text-gray-600 hover:bg-surface-2"
                       )}
                     >
                       {p}
@@ -265,7 +257,7 @@ export function PastQuestionsContent() {
                   <button
                     onClick={() => setPage((p) => Math.min(pagination.totalPages, p + 1))}
                     disabled={page === pagination.totalPages}
-                    className="px-4 py-2 text-sm text-gray-600 hover:bg-gray-100 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="px-4 py-2 text-sm text-gray-600 hover:bg-surface-2 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                   >
                     Next
                   </button>
@@ -275,6 +267,6 @@ export function PastQuestionsContent() {
           )}
         </div>
       </section>
-    </div>
+    </PageTransition>
   );
 }

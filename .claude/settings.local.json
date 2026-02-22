@@ -20,7 +20,10 @@
       "Bash(curl:*)",
       "WebFetch(domain:localhost)",
       "Bash(tasklist | grep -i node 2>&1)",
-      "Bash(cd /c/Users/owoti/Desktop/runacos && cp node_modules/.prisma/client/query_engine-windows.dll.node.tmp25908 node_modules/.prisma/client/query_engine-windows.dll.node 2>&1 || echo \"Temp file already cleaned up, trying generate with retries...\" && npx prisma generate 2>&1)"
+      "Bash(cd /c/Users/owoti/Desktop/runacos && cp node_modules/.prisma/client/query_engine-windows.dll.node.tmp25908 node_modules/.prisma/client/query_engine-windows.dll.node 2>&1 || echo \"Temp file already cleaned up, trying generate with retries...\" && npx prisma generate 2>&1)",
+      "Bash(cd /c/Users/owoti/Desktop/runacos && git init 2>&1)",
+      "Bash(cd /c/Users/owoti/Desktop/runacos && git remote add origin https://github.com/Temidayowo/RUNACOS.git 2>&1)",
+      "Bash(cd /c/Users/owoti/Desktop/runacos && git add -A 2>&1)"
     ]
   }
 }

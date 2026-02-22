@@ -13,41 +13,38 @@ const articles = [
 export function ArticlesContent() {
   return (
     <PageTransition>
-      <section className="bg-white py-16 md:py-20 text-center">
-        <div className="container-custom">
-          <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="section-label mb-3">
-            Knowledge Base
+      {/* Page Hero */}
+      <section className="page-hero text-center">
+        <div className="relative container-custom">
+          <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="font-mono text-xs uppercase tracking-widest text-electric mb-1">
+            Home / Articles
           </motion.p>
           <motion.h1
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="font-serif text-3xl font-extrabold text-gray-900 sm:text-4xl md:text-5xl"
+            className="font-heading text-3xl font-bold text-white sm:text-4xl md:text-5xl"
           >
-            Articles &amp; Insights
+            Articles & Insights
           </motion.h1>
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.2 }}
-            className="mx-auto mt-4 max-w-2xl text-gray-500"
+            className="mx-auto mt-4 max-w-2xl text-navy-200"
           >
-            Read insightful articles, tutorials, and opinions from RUNACOS members and faculty.
+            Read tutorials, research insights, and opinions from RUNACOS members and faculty.
           </motion.p>
         </div>
       </section>
 
-      <section className="py-12 md:py-16">
+      {/* Grid */}
+      <section className="py-12 md:py-16 bg-surface-1">
         <div className="container-custom">
           <StaggerContainer className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {articles.map((article) => (
               <StaggerItem key={article.id}>
-                <NewsCard
-                  news={{
-                    ...article,
-                    slug: article.slug,
-                  }}
-                />
+                <NewsCard news={{ ...article, slug: article.slug }} />
               </StaggerItem>
             ))}
           </StaggerContainer>

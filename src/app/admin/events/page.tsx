@@ -85,7 +85,7 @@ export default function AdminEventsPage() {
     return (
       <span
         className={cn(
-          "inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium",
+          "inline-flex items-center px-2.5 py-0.5 rounded-md font-mono text-xs font-medium",
           statusInfo.color === "green" && "bg-green-100 text-green-700",
           statusInfo.color === "yellow" && "bg-yellow-100 text-yellow-700",
           statusInfo.color === "gray" && "bg-gray-100 text-gray-700"
@@ -106,7 +106,7 @@ export default function AdminEventsPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold font-merriweather text-gray-900">Events</h1>
+          <h1 className="text-2xl font-bold font-heading text-gray-900">Events</h1>
           <p className="text-sm text-gray-500 mt-1">
             Manage upcoming and past events
           </p>
@@ -121,7 +121,7 @@ export default function AdminEventsPage() {
       </div>
 
       {/* Filters */}
-      <div className="bg-white rounded-lg shadow-sm p-4">
+      <div className="bg-surface-0 rounded-xl border border-surface-3 p-4">
         <div className="flex flex-col sm:flex-row gap-3">
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
@@ -133,7 +133,7 @@ export default function AdminEventsPage() {
                 setSearch(e.target.value);
                 setPage(1);
               }}
-              className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-navy-800/20 focus:border-navy-800"
+              className="w-full pl-10 pr-4 py-2 border border-surface-3 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-navy-800/20 focus:border-navy-800"
             />
           </div>
           <select
@@ -142,7 +142,7 @@ export default function AdminEventsPage() {
               setStatusFilter(e.target.value);
               setPage(1);
             }}
-            className="px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-navy-800/20 focus:border-navy-800 bg-white"
+            className="px-3 py-2 border border-surface-3 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-navy-800/20 focus:border-navy-800 bg-white"
           >
             <option value="">All Statuses</option>
             {Object.entries(CONTENT_STATUSES).map(([key, value]) => (
@@ -155,7 +155,7 @@ export default function AdminEventsPage() {
       </div>
 
       {/* Table */}
-      <div className="bg-white rounded-lg shadow-sm overflow-hidden">
+      <div className="bg-surface-0 rounded-xl border border-surface-3 overflow-hidden">
         {loading ? (
           <div className="p-8 space-y-4">
             {[...Array(5)].map((_, i) => (
@@ -183,7 +183,7 @@ export default function AdminEventsPage() {
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
-                  <tr className="border-b border-gray-100 bg-gray-50/50">
+                  <tr className="border-b border-surface-3 bg-surface-1">
                     <th className="text-left text-xs font-medium text-gray-500 uppercase tracking-wider px-6 py-3">
                       Title
                     </th>
@@ -201,14 +201,14 @@ export default function AdminEventsPage() {
                     </th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-100">
+                <tbody className="divide-y divide-surface-3">
                   {events.map((item, i) => (
                     <motion.tr
                       key={item.id}
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       transition={{ delay: i * 0.05 }}
-                      className="hover:bg-gray-50/50 transition-colors"
+                      className="hover:bg-surface-1 transition-colors"
                     >
                       <td className="px-6 py-4">
                         <p className="text-sm font-medium text-gray-900 truncate max-w-xs">
@@ -230,7 +230,7 @@ export default function AdminEventsPage() {
                         <div className="flex items-center justify-end gap-2">
                           <Link
                             href={`/admin/events/${item.id}/edit`}
-                            className="p-1.5 text-gray-400 hover:text-navy-800 hover:bg-gray-100 rounded-lg transition-colors"
+                            className="p-1.5 text-gray-400 hover:text-navy-800 hover:bg-surface-1 rounded-lg transition-colors"
                             title="Edit"
                           >
                             <Pencil className="w-4 h-4" />
@@ -252,7 +252,7 @@ export default function AdminEventsPage() {
 
             {/* Pagination */}
             {totalPages > 1 && (
-              <div className="flex items-center justify-between px-6 py-4 border-t border-gray-100">
+              <div className="flex items-center justify-between px-6 py-4 border-t border-surface-3">
                 <p className="text-sm text-gray-500">
                   Showing {(page - 1) * 10 + 1} to {Math.min(page * 10, total)} of {total} results
                 </p>
@@ -264,7 +264,7 @@ export default function AdminEventsPage() {
                       "p-2 rounded-lg text-sm transition-colors",
                       page === 1
                         ? "text-gray-300 cursor-not-allowed"
-                        : "text-gray-600 hover:bg-gray-100"
+                        : "text-gray-600 hover:bg-surface-1"
                     )}
                   >
                     <ChevronLeft className="w-4 h-4" />
@@ -277,7 +277,7 @@ export default function AdminEventsPage() {
                         "w-8 h-8 rounded-lg text-sm font-medium transition-colors",
                         p === page
                           ? "bg-navy-800 text-white"
-                          : "text-gray-600 hover:bg-gray-100"
+                          : "text-gray-600 hover:bg-surface-1"
                       )}
                     >
                       {p}
@@ -290,7 +290,7 @@ export default function AdminEventsPage() {
                       "p-2 rounded-lg text-sm transition-colors",
                       page === totalPages
                         ? "text-gray-300 cursor-not-allowed"
-                        : "text-gray-600 hover:bg-gray-100"
+                        : "text-gray-600 hover:bg-surface-1"
                     )}
                   >
                     <ChevronRight className="w-4 h-4" />

@@ -2,9 +2,13 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ArrowRight, MapPin, Clock } from "lucide-react";
+import { ArrowRight, MapPin, Clock, Users } from "lucide-react";
 import { format } from "date-fns";
-import { AnimateOnScroll, StaggerContainer, StaggerItem } from "@/components/ui/MotionWrapper";
+import {
+  AnimateOnScroll,
+  StaggerContainer,
+  StaggerItem,
+} from "@/components/ui/MotionWrapper";
 
 const placeholderEvents = [
   {
@@ -13,6 +17,7 @@ const placeholderEvents = [
     slug: "tech-summit-2024",
     location: "Main Auditorium, RUN",
     eventDate: "2024-11-15T09:00:00Z",
+    attendees: 89,
     coverImage: null,
   },
   {
@@ -21,6 +26,7 @@ const placeholderEvents = [
     slug: "ai-ml-workshop",
     location: "CS Lab 2, Block B",
     eventDate: "2024-11-20T14:00:00Z",
+    attendees: 45,
     coverImage: null,
   },
   {
@@ -29,62 +35,80 @@ const placeholderEvents = [
     slug: "career-fair-2024",
     location: "University Hall",
     eventDate: "2024-12-05T10:00:00Z",
+    attendees: 120,
     coverImage: null,
   },
 ];
 
 export function UpcomingEvents() {
   return (
-    <section className="bg-gray-50 py-16 md:py-24">
-      <div className="container-custom">
+    <section className="relative bg-surface-1 py-16 md:py-24">
+      <div className="absolute inset-0 bg-grid-dots pointer-events-none" />
+      <div className="relative container-custom">
         <AnimateOnScroll className="mb-12 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
           <div>
-            <p className="section-label mb-2">&mdash; Upcoming Events</p>
+            <p className="section-label mb-2">Upcoming Events</p>
+            <div className="section-accent-line" />
             <h2 className="section-heading">Don&apos;t Miss Out</h2>
-            <p className="mt-2 text-gray-500">Workshops, seminars, and social activities coming up</p>
+            <p className="mt-2 text-gray-500">
+              Workshops, seminars, and activities coming up
+            </p>
           </div>
           <Link
             href="/events"
-            className="group inline-flex items-center gap-1 text-sm font-medium text-navy-800 hover:text-blue-600 transition-colors"
+            className="group inline-flex items-center gap-1.5 text-sm font-medium text-navy-800 hover:text-electric transition-colors"
           >
-            View All Events
+            See All Events
             <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
           </Link>
         </AnimateOnScroll>
 
-        <StaggerContainer className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <StaggerContainer className="space-y-4">
           {placeholderEvents.map((event) => (
             <StaggerItem key={event.id}>
               <Link href={`/events/${event.slug}`}>
                 <motion.div
-                  whileHover={{ y: -4 }}
-                  className="group flex overflow-hidden rounded-lg border border-gray-100 bg-white shadow-sm transition-shadow hover:shadow-md"
+                  whileHover={{ y: -2, boxShadow: "0 8px 30px rgba(59,130,246,0.08)" }}
+                  className="group flex overflow-hidden rounded-xl border border-surface-3 bg-surface-0 transition-all duration-300"
                 >
                   {/* Date Block */}
-                  <div className="flex w-20 shrink-0 flex-col items-center justify-center bg-navy-800 text-white">
-                    <span className="text-2xl font-bold">
+                  <div className="flex w-20 shrink-0 flex-col items-center justify-center bg-navy-800 text-white sm:w-24">
+                    <span className="font-mono text-xs uppercase tracking-wider text-navy-300">
+                      {format(new Date(event.eventDate), "MMM")}
+                    </span>
+                    <span className="font-heading text-2xl font-bold sm:text-3xl">
                       {format(new Date(event.eventDate), "dd")}
                     </span>
-                    <span className="text-xs uppercase tracking-wider">
-                      {format(new Date(event.eventDate), "MMM")}
+                    <span className="font-mono text-[10px] text-navy-400">
+                      {format(new Date(event.eventDate), "yyyy")}
                     </span>
                   </div>
 
                   {/* Content */}
-                  <div className="flex-1 p-4">
-                    <h3 className="mb-2 font-serif text-base font-bold text-gray-900 line-clamp-2 group-hover:text-navy-800 transition-colors">
-                      {event.title}
-                    </h3>
-                    <div className="space-y-1">
-                      <p className="flex items-center gap-1.5 text-xs text-gray-500">
-                        <MapPin className="h-3 w-3" />
-                        {event.location}
-                      </p>
-                      <p className="flex items-center gap-1.5 text-xs text-gray-500">
-                        <Clock className="h-3 w-3" />
-                        {format(new Date(event.eventDate), "h:mm a")}
-                      </p>
+                  <div className="flex flex-1 items-center justify-between p-4 sm:p-5">
+                    <div className="flex-1">
+                      <h3 className="font-heading text-base font-semibold text-gray-900 line-clamp-1 group-hover:text-navy-800 transition-colors sm:text-lg">
+                        {event.title}
+                      </h3>
+                      <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1">
+                        <span className="flex items-center gap-1.5 text-xs text-gray-500">
+                          <MapPin className="h-3 w-3 text-gray-400" />
+                          {event.location}
+                        </span>
+                        <span className="flex items-center gap-1.5 text-xs text-gray-500">
+                          <Clock className="h-3 w-3 text-gray-400" />
+                          <span className="font-mono">
+                            {format(new Date(event.eventDate), "h:mm a")}
+                          </span>
+                        </span>
+                        <span className="flex items-center gap-1.5 text-xs text-gray-500">
+                          <Users className="h-3 w-3 text-gray-400" />
+                          <span className="font-mono">{event.attendees}</span> registered
+                        </span>
+                      </div>
                     </div>
+
+                    <ArrowRight className="hidden sm:block h-4 w-4 text-gray-300 transition-all group-hover:text-electric group-hover:translate-x-1" />
                   </div>
                 </motion.div>
               </Link>

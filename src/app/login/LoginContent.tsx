@@ -4,7 +4,7 @@ import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { Eye, EyeOff, Lock, Mail } from "lucide-react";
+import { Eye, EyeOff, Lock, Mail, ArrowRight } from "lucide-react";
 
 export default function LoginContent() {
   const router = useRouter();
@@ -41,39 +41,75 @@ export default function LoginContent() {
   };
 
   return (
-    <div className="min-h-screen flex">
-      {/* Left Panel - Branding */}
+    <div className="min-h-screen flex bg-surface-0">
+      {/* Left Panel — Dark CS-themed visual */}
       <motion.div
         initial={{ x: -100, opacity: 0 }}
         animate={{ x: 0, opacity: 1 }}
         transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
-        className="hidden lg:flex lg:w-1/2 bg-navy-800 text-white flex-col justify-center items-center p-12 relative overflow-hidden"
+        className="hidden lg:flex lg:w-1/2 bg-gradient-hero text-white flex-col justify-center items-center p-12 relative overflow-hidden"
       >
-        {/* Background pattern */}
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-20 left-20 w-40 h-40 border-2 border-white rounded-full" />
-          <div className="absolute bottom-32 right-16 w-64 h-64 border-2 border-white rounded-full" />
-          <div className="absolute top-1/2 left-1/3 w-24 h-24 border-2 border-white rounded-full" />
-        </div>
+        {/* Dot grid overlay */}
+        <div className="absolute inset-0 bg-grid-dots-light opacity-30 pointer-events-none" />
 
-        <div className="relative z-10 text-center">
-          <div className="w-24 h-24 bg-white rounded-full flex items-center justify-center mx-auto mb-8">
-            <span className="text-navy-800 text-4xl font-bold font-merriweather">R</span>
-          </div>
-          <h1 className="text-3xl font-bold font-merriweather mb-4">RUNACOS</h1>
-          <p className="text-lg text-gray-300 mb-2">
-            Redeemer&apos;s University Association of
+        {/* Floating code symbols */}
+        <motion.div
+          animate={{ y: [-12, 12, -12] }}
+          transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute top-[12%] left-[10%] text-white/[0.06] font-mono text-8xl font-bold select-none"
+        >
+          {"</>"}
+        </motion.div>
+        <motion.div
+          animate={{ y: [10, -15, 10] }}
+          transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute top-[20%] right-[12%] text-white/[0.05] font-mono text-7xl font-bold select-none"
+        >
+          {"{ }"}
+        </motion.div>
+        <motion.div
+          animate={{ y: [-8, 16, -8] }}
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute bottom-[30%] left-[20%] text-white/[0.04] font-mono text-6xl font-bold select-none"
+        >
+          {"λ"}
+        </motion.div>
+        <motion.div
+          animate={{ y: [6, -10, 6] }}
+          transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute bottom-[15%] right-[18%] text-white/[0.04] font-mono text-5xl font-bold select-none"
+        >
+          01
+        </motion.div>
+
+        {/* Ambient glow */}
+        <div className="absolute top-1/3 left-1/3 w-[500px] h-[500px] bg-electric/5 rounded-full blur-3xl pointer-events-none" />
+
+        <div className="relative z-10 text-center max-w-sm">
+          <motion.div
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ delay: 0.3, type: "spring", stiffness: 200 }}
+            className="w-20 h-20 bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl flex items-center justify-center mx-auto mb-8"
+          >
+            <span className="text-white text-3xl font-bold font-heading">R</span>
+          </motion.div>
+
+          <h1 className="text-3xl font-bold font-heading mb-3 tracking-tight">RUNACOS</h1>
+          <p className="text-sm text-navy-200 mb-8 leading-relaxed">
+            Redeemer&apos;s University Association of Computer Science Students
           </p>
-          <p className="text-lg text-gray-300 mb-8">Computer Science Students</p>
-          <div className="w-16 h-0.5 bg-blue-500 mx-auto mb-8" />
-          <p className="text-gray-400 text-sm max-w-sm">
-            Empowering the Future of Technology & Innovation
+
+          <div className="h-px w-16 bg-gradient-to-r from-electric to-cyan mx-auto mb-8" />
+
+          <p className="text-white/40 text-sm font-mono tracking-wide">
+            &quot;Where Code Meets Community&quot;
           </p>
         </div>
       </motion.div>
 
-      {/* Right Panel - Login Form */}
-      <div className="flex-1 flex items-center justify-center p-8 bg-white">
+      {/* Right Panel — Login Form */}
+      <div className="flex-1 flex items-center justify-center p-8">
         <motion.div
           initial={{ x: 100, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
@@ -82,24 +118,24 @@ export default function LoginContent() {
         >
           {/* Mobile logo */}
           <div className="lg:hidden text-center mb-8">
-            <div className="w-16 h-16 bg-navy-800 rounded-full flex items-center justify-center mx-auto mb-4">
-              <span className="text-white text-2xl font-bold font-merriweather">R</span>
+            <div className="w-14 h-14 bg-navy-800 rounded-2xl flex items-center justify-center mx-auto mb-4">
+              <span className="text-white text-xl font-bold font-heading">R</span>
             </div>
-            <h2 className="text-xl font-bold font-merriweather text-navy-800">RUNACOS</h2>
+            <h2 className="text-lg font-bold font-heading text-navy-800">RUNACOS</h2>
           </div>
 
           <div className="text-center mb-8">
-            <h2 className="text-2xl font-bold font-merriweather text-gray-900 mb-2">
+            <h2 className="text-2xl font-bold font-heading text-gray-900 mb-2">
               Welcome Back
             </h2>
-            <p className="text-gray-500">Sign in to access the admin panel</p>
+            <p className="text-sm text-gray-500">Sign in to your account</p>
           </div>
 
           {error && (
             <motion.div
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
-              className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-lg mb-6 text-sm"
+              className="bg-rose-50 border border-rose-200 text-rose-600 px-4 py-3 rounded-xl mb-6 text-sm"
             >
               {error}
             </motion.div>
@@ -115,13 +151,13 @@ export default function LoginContent() {
                 Email Address
               </label>
               <div className="relative">
-                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-[18px] h-[18px] text-gray-400" />
                 <input
                   id="email"
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all"
+                  className="input-field pl-10"
                   placeholder="admin@runacos.org"
                   required
                 />
@@ -137,22 +173,22 @@ export default function LoginContent() {
                 Password
               </label>
               <div className="relative">
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-[18px] h-[18px] text-gray-400" />
                 <input
                   id="password"
                   type={showPassword ? "text" : "password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full pl-10 pr-12 py-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all"
+                  className="input-field pl-10 pr-12"
                   placeholder="Enter your password"
                   required
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
                 >
-                  {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                  {showPassword ? <EyeOff className="w-[18px] h-[18px]" /> : <Eye className="w-[18px] h-[18px]" />}
                 </button>
               </div>
             </motion.div>
@@ -161,14 +197,14 @@ export default function LoginContent() {
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.3 }}
-              className="flex items-center justify-between"
+              className="flex items-center"
             >
               <label className="flex items-center gap-2 cursor-pointer">
                 <input
                   type="checkbox"
                   checked={rememberMe}
                   onChange={(e) => setRememberMe(e.target.checked)}
-                  className="w-4 h-4 rounded border-gray-300 text-navy-800 focus:ring-navy-800"
+                  className="w-4 h-4 rounded border-gray-300 text-electric focus:ring-electric/30"
                 />
                 <span className="text-sm text-gray-600">Remember me</span>
               </label>
@@ -178,19 +214,26 @@ export default function LoginContent() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4 }}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
+              whileHover={{ scale: 1.01 }}
+              whileTap={{ scale: 0.99 }}
               type="submit"
               disabled={loading}
-              className="w-full bg-navy-800 text-white py-2.5 rounded-lg font-medium hover:bg-navy-700 active:bg-navy-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              className="w-full bg-navy-800 text-white py-3 rounded-xl font-medium hover:bg-navy-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
             >
               {loading ? (
                 <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
               ) : (
-                "Sign In"
+                <>
+                  Sign In
+                  <ArrowRight className="w-4 h-4" />
+                </>
               )}
             </motion.button>
           </form>
+
+          <p className="mt-8 text-center text-xs text-gray-400 font-mono">
+            RUNACOS Admin Portal v2.0
+          </p>
         </motion.div>
       </div>
     </div>

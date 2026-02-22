@@ -70,7 +70,7 @@ export function TrackResultContent() {
 
   return (
     <PageTransition>
-      <section className="py-12 md:py-20">
+      <section className="py-12 md:py-20 bg-surface-1">
         <div className="container-custom">
           <div className="mx-auto max-w-3xl">
             {/* Back */}
@@ -113,13 +113,13 @@ export function TrackResultContent() {
 
             {/* Timeline */}
             <AnimateOnScroll variants={fadeUp}>
-              <div className="mb-10 rounded-xl border border-gray-100 bg-white p-6 shadow-sm sm:p-8">
-                <h3 className="mb-6 font-serif text-lg font-bold text-gray-900">
+              <div className="mb-10 rounded-xl border border-surface-3 bg-surface-0 p-6 shadow-sm sm:p-8">
+                <h3 className="mb-6 font-heading text-lg font-bold text-gray-900">
                   Status Timeline
                 </h3>
                 <div className="relative ml-4">
                   {/* Vertical line */}
-                  <div className="absolute left-0 top-2 bottom-2 w-px bg-gray-200" />
+                  <div className="absolute left-0 top-2 bottom-2 w-px bg-surface-3" />
 
                   <div className="space-y-8">
                     {timeline.map((entry, i) => (
@@ -184,8 +184,8 @@ export function TrackResultContent() {
 
             {/* Fault Details */}
             <AnimateOnScroll variants={fadeUp} delay={0.1}>
-              <div className="rounded-xl border border-gray-100 bg-white p-6 shadow-sm sm:p-8">
-                <h3 className="mb-4 font-serif text-lg font-bold text-gray-900">
+              <div className="rounded-xl border border-surface-3 bg-surface-0 p-6 shadow-sm sm:p-8">
+                <h3 className="mb-4 font-heading text-lg font-bold text-gray-900">
                   Fault Details
                 </h3>
                 <div className="grid gap-4 sm:grid-cols-2">
@@ -202,7 +202,7 @@ export function TrackResultContent() {
                     },
                   ].map((item) => (
                     <div key={item.label} className="flex items-start gap-3">
-                      <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-gray-50">
+                      <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-surface-1">
                         <item.icon className="h-4 w-4 text-gray-400" />
                       </div>
                       <div>
@@ -213,9 +213,9 @@ export function TrackResultContent() {
                   ))}
                 </div>
 
-                <div className="mt-4 border-t border-gray-100 pt-4">
+                <div className="mt-4 border-t border-surface-3 pt-4">
                   <div className="flex items-start gap-3">
-                    <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-gray-50">
+                    <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-surface-1">
                       <FileText className="h-4 w-4 text-gray-400" />
                     </div>
                     <div>

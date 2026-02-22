@@ -132,9 +132,9 @@ export default function ContactMessagesPage() {
     return (
       <div className="space-y-6">
         <div className="h-8 bg-gray-200 rounded w-48 animate-pulse" />
-        <div className="bg-white rounded-lg shadow-sm">
+        <div className="bg-surface-0 rounded-xl border border-surface-3">
           {[...Array(5)].map((_, i) => (
-            <div key={i} className="p-4 border-b border-gray-100 space-y-2">
+            <div key={i} className="p-4 border-b border-surface-3 space-y-2">
               <div className="flex items-center gap-3">
                 <div className="h-4 bg-gray-200 rounded w-32 animate-pulse" />
                 <div className="h-4 bg-gray-200 rounded w-48 animate-pulse" />
@@ -151,7 +151,7 @@ export default function ContactMessagesPage() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold font-merriweather text-gray-900">Contact Messages</h1>
+        <h1 className="text-2xl font-bold font-heading text-gray-900">Contact Messages</h1>
         <p className="text-gray-500 text-sm mt-1">
           {messages.length} message{messages.length !== 1 ? "s" : ""}
           {unreadCount > 0 && ` (${unreadCount} unread)`}
@@ -159,7 +159,7 @@ export default function ContactMessagesPage() {
       </div>
 
       {/* Filters */}
-      <div className="bg-white rounded-lg shadow-sm p-4">
+      <div className="bg-surface-0 rounded-xl border border-surface-3 p-4">
         <div className="flex items-center gap-2">
           <span className="text-sm font-medium text-gray-500 mr-2">Filter:</span>
           {(
@@ -176,7 +176,7 @@ export default function ContactMessagesPage() {
                 "px-3 py-1.5 rounded-lg text-sm font-medium transition-colors",
                 filter === option.value
                   ? "bg-navy-800 text-white"
-                  : "text-gray-600 hover:bg-gray-100"
+                  : "text-gray-600 hover:bg-surface-1"
               )}
             >
               {option.label}
@@ -186,7 +186,7 @@ export default function ContactMessagesPage() {
       </div>
 
       {/* Messages List */}
-      <div className="bg-white rounded-lg shadow-sm overflow-hidden">
+      <div className="bg-surface-0 rounded-xl border border-surface-3 overflow-hidden">
         {messages.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-16 px-4">
             <MessageSquare className="w-12 h-12 text-gray-300 mb-3" />
@@ -199,7 +199,7 @@ export default function ContactMessagesPage() {
             </p>
           </div>
         ) : (
-          <div className="divide-y divide-gray-100">
+          <div className="divide-y divide-surface-3">
             {messages.map((message, i) => (
               <motion.div
                 key={message.id}
@@ -212,14 +212,14 @@ export default function ContactMessagesPage() {
                   onClick={() => handleExpand(message)}
                   className={cn(
                     "flex items-start gap-4 p-4 cursor-pointer transition-colors",
-                    !message.isRead ? "bg-blue-50/40" : "hover:bg-gray-50/50",
-                    expandedId === message.id && "bg-gray-50"
+                    !message.isRead ? "bg-blue-50/40" : "hover:bg-surface-1/50",
+                    expandedId === message.id && "bg-surface-1"
                   )}
                 >
                   {/* Unread indicator */}
                   <div className="flex-shrink-0 mt-1">
                     {!message.isRead ? (
-                      <div className="w-2.5 h-2.5 bg-blue-500 rounded-full" />
+                      <div className="w-2.5 h-2.5 bg-electric rounded-full" />
                     ) : (
                       <div className="w-2.5 h-2.5" />
                     )}
@@ -255,7 +255,7 @@ export default function ContactMessagesPage() {
                     {/* Read status badge */}
                     <span
                       className={cn(
-                        "inline-flex items-center mt-1.5 px-2 py-0.5 rounded-full text-xs font-medium",
+                        "inline-flex items-center mt-1.5 px-2 py-0.5 rounded-md font-mono text-xs font-medium",
                         message.isRead
                           ? "bg-green-100 text-green-700"
                           : "bg-yellow-100 text-yellow-700"
@@ -297,7 +297,7 @@ export default function ContactMessagesPage() {
                       className="overflow-hidden"
                     >
                       <div className="px-4 pb-4 pl-11">
-                        <div className="bg-gray-50 rounded-lg p-4 border border-gray-100">
+                        <div className="bg-surface-1 rounded-lg p-4 border border-surface-3">
                           <div className="flex items-center justify-between mb-3">
                             <h3 className="text-sm font-semibold text-gray-900">
                               {message.subject}
@@ -313,7 +313,7 @@ export default function ContactMessagesPage() {
                             <span>From: {message.name}</span>
                             <span>&lt;{message.email}&gt;</span>
                           </div>
-                          <div className="border-t border-gray-200 pt-3">
+                          <div className="border-t border-surface-3 pt-3">
                             <p className="text-sm text-gray-700 whitespace-pre-wrap leading-relaxed">
                               {message.message}
                             </p>

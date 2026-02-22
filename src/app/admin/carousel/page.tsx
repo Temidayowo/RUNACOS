@@ -153,7 +153,7 @@ export default function CarouselPage() {
         {[...Array(3)].map((_, i) => (
           <div
             key={i}
-            className="bg-white rounded-lg p-6 shadow-sm animate-pulse"
+            className="bg-surface-0 rounded-xl border border-surface-3 p-6 animate-pulse"
           >
             <div className="h-24 bg-gray-200 rounded" />
           </div>
@@ -167,7 +167,7 @@ export default function CarouselPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold font-merriweather text-gray-900">
+          <h1 className="text-2xl font-bold font-heading text-gray-900">
             Hero Carousel
           </h1>
           <p className="text-gray-500 text-sm mt-1">
@@ -202,7 +202,7 @@ export default function CarouselPage() {
 
       {/* Slides List */}
       {slides.length === 0 ? (
-        <div className="bg-white rounded-lg shadow-sm p-12 text-center">
+        <div className="bg-surface-0 rounded-xl border border-surface-3 p-12 text-center">
           <ImageIcon className="mx-auto h-12 w-12 text-gray-300 mb-3" />
           <p className="text-gray-500 font-medium">No carousel slides yet</p>
           <p className="text-sm text-gray-400 mt-1">
@@ -219,20 +219,20 @@ export default function CarouselPage() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               className={cn(
-                "bg-white rounded-lg shadow-sm border overflow-hidden",
+                "bg-surface-0 rounded-xl border overflow-hidden",
                 !slide.active && "opacity-60",
                 editingId === slide.id
                   ? "border-blue-300 ring-1 ring-blue-200"
-                  : "border-gray-100"
+                  : "border-surface-3"
               )}
             >
               {/* Slide Header */}
-              <div className="flex items-center gap-3 px-4 py-3 border-b border-gray-50 bg-gray-50/50">
+              <div className="flex items-center gap-3 px-4 py-3 border-b border-gray-50 bg-surface-1/50">
                 <GripVertical className="w-4 h-4 text-gray-300" />
                 <div className="flex items-center gap-2 flex-1 min-w-0">
                   <span
                     className={cn(
-                      "flex items-center gap-1 text-xs font-medium px-2 py-0.5 rounded-full",
+                      "flex items-center gap-1 text-xs font-medium px-2 py-0.5 rounded-md font-mono",
                       slide.type === "video"
                         ? "bg-purple-100 text-purple-700"
                         : "bg-blue-100 text-blue-700"
@@ -256,7 +256,7 @@ export default function CarouselPage() {
                   <button
                     onClick={() => moveSlide(slide.id, "up")}
                     disabled={idx === 0}
-                    className="p-1.5 rounded hover:bg-gray-100 text-gray-400 disabled:opacity-30"
+                    className="p-1.5 rounded hover:bg-surface-1 text-gray-400 disabled:opacity-30"
                     title="Move up"
                   >
                     <ArrowUp className="w-4 h-4" />
@@ -264,7 +264,7 @@ export default function CarouselPage() {
                   <button
                     onClick={() => moveSlide(slide.id, "down")}
                     disabled={idx === slides.length - 1}
-                    className="p-1.5 rounded hover:bg-gray-100 text-gray-400 disabled:opacity-30"
+                    className="p-1.5 rounded hover:bg-surface-1 text-gray-400 disabled:opacity-30"
                     title="Move down"
                   >
                     <ArrowDown className="w-4 h-4" />
@@ -274,7 +274,7 @@ export default function CarouselPage() {
                       updateSlide(slide.id, { active: !slide.active })
                     }
                     className={cn(
-                      "p-1.5 rounded hover:bg-gray-100",
+                      "p-1.5 rounded hover:bg-surface-1",
                       slide.active ? "text-green-500" : "text-gray-300"
                     )}
                     title={slide.active ? "Disable slide" : "Enable slide"}
@@ -352,7 +352,7 @@ export default function CarouselPage() {
                     transition={{ duration: 0.3 }}
                     className="overflow-hidden"
                   >
-                    <div className="border-t border-gray-100 p-4 space-y-4 bg-gray-50/30">
+                    <div className="border-t border-surface-3 p-4 space-y-4 bg-surface-1/30">
                       {/* Media Upload */}
                       <div>
                         <label className="block text-xs font-medium text-gray-500 uppercase tracking-wider mb-1.5">

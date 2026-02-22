@@ -55,15 +55,10 @@ export function MembershipCard({
           </>
         ) : (
           <>
-            <div className="absolute inset-0 bg-gradient-to-br from-navy-900 via-navy-800 to-navy-700" />
-            <div
-              className="absolute inset-0 opacity-5"
-              style={{
-                backgroundImage:
-                  "radial-gradient(circle, white 1px, transparent 1px)",
-                backgroundSize: "20px 20px",
-              }}
-            />
+            <div className="absolute inset-0 bg-gradient-to-br from-midnight via-navy-800 to-navy-700" />
+            <div className="absolute inset-0 bg-grid-dots opacity-10" />
+            {/* Circuit trace accent */}
+            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-electric to-cyan" />
           </>
         )}
 
@@ -71,10 +66,10 @@ export function MembershipCard({
           {/* Header */}
           <div className="flex items-start justify-between">
             <div>
-              <h3 className="text-lg font-bold tracking-wide">RUNACOS</h3>
-              <p className="text-xs text-white/70">Membership Card</p>
+              <h3 className="text-lg font-bold tracking-wide font-heading">RUNACOS</h3>
+              <p className="text-xs font-mono text-white/60">Membership Card</p>
             </div>
-            <div className="h-20 w-16 flex-shrink-0 overflow-hidden rounded-lg border-2 border-white/30 bg-white/10">
+            <div className="h-20 w-16 flex-shrink-0 overflow-hidden rounded-xl border-2 border-white/20 bg-white/10 backdrop-blur-sm">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={passportUrl}
@@ -88,31 +83,31 @@ export function MembershipCard({
           {/* Details */}
           <div className="mt-4 space-y-2">
             <div>
-              <p className="text-[10px] uppercase tracking-wider text-white/60">
+              <p className="text-[10px] uppercase tracking-wider text-white/50 font-mono">
                 Name
               </p>
-              <p className="text-base font-semibold">
+              <p className="text-base font-semibold font-heading">
                 {firstName} {lastName}
               </p>
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <p className="text-[10px] uppercase tracking-wider text-white/60">
+                <p className="text-[10px] uppercase tracking-wider text-white/50 font-mono">
                   Matric No
                 </p>
-                <p className="text-sm font-medium">{matricNumber}</p>
+                <p className="text-sm font-mono font-medium">{matricNumber}</p>
               </div>
               <div>
-                <p className="text-[10px] uppercase tracking-wider text-white/60">
+                <p className="text-[10px] uppercase tracking-wider text-white/50 font-mono">
                   Level
                 </p>
-                <p className="text-sm font-medium">{level}</p>
+                <p className="text-sm font-mono font-medium">{level}</p>
               </div>
             </div>
             <div className="grid grid-cols-2 gap-4">
               {department && (
                 <div>
-                  <p className="text-[10px] uppercase tracking-wider text-white/60">
+                  <p className="text-[10px] uppercase tracking-wider text-white/50 font-mono">
                     Department
                   </p>
                   <p className="text-sm font-medium">{department}</p>
@@ -120,7 +115,7 @@ export function MembershipCard({
               )}
               {faculty && (
                 <div>
-                  <p className="text-[10px] uppercase tracking-wider text-white/60">
+                  <p className="text-[10px] uppercase tracking-wider text-white/50 font-mono">
                     Faculty
                   </p>
                   <p className="text-sm font-medium">{faculty}</p>
@@ -129,13 +124,13 @@ export function MembershipCard({
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <p className="text-[10px] uppercase tracking-wider text-white/60">
+                <p className="text-[10px] uppercase tracking-wider text-white/50 font-mono">
                   Member ID
                 </p>
-                <p className="text-sm font-mono font-medium">{memberId}</p>
+                <p className="text-sm font-mono font-medium text-electric">{memberId}</p>
               </div>
               <div>
-                <p className="text-[10px] uppercase tracking-wider text-white/60">
+                <p className="text-[10px] uppercase tracking-wider text-white/50 font-mono">
                   Valid
                 </p>
                 <p className="text-sm font-medium">
@@ -148,10 +143,10 @@ export function MembershipCard({
 
           {/* Footer */}
           <div className="mt-4 border-t border-white/10 pt-3">
-            <p className="text-[10px] text-white/60">
+            <p className="text-[10px] text-white/50 font-mono">
               Association of Computer Science Students
             </p>
-            <p className="text-[10px] text-white/60">
+            <p className="text-[10px] text-white/50 font-mono">
               Redeemer&apos;s University, Ede
             </p>
           </div>

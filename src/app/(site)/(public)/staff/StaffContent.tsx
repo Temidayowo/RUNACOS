@@ -22,16 +22,16 @@ const staff = [
 export function StaffContent() {
   return (
     <PageTransition>
-      <section className="bg-white py-16 md:py-20 text-center">
-        <div className="container-custom">
-          <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="section-label mb-3">
-            Our Faculty
+      <section className="page-hero text-center">
+        <div className="relative container-custom">
+          <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="font-mono text-xs uppercase tracking-widest text-electric mb-1">
+            Home / Staff
           </motion.p>
           <motion.h1
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="font-serif text-4xl font-extrabold text-gray-900 sm:text-5xl"
+            className="font-heading text-3xl font-bold text-white sm:text-4xl md:text-5xl"
           >
             Department Staff
           </motion.h1>
@@ -39,7 +39,7 @@ export function StaffContent() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.2 }}
-            className="mx-auto mt-4 max-w-lg text-gray-500"
+            className="mx-auto mt-4 max-w-2xl text-navy-200"
           >
             The brilliant minds shaping the next generation of computer scientists.
           </motion.p>
@@ -53,7 +53,7 @@ export function StaffContent() {
               <StaggerItem key={member.name}>
                 <motion.div
                   whileHover={{ y: -4 }}
-                  className="rounded-lg border border-gray-100 bg-white p-6 shadow-sm transition-shadow hover:shadow-md"
+                  className="rounded-xl border border-surface-3 bg-surface-0 p-6 shadow-sm transition-shadow hover:shadow-md"
                 >
                   <div className="relative mb-4 h-16 w-16 overflow-hidden rounded-full">
                     {member.image ? (
@@ -72,7 +72,7 @@ export function StaffContent() {
                       </div>
                     )}
                   </div>
-                  <h3 className="font-serif text-base font-bold text-gray-900">{member.name}</h3>
+                  <h3 className="font-heading text-base font-bold text-gray-900">{member.name}</h3>
                   <p className="text-sm font-medium text-blue-600">{member.title}</p>
                   <div className="mt-3 flex items-center gap-1.5 text-xs text-gray-500">
                     <BookOpen className="h-3 w-3" />

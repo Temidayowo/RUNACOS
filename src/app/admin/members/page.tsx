@@ -166,7 +166,7 @@ export default function AdminMembersPage() {
       </div>
 
       {/* Table */}
-      <div className="overflow-x-auto rounded-xl border border-gray-100 bg-white shadow-sm">
+      <div className="overflow-x-auto rounded-xl border border-surface-3 bg-surface-0">
         {loading ? (
           <div className="flex items-center justify-center py-20">
             <Loader2 className="h-8 w-8 animate-spin text-navy-600" />
@@ -182,7 +182,7 @@ export default function AdminMembersPage() {
         ) : (
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-gray-100 bg-gray-50 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+              <tr className="border-b border-surface-3 bg-surface-1 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
                 <th className="px-4 py-3">Name</th>
                 <th className="px-4 py-3">Matric No</th>
                 <th className="px-4 py-3 hidden md:table-cell">Email</th>
@@ -193,14 +193,14 @@ export default function AdminMembersPage() {
                 <th className="px-4 py-3">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-50">
+            <tbody className="divide-y divide-surface-3">
               {members.map((member, i) => (
                 <motion.tr
                   key={member.id}
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: i * 0.03 }}
-                  className="hover:bg-gray-50"
+                  className="hover:bg-surface-1"
                 >
                   <td className="px-4 py-3 font-medium text-gray-900">
                     {member.firstName} {member.lastName}
@@ -212,7 +212,7 @@ export default function AdminMembersPage() {
                     {member.memberId}
                   </td>
                   <td className="px-4 py-3">
-                    <span className={`inline-flex rounded-full px-2 py-0.5 text-xs font-medium ${statusColor(member.paymentStatus)}`}>
+                    <span className={`inline-flex rounded-md font-mono px-2 py-0.5 text-xs font-medium ${statusColor(member.paymentStatus)}`}>
                       {member.paymentStatus}
                     </span>
                   </td>
@@ -288,12 +288,12 @@ export default function AdminMembersPage() {
               initial={{ scale: 0.95, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.95, opacity: 0 }}
-              className="relative max-h-[80vh] w-full max-w-lg overflow-y-auto rounded-2xl bg-white p-6 shadow-xl"
+              className="relative max-h-[80vh] w-full max-w-lg overflow-y-auto rounded-2xl bg-surface-0 p-6 shadow-xl"
               onClick={(e) => e.stopPropagation()}
             >
               <button
                 onClick={() => setSelectedMember(null)}
-                className="absolute right-4 top-4 rounded-lg p-1 hover:bg-gray-100"
+                className="absolute right-4 top-4 rounded-lg p-1 hover:bg-surface-1"
               >
                 <X className="h-5 w-5 text-gray-400" />
               </button>
@@ -312,7 +312,7 @@ export default function AdminMembersPage() {
                     {selectedMember.firstName} {selectedMember.lastName}
                   </h2>
                   <p className="text-sm text-gray-500">{selectedMember.memberId}</p>
-                  <span className={`mt-1 inline-flex rounded-full px-2 py-0.5 text-xs font-medium ${statusColor(selectedMember.paymentStatus)}`}>
+                  <span className={`mt-1 inline-flex rounded-md font-mono px-2 py-0.5 text-xs font-medium ${statusColor(selectedMember.paymentStatus)}`}>
                     {selectedMember.paymentStatus}
                   </span>
                 </div>
@@ -334,7 +334,7 @@ export default function AdminMembersPage() {
                   { label: "Payment Date", value: selectedMember.paidAt ? new Date(selectedMember.paidAt).toLocaleString() : "Pending" },
                   { label: "Registration Date", value: new Date(selectedMember.createdAt).toLocaleString() },
                 ].map((item) => (
-                  <div key={item.label} className="flex justify-between border-b border-gray-50 pb-2">
+                  <div key={item.label} className="flex justify-between border-b border-surface-3 pb-2">
                     <span className="text-sm text-gray-500">{item.label}</span>
                     <span className="text-sm font-medium text-gray-900">{item.value}</span>
                   </div>
