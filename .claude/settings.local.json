@@ -1,0 +1,26 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(tail:*)",
+      "Bash(cd /c/Users/owoti/Desktop/runacos && npx prisma generate 2>&1)",
+      "Bash(cd /c/Users/owoti/Desktop/runacos && npx prisma db push 2>&1)",
+      "Bash(cd /c/Users/owoti/Desktop/runacos && npx tsx prisma/seed.ts 2>&1)",
+      "Bash(cd /c/Users/owoti/Desktop/runacos && npx next dev -p 9090 2>&1)",
+      "Bash(head:*)",
+      "Bash(cd:*)",
+      "Bash(ls:*)",
+      "Bash(netstat:*)",
+      "Bash(grep:*)",
+      "WebSearch",
+      "WebFetch(domain:mixkit.co)",
+      "Bash(cd /c/Users/owoti/Desktop/runacos && npm install html2canvas 2>&1)",
+      "Bash(cd /c/Users/owoti/Desktop/runacos && npm run build 2>&1)",
+      "WebFetch(domain:pixabay.com)",
+      "Bash(sleep 10:*)",
+      "Bash(curl:*)",
+      "WebFetch(domain:localhost)",
+      "Bash(tasklist | grep -i node 2>&1)",
+      "Bash(cd /c/Users/owoti/Desktop/runacos && cp node_modules/.prisma/client/query_engine-windows.dll.node.tmp25908 node_modules/.prisma/client/query_engine-windows.dll.node 2>&1 || echo \"Temp file already cleaned up, trying generate with retries...\" && npx prisma generate 2>&1)"
+    ]
+  }
+}

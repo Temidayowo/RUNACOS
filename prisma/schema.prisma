@@ -1,0 +1,250 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  password  String
+  role      String   @default("STAFF")
+  image     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  accounts       Account[]
+  sessions       Session[]
+  assignedFaults Fault[]              @relation("AssignedStaff")
+  statusChanges  FaultStatusHistory[]
+
+  @@map("users")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model News {
+  id          String    @id @default(cuid())
+  title       String
+  slug        String    @unique
+  content     String
+  excerpt     String
+  coverImage  String?
+  category    String    @default("General")
+  author      String
+  status      String    @default("DRAFT")
+  publishedAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@map("news")
+}
+
+model Event {
+  id          String    @id @default(cuid())
+  title       String
+  slug        String    @unique
+  description String
+  coverImage  String?
+  location    String
+  eventDate   DateTime
+  endDate     DateTime?
+  status      String    @default("DRAFT")
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  registrations EventRegistration[]
+
+  @@map("events")
+}
+
+model EventRegistration {
+  id        String   @id @default(cuid())
+  eventId   String
+  name      String
+  email     String
+  phone     String?
+  createdAt DateTime @default(now())
+
+  event Event @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  @@map("event_registrations")
+}
+
+model Article {
+  id          String    @id @default(cuid())
+  title       String
+  slug        String    @unique
+  content     String
+  excerpt     String
+  coverImage  String?
+  category    String    @default("General")
+  author      String
+  status      String    @default("DRAFT")
+  publishedAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@map("articles")
+}
+
+model FaultCategory {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  description String?
+  createdAt   DateTime @default(now())
+
+  faults Fault[]
+
+  @@map("fault_categories")
+}
+
+model Fault {
+  id              String   @id @default(cuid())
+  referenceId     String   @unique
+  name            String
+  email           String
+  phone           String?
+  location        String
+  categoryId      String
+  description     String
+  fileUrl         String?
+  status          String   @default("OPEN")
+  assignedStaffId String?
+  adminNotes      String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  category      FaultCategory        @relation(fields: [categoryId], references: [id])
+  assignedStaff User?                @relation("AssignedStaff", fields: [assignedStaffId], references: [id])
+  statusHistory FaultStatusHistory[]
+
+  @@map("faults")
+}
+
+model FaultStatusHistory {
+  id        String   @id @default(cuid())
+  faultId   String
+  status    String
+  note      String?
+  changedBy String?
+  createdAt DateTime @default(now())
+
+  fault Fault @relation(fields: [faultId], references: [id], onDelete: Cascade)
+  user  User? @relation(fields: [changedBy], references: [id])
+
+  @@map("fault_status_history")
+}
+
+model PastQuestion {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  department  String
+  course      String
+  year        Int
+  fileUrl     String
+  fileName    String
+  fileSize    Int
+  fileType    String
+  downloads   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("past_questions")
+}
+
+model ContactSubmission {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  subject   String
+  message   String
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@map("contact_submissions")
+}
+
+model Member {
+  id              String    @id @default(cuid())
+  memberId        String    @unique
+  firstName       String
+  lastName        String
+  email           String    @unique
+  phone           String
+  matricNumber    String    @unique
+  level           String
+  gender          String?
+  department      String?
+  faculty         String?
+  stateOfOrigin   String?
+  academicSession String?
+  semester        String?
+  passportUrl     String
+  paymentRef      String    @unique
+  paymentStatus   String    @default("PENDING")
+  amountPaid      Int
+  paidAt          DateTime?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@map("members")
+}
+
+model SiteSetting {
+  id    String @id @default(cuid())
+  key   String @unique
+  value String
+
+  @@map("site_settings")
+}
+
+model Executive {
+  id        String   @id @default(cuid())
+  name      String
+  position  String
+  image     String?
+  email     String?
+  phone     String?
+  bio       String?
+  order     Int      @default(0)
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("executives")
+}
