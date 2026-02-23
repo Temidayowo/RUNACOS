@@ -3,7 +3,7 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
@@ -31,12 +31,12 @@ model Account {
   type              String
   provider          String
   providerAccountId String
-  refresh_token     String?
-  access_token      String?
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
   expires_at        Int?
   token_type        String?
   scope             String?
-  id_token          String?
+  id_token          String? @db.Text
   session_state     String?
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -60,8 +60,8 @@ model News {
   id          String    @id @default(cuid())
   title       String
   slug        String    @unique
-  content     String
-  excerpt     String
+  content     String    @db.LongText
+  excerpt     String    @db.Text
   coverImage  String?
   category    String    @default("General")
   author      String
@@ -77,7 +77,7 @@ model Event {
   id          String    @id @default(cuid())
   title       String
   slug        String    @unique
-  description String
+  description String    @db.Text
   coverImage  String?
   location    String
   eventDate   DateTime
@@ -108,8 +108,8 @@ model Article {
   id          String    @id @default(cuid())
   title       String
   slug        String    @unique
-  content     String
-  excerpt     String
+  content     String    @db.LongText
+  excerpt     String    @db.Text
   coverImage  String?
   category    String    @default("General")
   author      String
@@ -124,7 +124,7 @@ model Article {
 model FaultCategory {
   id          String   @id @default(cuid())
   name        String   @unique
-  description String?
+  description String?  @db.Text
   createdAt   DateTime @default(now())
 
   faults Fault[]
@@ -140,11 +140,11 @@ model Fault {
   phone           String?
   location        String
   categoryId      String
-  description     String
+  description     String   @db.Text
   fileUrl         String?
   status          String   @default("OPEN")
   assignedStaffId String?
-  adminNotes      String?
+  adminNotes      String?  @db.Text
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 
@@ -152,6 +152,8 @@ model Fault {
   assignedStaff User?                @relation("AssignedStaff", fields: [assignedStaffId], references: [id])
   statusHistory FaultStatusHistory[]
 
+  @@index([categoryId])
+  @@index([assignedStaffId])
   @@map("faults")
 }
 
@@ -159,20 +161,22 @@ model FaultStatusHistory {
   id        String   @id @default(cuid())
   faultId   String
   status    String
-  note      String?
+  note      String?  @db.Text
   changedBy String?
   createdAt DateTime @default(now())
 
   fault Fault @relation(fields: [faultId], references: [id], onDelete: Cascade)
   user  User? @relation(fields: [changedBy], references: [id])
 
+  @@index([faultId])
+  @@index([changedBy])
   @@map("fault_status_history")
 }
 
 model PastQuestion {
   id          String   @id @default(cuid())
   title       String
-  description String?
+  description String?  @db.Text
   department  String
   course      String
   year        Int
@@ -192,7 +196,7 @@ model ContactSubmission {
   name      String
   email     String
   subject   String
-  message   String
+  message   String   @db.Text
   isRead    Boolean  @default(false)
   createdAt DateTime @default(now())
 
@@ -215,9 +219,9 @@ model Member {
   academicSession String?
   semester        String?
   passportUrl     String
-  paymentRef      String    @unique
-  paymentStatus   String    @default("PENDING")
-  amountPaid      Int
+  paymentRef      String?   @unique
+  paymentStatus   String    @default("UNPAID")
+  amountPaid      Int       @default(0)
   paidAt          DateTime?
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
@@ -228,7 +232,7 @@ model Member {
 model SiteSetting {
   id    String @id @default(cuid())
   key   String @unique
-  value String
+  value String @db.LongText
 
   @@map("site_settings")
 }
@@ -240,7 +244,7 @@ model Executive {
   image     String?
   email     String?
   phone     String?
-  bio       String?
+  bio       String?  @db.Text
   order     Int      @default(0)
   active    Boolean  @default(true)
   createdAt DateTime @default(now())

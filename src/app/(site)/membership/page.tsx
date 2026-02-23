@@ -13,28 +13,29 @@ import {
   ArrowRight,
   ArrowLeft,
   Loader2,
-  CreditCard,
   Camera,
   X,
   AlertCircle,
   Building2,
   MapPin,
+  CreditCard,
 } from "lucide-react";
+import Link from "next/link";
 import { toast } from "sonner";
 import { PageTransition } from "@/components/ui/MotionWrapper";
 import { PageHero } from "@/components/ui/PageHero";
 import { NIGERIAN_STATES, FACULTIES, DEPARTMENTS } from "@/lib/validations/membership";
 
-const steps = ["Personal Info", "Academic Details", "Passport Photo", "Review & Pay"];
+const steps = ["Personal Info", "Academic Details", "Passport Photo", "Review & Register"];
 
 export default function MembershipPage() {
   const [currentStep, setCurrentStep] = useState(0);
   const [loading, setLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
-  const [fee, setFee] = useState(5000);
   const [academicSession, setAcademicSession] = useState("");
   const [currentSemester, setCurrentSemester] = useState("");
   const [duplicateErrors, setDuplicateErrors] = useState<Record<string, string>>({});
+  const [registeredMember, setRegisteredMember] = useState<{ memberId: string } | null>(null);
   const [form, setForm] = useState({
     firstName: "",
     lastName: "",
@@ -49,14 +50,11 @@ export default function MembershipPage() {
     passportUrl: "",
   });
 
-  // Fetch membership fee and academic settings
+  // Fetch academic settings
   useEffect(() => {
     fetch("/api/settings")
       .then((res) => res.json())
       .then((data) => {
-        if (data.data?.membership_fee) {
-          setFee(parseInt(data.data.membership_fee));
-        }
         if (data.data?.academic_session) {
           setAcademicSession(data.data.academic_session);
         }
@@ -123,7 +121,7 @@ export default function MembershipPage() {
     return true;
   };
 
-  const handlePayment = async () => {
+  const handleRegister = async () => {
     setLoading(true);
     try {
       // Final duplicate check
@@ -145,7 +143,7 @@ export default function MembershipPage() {
         return;
       }
 
-      // Register member with academic session and semester from settings
+      // Register member (no payment)
       const registerRes = await fetch("/api/membership/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -163,31 +161,93 @@ export default function MembershipPage() {
         return;
       }
 
-      const member = registerData.data;
-
-      // Initialize Paystack payment
-      const payRes = await fetch("/api/paystack/initialize", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email: form.email,
-          amount: fee,
-          reference: member.paymentRef,
-        }),
-      });
-      const payData = await payRes.json();
-
-      if (payRes.ok && payData.data?.authorizationUrl) {
-        window.location.href = payData.data.authorizationUrl;
-      } else {
-        toast.error(payData.error || "Payment initialization failed");
-      }
+      setRegisteredMember(registerData.data);
+      toast.success("Registration successful!");
     } catch {
       toast.error("Something went wrong");
     } finally {
       setLoading(false);
     }
   };
+
+  // Registration success state
+  if (registeredMember) {
+    return (
+      <PageTransition>
+        <PageHero
+          slug="membership"
+          defaultHeading="Join RUNACOS"
+          defaultSubheading="Become an official member of the Redeemer's University Association of Computer Science Students."
+          breadcrumb="Home / Membership"
+        />
+        <section className="py-12 md:py-16 bg-surface-1">
+          <div className="container-custom">
+            <div className="mx-auto max-w-xl text-center">
+              <motion.div
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ type: "spring", duration: 0.6 }}
+                className="flex flex-col items-center gap-6"
+              >
+                <motion.div
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ delay: 0.2, type: "spring" }}
+                  className="flex h-20 w-20 items-center justify-center rounded-2xl bg-emerald-50"
+                >
+                  <CheckCircle className="h-10 w-10 text-green-500" />
+                </motion.div>
+
+                <div>
+                  <h2 className="font-heading text-2xl font-bold text-gray-900">
+                    Welcome to RUNACOS!
+                  </h2>
+                  <p className="mt-2 text-gray-500">
+                    Your membership registration is complete. You are now an official member.
+                  </p>
+                </div>
+
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3 }}
+                  className="rounded-lg border-2 border-dashed border-navy-200 bg-navy-50 p-4"
+                >
+                  <p className="text-xs text-gray-500 mb-1">Your Membership ID</p>
+                  <span className="font-mono text-xl font-bold text-navy-800">
+                    {registeredMember.memberId}
+                  </span>
+                </motion.div>
+
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.4 }}
+                  className="w-full rounded-xl border border-amber-200 bg-amber-50 p-4 text-left"
+                >
+                  <p className="text-sm font-medium text-amber-800">
+                    Want your membership card?
+                  </p>
+                  <p className="mt-1 text-xs text-amber-700">
+                    Pay the association dues to unlock your digital membership card and access all member benefits.
+                  </p>
+                </motion.div>
+
+                <div className="flex flex-col gap-3 sm:flex-row">
+                  <Link href="/membership/pay" className="btn-primary gap-2">
+                    <CreditCard className="h-4 w-4" /> Pay Association Dues
+                  </Link>
+                  <Link href="/" className="btn-secondary">
+                    Go to Homepage
+                  </Link>
+                </div>
+              </motion.div>
+            </div>
+          </div>
+        </section>
+      </PageTransition>
+    );
+  }
 
   return (
     <PageTransition>
@@ -513,11 +573,11 @@ export default function MembershipPage() {
                   </div>
                 )}
 
-                {/* Step 4: Review & Pay */}
+                {/* Step 4: Review & Register */}
                 {currentStep === 3 && (
                   <div className="space-y-5">
                     <h3 className="font-heading text-lg font-bold text-gray-900">
-                      Review & Proceed to Payment
+                      Review & Complete Registration
                     </h3>
 
                     <div className="flex flex-col items-center gap-4 sm:flex-row sm:items-start">
@@ -552,17 +612,12 @@ export default function MembershipPage() {
                       </div>
                     </div>
 
-                    <div className="rounded-lg border border-navy-100 bg-navy-50 p-4">
-                      <div className="flex items-center justify-between">
-                        <span className="text-sm font-medium text-navy-700">
-                          Association Fee
-                        </span>
-                        <span className="text-xl font-bold text-navy-800">
-                          &#8358;{fee.toLocaleString()}
-                        </span>
-                      </div>
-                      <p className="mt-1 text-xs text-navy-600">
-                        Collected per academic session &middot; {academicSession || "Current"} session
+                    <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-4">
+                      <p className="text-sm font-medium text-emerald-800">
+                        Registration is free
+                      </p>
+                      <p className="mt-1 text-xs text-emerald-700">
+                        You can pay association dues later to get your membership card and access all member benefits.
                       </p>
                     </div>
                   </div>
@@ -595,16 +650,16 @@ export default function MembershipPage() {
                 <motion.button
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  onClick={handlePayment}
+                  onClick={handleRegister}
                   disabled={loading}
                   className="btn-primary gap-2"
                 >
                   {loading ? (
                     <Loader2 className="h-4 w-4 animate-spin" />
                   ) : (
-                    <CreditCard className="h-4 w-4" />
+                    <CheckCircle className="h-4 w-4" />
                   )}
-                  {loading ? "Processing..." : `Pay \u20A6${fee.toLocaleString()}`}
+                  {loading ? "Registering..." : "Complete Registration"}
                 </motion.button>
               )}
             </div>

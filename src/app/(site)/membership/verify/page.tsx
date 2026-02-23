@@ -149,10 +149,10 @@ function VerifyContent() {
 
                 <div>
                   <h2 className="font-heading text-2xl font-bold text-gray-900">
-                    Welcome to RUNACOS!
+                    Payment Verified!
                   </h2>
                   <p className="mt-2 text-gray-500">
-                    Your payment has been verified and your membership is now active.
+                    Your association dues have been paid. Your membership card is now available.
                   </p>
                 </div>
 

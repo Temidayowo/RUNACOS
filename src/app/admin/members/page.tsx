@@ -130,6 +130,8 @@ export default function AdminMembersPage() {
         return "bg-yellow-100 text-yellow-700";
       case "FAILED":
         return "bg-red-100 text-red-700";
+      case "UNPAID":
+        return "bg-gray-100 text-gray-600";
       default:
         return "bg-gray-100 text-gray-700";
     }
@@ -330,8 +332,8 @@ export default function AdminMembersPage() {
                   { label: "State of Origin", value: selectedMember.stateOfOrigin || "N/A" },
                   { label: "Academic Session", value: selectedMember.academicSession || "N/A" },
                   { label: "Semester", value: selectedMember.semester || "N/A" },
-                  { label: "Amount Paid", value: `\u20A6${selectedMember.amountPaid.toLocaleString()}` },
-                  { label: "Payment Date", value: selectedMember.paidAt ? new Date(selectedMember.paidAt).toLocaleString() : "Pending" },
+                  { label: "Amount Paid", value: selectedMember.amountPaid ? `\u20A6${selectedMember.amountPaid.toLocaleString()}` : "Not paid" },
+                  { label: "Payment Date", value: selectedMember.paidAt ? new Date(selectedMember.paidAt).toLocaleString() : "Not paid" },
                   { label: "Registration Date", value: new Date(selectedMember.createdAt).toLocaleString() },
                 ].map((item) => (
                   <div key={item.label} className="flex justify-between border-b border-surface-3 pb-2">

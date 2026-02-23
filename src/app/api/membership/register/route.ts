@@ -34,20 +34,11 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Get membership fee from settings
-    const feeSetting = await prisma.siteSetting.findUnique({
-      where: { key: "membership_fee" },
-    });
-    const amount = feeSetting ? parseInt(feeSetting.value) : 5000;
-
     // Generate unique member ID
     let memberId = generateMemberId();
     while (await prisma.member.findUnique({ where: { memberId } })) {
       memberId = generateMemberId();
     }
-
-    // Generate a temporary payment reference
-    const paymentRef = `PAY-${nanoid(12)}`;
 
     const member = await prisma.member.create({
       data: {
@@ -65,8 +56,6 @@ export async function POST(req: NextRequest) {
         academicSession: validated.academicSession,
         semester: validated.semester,
         passportUrl: validated.passportUrl,
-        paymentRef,
-        amountPaid: amount,
       },
     });
 

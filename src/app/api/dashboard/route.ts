@@ -23,6 +23,7 @@ export async function GET() {
       recentFaults,
       totalMembers,
       verifiedMembers,
+      totalExecutives,
     ] = await Promise.all([
       prisma.fault.count(),
       prisma.fault.count({ where: { status: "OPEN" } }),
@@ -41,6 +42,7 @@ export async function GET() {
       }),
       prisma.member.count(),
       prisma.member.count({ where: { paymentStatus: "VERIFIED" } }),
+      prisma.executive.count({ where: { active: true } }),
     ]);
 
     return NextResponse.json({
@@ -56,6 +58,7 @@ export async function GET() {
           events: totalEvents,
           articles: totalArticles,
           pastQuestions: totalPastQuestions,
+          executives: totalExecutives,
         },
         users: totalUsers,
         unreadContacts,

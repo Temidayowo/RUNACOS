@@ -10,20 +10,23 @@ import {
   FileText,
   FileQuestion,
   Users,
+  UserCheck,
   AlertCircle,
   Clock,
   CheckCircle,
   MessageSquare,
+  Shield,
 } from "lucide-react";
 import { cn, formatDateShort } from "@/lib/utils";
 import { FAULT_STATUSES } from "@/lib/constants";
 
 interface DashboardData {
   faults: { total: number; open: number; inProgress: number; resolved: number };
-  content: { news: number; events: number; articles: number; pastQuestions: number };
+  content: { news: number; events: number; articles: number; pastQuestions: number; executives: number };
   users: number;
   unreadContacts: number;
   recentFaults: any[];
+  members: { total: number; verified: number };
 }
 
 function AnimatedCounter({ value, duration = 1.5 }: { value: number; duration?: number }) {
@@ -88,6 +91,7 @@ export default function AdminDashboard() {
     { label: "Events", value: data.content.events, href: "/admin/events", icon: Calendar },
     { label: "Articles", value: data.content.articles, href: "/admin/articles", icon: FileText },
     { label: "Past Questions", value: data.content.pastQuestions, href: "/admin/past-questions", icon: FileQuestion },
+    { label: "Executives", value: data.content.executives, href: "/admin/executives", icon: Shield },
   ];
 
   return (
@@ -128,7 +132,7 @@ export default function AdminDashboard() {
         {/* Content Stats */}
         <div className="lg:col-span-2">
           <h2 className="text-lg font-semibold font-heading text-gray-900 mb-4">Content Overview</h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
             {contentCards.map((card, i) => {
               const Icon = card.icon;
               return (
@@ -154,7 +158,7 @@ export default function AdminDashboard() {
           </div>
 
           {/* Quick Stats */}
-          <div className="grid grid-cols-2 gap-4 mt-4">
+          <div className="grid grid-cols-3 gap-4 mt-4">
             <Link
               href="/admin/users"
               className="bg-surface-0 rounded-xl p-4 border border-surface-3 hover:shadow-card-hover transition-all"
@@ -183,6 +187,29 @@ export default function AdminDashboard() {
                 </div>
               </div>
             </Link>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.9 }}
+              className="bg-surface-0 rounded-xl p-4 border border-surface-3"
+            >
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center">
+                  <UserCheck className="w-5 h-5 text-emerald-600" />
+                </div>
+                <div>
+                  <p className="text-xl font-bold font-mono text-gray-900">
+                    <AnimatedCounter value={data.members.total} />
+                  </p>
+                  <p className="text-sm text-gray-500">
+                    Members{" "}
+                    <span className="text-emerald-600 font-medium">
+                      (<AnimatedCounter value={data.members.verified} /> verified)
+                    </span>
+                  </p>
+                </div>
+              </div>
+            </motion.div>
           </div>
         </div>
 

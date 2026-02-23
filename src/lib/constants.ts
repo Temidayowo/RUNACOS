@@ -57,7 +57,8 @@ export const FOOTER_RESOURCES = [
   { label: "Past Questions", href: "/past-questions" },
   { label: "Articles", href: "/articles" },
   { label: "Constitution", href: "/constitution" },
-  { label: "FRMS", href: "/frms/report" },
+  { label: "Report an Issue", href: "/frms/report" },
+  { label: "Voting", href: "/voting" },
 ] as const;
 
 export const FOOTER_CONNECT = [

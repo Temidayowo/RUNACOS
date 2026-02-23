@@ -145,23 +145,31 @@ export function Footer() {
           </AnimateOnScroll>
         </div>
 
-        {/* Association Fee Notice */}
+        {/* Membership Notice */}
         <div className="mt-10 rounded-xl border border-white/10 bg-white/5 backdrop-blur-sm p-4 flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-6">
           <div className="flex items-center gap-2">
             <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-electric/10">
               <span className="text-electric text-sm font-bold font-mono">&#8358;</span>
             </div>
             <div>
-              <p className="text-xs font-mono font-semibold text-white/80">Association Fee</p>
-              <p className="text-[11px] text-navy-300">Collected per academic session to maintain your RUNACOS membership.</p>
+              <p className="text-xs font-mono font-semibold text-white/80">Become a Member</p>
+              <p className="text-[11px] text-navy-300">Registration is free. Pay association dues to get your membership card.</p>
             </div>
           </div>
-          <Link
-            href="/membership"
-            className="text-xs font-medium text-electric hover:text-white transition-colors whitespace-nowrap link-hover-underline"
-          >
-            Register &amp; Pay &rarr;
-          </Link>
+          <div className="flex items-center gap-3">
+            <Link
+              href="/membership"
+              className="text-xs font-medium text-electric hover:text-white transition-colors whitespace-nowrap link-hover-underline"
+            >
+              Register Free &rarr;
+            </Link>
+            <Link
+              href="/membership/pay"
+              className="text-xs font-medium text-navy-300 hover:text-white transition-colors whitespace-nowrap link-hover-underline"
+            >
+              Pay Dues &rarr;
+            </Link>
+          </div>
         </div>
 
         {/* Circuit-trace divider */}

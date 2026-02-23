@@ -361,11 +361,15 @@ async function main() {
     },
   ];
 
-  for (const contact of contacts) {
-    await prisma.contactSubmission.create({ data: contact });
+  const existingContacts = await prisma.contactSubmission.count();
+  if (existingContacts === 0) {
+    for (const contact of contacts) {
+      await prisma.contactSubmission.create({ data: contact });
+    }
+    console.log("✅ Demo contacts seeded:", contacts.length);
+  } else {
+    console.log("⏭️ Contacts already exist, skipping (" + existingContacts + " found)");
   }
-
-  console.log("✅ Demo contacts seeded:", contacts.length);
 
   // Seed site settings
   await prisma.siteSetting.upsert({
@@ -394,7 +398,7 @@ async function main() {
     news: {
       heading: "",
       subheading: "",
-      backgroundImage: "https://images.unsplash.com/photo-1504711434969-e33886168d5c?w=1920&q=80",
+      backgroundImage: "https://images.unsplash.com/photo-1495020689067-958852a7765e?w=1920&q=80",
     },
     articles: {
       heading: "",
@@ -424,7 +428,7 @@ async function main() {
     "privacy-policy": {
       heading: "",
       subheading: "",
-      backgroundImage: "https://images.unsplash.com/photo-1563986768609-322da13575f2?w=1920&q=80",
+      backgroundImage: "https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?w=1920&q=80",
     },
     "terms-of-service": {
       heading: "",
