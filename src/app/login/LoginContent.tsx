@@ -234,7 +234,7 @@ export default function LoginContent() {
           </form>
 
           <p className="mt-8 text-center text-xs text-gray-400 font-mono">
-            RUNACOS Admin Portal v2.0
+            RUNACOS Admin Portal v1.0
           </p>
         </motion.div>
       </div>

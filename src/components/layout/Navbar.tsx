@@ -4,12 +4,13 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, ChevronRight } from "lucide-react";
-import { NAV_LINKS } from "@/lib/constants";
+import { Menu, X, ChevronRight, ChevronDown } from "lucide-react";
+import { NAV_LINKS, NAV_RESOURCES } from "@/lib/constants";
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [resourcesOpen, setResourcesOpen] = useState(false);
   const pathname = usePathname();
 
   if (pathname?.startsWith("/admin")) return null;
@@ -91,7 +92,7 @@ export function Navbar() {
               <div className={`text-[10px] font-mono uppercase tracking-wider leading-tight ${
                 isScrolled || !isTransparentHero ? "text-gray-400" : "text-white/50"
               }`}>
-                Ass&apos; of Computing Students
+                Association of Computing Students
               </div>
             </div>
           </Link>
@@ -131,6 +132,44 @@ export function Navbar() {
                 </motion.div>
               );
             })}
+
+            {/* Resources Dropdown */}
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 + NAV_LINKS.length * 0.04 }}
+              className="relative"
+              onMouseEnter={() => setResourcesOpen(true)}
+              onMouseLeave={() => setResourcesOpen(false)}
+            >
+              <button
+                className={`flex items-center gap-1 px-3 py-2 text-[13px] font-medium transition-colors duration-200 ${textColor} hover:${isScrolled || !isTransparentHero ? "text-navy-800" : "text-white"}`}
+              >
+                Resources
+                <ChevronDown className={`h-3 w-3 transition-transform ${resourcesOpen ? "rotate-180" : ""}`} />
+              </button>
+              <AnimatePresence>
+                {resourcesOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 8 }}
+                    transition={{ duration: 0.15 }}
+                    className="absolute top-full left-0 mt-1 w-52 rounded-xl border border-surface-3 bg-white py-2 shadow-lg"
+                  >
+                    {NAV_RESOURCES.map((item) => (
+                      <Link
+                        key={item.href}
+                        href={item.href}
+                        className="block px-4 py-2.5 text-sm text-gray-600 hover:bg-surface-1 hover:text-navy-800 transition-colors"
+                      >
+                        {item.label}
+                      </Link>
+                    ))}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </motion.div>
           </nav>
 
           {/* Right Actions */}
@@ -232,6 +271,28 @@ export function Navbar() {
                   );
                 })}
 
+                {/* Resources section in mobile menu */}
+                <div className="mt-4 px-4">
+                  <p className="text-[10px] font-mono uppercase tracking-wider text-gray-400 mb-2">
+                    Resources
+                  </p>
+                </div>
+                {NAV_RESOURCES.map((item, i) => (
+                  <motion.div
+                    key={item.href}
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.3 + i * 0.04 }}
+                  >
+                    <Link
+                      href={item.href}
+                      className="flex items-center justify-between rounded-xl px-4 py-3 text-sm font-medium text-gray-600 hover:bg-surface-1 hover:text-navy-800 transition-colors"
+                    >
+                      {item.label}
+                    </Link>
+                  </motion.div>
+                ))}
+
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -251,7 +312,7 @@ export function Navbar() {
               {/* Bottom section */}
               <div className="absolute bottom-0 left-0 right-0 border-t border-surface-3 px-8 py-4">
                 <p className="text-[10px] font-mono text-gray-400 tracking-wider">
-                  RUNACOS v2.0.0
+                  RUNACOS v1.0.0
                 </p>
               </div>
             </motion.div>

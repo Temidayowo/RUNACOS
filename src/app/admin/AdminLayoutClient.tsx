@@ -140,7 +140,7 @@ export default function AdminLayoutClient({ children }: { children: React.ReactN
               <Settings className="w-5 h-5" />
               Settings
             </Link>
-            <p className="mt-3 px-3 font-mono text-[10px] text-navy-300">v2.0.0</p>
+            <p className="mt-3 px-3 font-mono text-[10px] text-navy-300">v1.0.0</p>
           </div>
         </div>
       </aside>

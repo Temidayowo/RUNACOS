@@ -2,7 +2,7 @@ export const SITE_NAME = "RUNACOS";
 export const SITE_DESCRIPTION =
   "The Redeemer's University Association of Computer Science Students";
 export const SITE_URL = process.env.NEXTAUTH_URL || "https://runacos.org";
-export const SITE_VERSION = "2.0.0";
+export const SITE_VERSION = "1.0.0";
 
 export const FAULT_STATUSES = {
   OPEN: { label: "Open", color: "red" },
@@ -40,9 +40,16 @@ export const NAV_LINKS = [
   { label: "News", href: "/news" },
   { label: "Events", href: "/events" },
   { label: "Articles", href: "/articles" },
-  { label: "Past Questions", href: "/past-questions" },
   { label: "Executives", href: "/executives" },
+  { label: "Alumni", href: "/alumni" },
   { label: "Contact", href: "/contact" },
+] as const;
+
+export const NAV_RESOURCES = [
+  { label: "Pay Dues", href: "/dues/pay" },
+  { label: "Generate Receipt", href: "/dues/receipt" },
+  { label: "Past Questions", href: "/past-questions" },
+  { label: "Report an Issue", href: "/frms/report" },
 ] as const;
 
 export const FOOTER_QUICK_LINKS = [
@@ -56,9 +63,10 @@ export const FOOTER_QUICK_LINKS = [
 export const FOOTER_RESOURCES = [
   { label: "Past Questions", href: "/past-questions" },
   { label: "Articles", href: "/articles" },
-  { label: "Constitution", href: "/constitution" },
+  { label: "Pay Dues", href: "/dues/pay" },
+  { label: "Generate Receipt", href: "/dues/receipt" },
   { label: "Report an Issue", href: "/frms/report" },
-  { label: "Voting", href: "/voting" },
+  { label: "Constitution", href: "/constitution" },
 ] as const;
 
 export const FOOTER_CONNECT = [
