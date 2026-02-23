@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { signOut, useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   LayoutDashboard,
@@ -24,6 +25,8 @@ import {
   IdCard,
   SlidersHorizontal,
   Crown,
+  CreditCard,
+  GraduationCap,
 } from "lucide-react";
 import { cn, getInitials } from "@/lib/utils";
 
@@ -37,15 +40,25 @@ const sidebarLinks = [
   { label: "Articles", href: "/admin/articles", icon: FileText },
   { label: "Past Questions", href: "/admin/past-questions", icon: FileQuestion },
   { label: "Members", href: "/admin/members", icon: IdCard },
+  { label: "Payments", href: "/admin/payments", icon: CreditCard },
+  { label: "Alumni", href: "/admin/alumni", icon: GraduationCap },
   { label: "Contact Messages", href: "/admin/contact", icon: MessageSquare },
   { label: "Users", href: "/admin/users", icon: Users },
 ];
 
 export default function AdminLayoutClient({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const { data: session } = useSession();
+  const router = useRouter();
+  const { data: session, status } = useSession();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
+
+  // Redirect to login if session is lost (e.g. after signOut)
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      router.replace("/login");
+    }
+  }, [status, router]);
 
   const isActive = (href: string) => {
     if (href === "/admin") return pathname === "/admin";
@@ -69,8 +82,8 @@ export default function AdminLayoutClient({ children }: { children: React.ReactN
               <img src="/logo.png" alt="RUNACOS" className="h-6 w-6 object-contain" style={{ filter: "brightness(0) invert(1)" }} />
             </div>
             <div>
-              <h1 className="font-bold font-heading text-sm">RUNACOS</h1>
-              <p className="text-xs font-mono text-navy-400">Admin Panel</p>
+              <h1 className="font-bold font-heading text-sm text-white">RUNACOS</h1>
+              <p className="text-xs font-mono text-navy-200">Admin Panel</p>
             </div>
             <button
               onClick={() => setSidebarOpen(false)}
@@ -127,7 +140,7 @@ export default function AdminLayoutClient({ children }: { children: React.ReactN
               <Settings className="w-5 h-5" />
               Settings
             </Link>
-            <p className="mt-3 px-3 font-mono text-[10px] text-navy-500">v2.0.0</p>
+            <p className="mt-3 px-3 font-mono text-[10px] text-navy-300">v2.0.0</p>
           </div>
         </div>
       </aside>
@@ -201,7 +214,10 @@ export default function AdminLayoutClient({ children }: { children: React.ReactN
                       <p className="text-xs font-mono text-gray-500">{session?.user?.email}</p>
                     </div>
                     <button
-                      onClick={() => signOut({ callbackUrl: "/login" })}
+                      onClick={async () => {
+                        await signOut({ redirect: false });
+                        window.location.href = "/login";
+                      }}
                       className="flex items-center gap-2 w-full px-4 py-2 text-sm text-rose-600 hover:bg-rose-50 transition-colors"
                     >
                       <LogOut className="w-4 h-4" />
