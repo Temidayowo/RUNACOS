@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
@@ -92,8 +93,7 @@ export default function LoginContent() {
             transition={{ delay: 0.3, type: "spring", stiffness: 200 }}
             className="w-20 h-20 bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl flex items-center justify-center mx-auto mb-8"
           >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/logo.png" alt="RUNACOS" className="h-12 w-12 object-contain" style={{ filter: "brightness(0) invert(1)" }} />
+            <Image src="/logo.png" alt="RUNACOS" width={48} height={48} className="object-contain" style={{ filter: "brightness(0) invert(1)" }} />
           </motion.div>
 
           <h1 className="text-3xl font-bold font-heading mb-3 tracking-tight">RUNACOS</h1>
@@ -120,8 +120,7 @@ export default function LoginContent() {
           {/* Mobile logo */}
           <div className="lg:hidden text-center mb-8">
             <div className="w-14 h-14 bg-navy-800 rounded-2xl flex items-center justify-center mx-auto mb-4">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/logo.png" alt="RUNACOS" className="h-8 w-8 object-contain" style={{ filter: "brightness(0) invert(1)" }} />
+              <Image src="/logo.png" alt="RUNACOS" width={32} height={32} className="object-contain" style={{ filter: "brightness(0) invert(1)" }} />
             </div>
             <h2 className="text-lg font-bold font-heading text-navy-800">RUNACOS</h2>
           </div>

@@ -10,18 +10,27 @@ export async function GET(
 
     const member = await prisma.member.findUnique({
       where: { memberId },
+      include: {
+        duesPayments: {
+          where: { paymentStatus: "VERIFIED" },
+          orderBy: { createdAt: "desc" },
+          take: 1,
+        },
+      },
     });
 
     if (!member) {
       return NextResponse.json({ error: "Member not found" }, { status: 404 });
     }
 
-    if (member.paymentStatus !== "VERIFIED") {
+    if (member.duesPayments.length === 0) {
       return NextResponse.json(
-        { error: "Member payment not verified" },
+        { error: "No verified payment found for this member" },
         { status: 403 }
       );
     }
+
+    const latestPayment = member.duesPayments[0];
 
     // Fetch badge template from settings
     const badgeTemplateSetting = await prisma.siteSetting.findUnique({
@@ -36,7 +45,7 @@ export async function GET(
         matricNumber: member.matricNumber,
         level: member.level,
         passportUrl: member.passportUrl,
-        paidAt: member.paidAt,
+        paidAt: latestPayment.verifiedAt || latestPayment.createdAt,
         gender: member.gender,
         department: member.department,
         faculty: member.faculty,

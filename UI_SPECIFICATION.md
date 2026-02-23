@@ -1,702 +1,716 @@
-# RUNACOS UI Specification
+# RUNACOS UI Specification v2.0
 
-## Design Tokens
+> Updated: February 2026 | Design System for the Redeemer's University Association of Computer Science Students platform.
 
-### Colors
+---
+
+## 1. Design Tokens
+
+### 1.1 Color Palette
+
+#### Primary Brand
 | Token | Value | Usage |
 |-------|-------|-------|
-| `navy-900` | `#081E36` | Footer background |
-| `navy-800` | `#0B2C4D` | Primary brand, navbar text, headings, CTA fills |
-| `navy-700` | `#0F3A64` | Hover states on primary |
-| `navy-600` | `#14487B` | Active states |
-| `blue-500` | `#2563EB` | Accent (hero highlight text "Technology & Innovation"), links |
-| `blue-100` | `#DBEAFE` | Light accent backgrounds |
-| `gray-50` | `#F9FAFB` | Page section alternating backgrounds |
-| `gray-100` | `#F3F4F6` | Card hover, input backgrounds |
-| `gray-200` | `#E5E7EB` | Borders, dividers |
-| `gray-400` | `#9CA3AF` | Placeholder text, secondary text |
-| `gray-500` | `#6B7280` | Body secondary text |
-| `gray-600` | `#4B5563` | Body text |
-| `gray-700` | `#374151` | Emphasis body text |
-| `gray-900` | `#111827` | Headings, strong text |
-| `white` | `#FFFFFF` | Card backgrounds, page backgrounds |
-| `green-500` | `#22C55E` | Success states, resolved status |
-| `yellow-500` | `#EAB308` | Warning, in-progress status |
-| `red-500` | `#EF4444` | Error, open/urgent status |
-| `orange-500` | `#F97316` | Category tags (events) |
+| `navy-800` | `#0B2C4D` | Primary brand, headings, CTA fills, card highlights |
+| `navy-900` | `#081E36` | Footer background, deep emphasis |
+| `navy-950` | `#051425` | Deepest brand tone |
+| `midnight` | `#040D19` | Hero sections, admin sidebar |
+| `electric` | `#3B82F6` | Accents, active indicators, links, highlights |
+| `cyan` | `#06B6D4` | Secondary accent, gradient endpoints |
 
-### Typography
-| Element | Font | Weight | Size (Desktop) | Size (Mobile) |
-|---------|------|--------|----------------|---------------|
-| **H1 (Hero)** | Merriweather | 800 | 48px / 3rem | 32px / 2rem |
-| **H2 (Section)** | Merriweather | 700 | 36px / 2.25rem | 28px / 1.75rem |
-| **H3 (Card title)** | Merriweather | 700 | 20px / 1.25rem | 18px / 1.125rem |
-| **H4 (Subsection)** | Merriweather | 600 | 18px / 1.125rem | 16px / 1rem |
-| **Label (uppercase)** | Inter | 600 | 12px / 0.75rem | 12px / 0.75rem |
-| **Body** | Inter | 400 | 16px / 1rem | 14px / 0.875rem |
-| **Body small** | Inter | 400 | 14px / 0.875rem | 13px / 0.8125rem |
-| **Caption** | Inter | 400 | 12px / 0.75rem | 12px / 0.75rem |
+#### Navy Scale
+| Token | Value |
+|-------|-------|
+| `navy-50` | `#E8EEF4` |
+| `navy-100` | `#C5D4E3` |
+| `navy-200` | `#9FB8D0` |
+| `navy-300` | `#799CBD` |
+| `navy-400` | `#5C87AE` |
+| `navy-500` | `#3F729F` |
+| `navy-600` | `#376491` |
+| `navy-700` | `#2D5280` |
+| `navy-800` | `#0B2C4D` |
+| `navy-900` | `#081E36` |
 
-### Spacing
-- Section padding: `py-16 md:py-24` (64px / 96px)
-- Container max-width: `max-w-7xl` (1280px), `px-4 md:px-6 lg:px-8`
-- Card padding: `p-4 md:p-6`
-- Card gap (grid): `gap-6 md:gap-8`
-- Element spacing: 4px increments (Tailwind scale)
+#### Surface / Semantic Colors
+| Token | Value | Usage |
+|-------|-------|-------|
+| `surface-0` | `#FFFFFF` | Cards, content containers, modal backgrounds |
+| `surface-1` | `#F8FAFC` | Page section backgrounds, subtle alternation |
+| `surface-2` | `#F1F5F9` | Hover states, input backgrounds |
+| `surface-3` | `#E2E8F0` | Borders, dividers, separators |
 
-### Border Radius
-- Cards: `rounded-lg` (8px)
-- Buttons: `rounded-lg` (8px)
-- Pill tabs: `rounded-full` (9999px)
-- Input fields: `rounded-lg` (8px)
-- Images in cards: `rounded-t-lg` (top only)
+#### Feedback Colors
+| Token | Value | Usage |
+|-------|-------|-------|
+| `green-500` | `#22C55E` | Success, verified, resolved, published |
+| `amber-500` | `#F59E0B` | Warning, pending, in-progress |
+| `rose-500` | `#F43F5E` | Error, open/urgent, danger actions |
+| `gray-400` | `#9CA3AF` | Closed, archived, disabled |
 
-### Shadows
-- Card default: `shadow-sm` → `shadow-md` on hover
-- Navbar: `shadow-sm`
-- Modal: `shadow-xl`
-- Footer: none (solid bg)
+#### Gradients
+| Name | Definition | Usage |
+|------|-----------|-------|
+| `gradient-hero` | `135deg: midnight → navy-800 → navy-900` | Hero sections, full-screen backgrounds |
+| `gradient-accent` | `135deg: electric → cyan` | Primary CTA buttons, accent fills |
+| `gradient-card-shine` | `105deg: transparent → white/20 → transparent` | Card hover highlights |
+
+### 1.2 Typography
+
+#### Font Families
+| Family | Font | Usage |
+|--------|------|-------|
+| `font-sans` | **Inter** | Body text, labels, descriptions |
+| `font-heading` | **Space Grotesk** | Headlines, titles, section headings |
+| `font-mono` | **JetBrains Mono** | Data, reference IDs, code, stats, timestamps |
+
+#### Type Scale
+| Element | Font | Weight | Desktop Size | Mobile Size |
+|---------|------|--------|-------------|-------------|
+| H1 (Hero) | Space Grotesk | 800 | 4.5rem (72px) | 2.5rem (40px) |
+| H2 (Section) | Space Grotesk | 700 | 2.5rem (40px) | 1.875rem (30px) |
+| H3 (Card title) | Space Grotesk | 600 | 1.25rem (20px) | 1.125rem (18px) |
+| H4 (Subsection) | Space Grotesk | 600 | 1.125rem (18px) | 1rem (16px) |
+| Section Label | Inter (uppercase) | 600 | 0.75rem (12px) | 0.75rem (12px) |
+| Body | Inter | 400 | 1rem (16px) | 0.875rem (14px) |
+| Body Small | Inter | 400 | 0.875rem (14px) | 0.8125rem (13px) |
+| Caption / Mono Data | JetBrains Mono | 500 | 0.75rem (12px) | 0.75rem (12px) |
+
+### 1.3 Spacing
+
+| Context | Value |
+|---------|-------|
+| Container | `max-w-7xl mx-auto px-4 sm:px-6 lg:px-8` |
+| Section vertical | `py-16 md:py-24` |
+| Card padding | `p-4 sm:p-5` or `p-6` |
+| Grid gap | `gap-4` (sm) / `gap-6` (md) / `gap-8` (lg) |
+| Element spacing | 4px increments (Tailwind spacing scale) |
+
+### 1.4 Border Radius
+
+| Element | Value |
+|---------|-------|
+| Cards | `rounded-xl` (12px) |
+| Buttons | `rounded-[10px]` or `rounded-full` (pills) |
+| Inputs | `rounded-[10px]` |
+| Badges | `rounded-md` (6px) |
+| Avatars / Logo | `rounded-xl` (12px) |
+| Images in cards | `rounded-xl` (12px) |
+
+### 1.5 Shadows
+
+| Context | Value |
+|---------|-------|
+| Card default | `shadow-sm` |
+| Card hover | `shadow-card-hover` (0 8px 30px rgba(59,130,246,0.08)) |
+| Navbar (scrolled) | `shadow-sm` |
+| Modal | `shadow-2xl` |
+| CTA hover | `shadow-glow-blue` (0 8px 30px rgba(59,130,246,0.25)) |
 
 ---
 
-## Animation Specification (Framer Motion)
+## 2. Animation Specification
 
-### Page Transitions
-- **Page enter**: fade in + slide up 20px, duration 0.6s, ease `[0.25, 0.46, 0.45, 0.94]`
-- **Page exit**: fade out, duration 0.3s
+### 2.1 Page Transitions (Framer Motion)
 
-### Scroll Animations (staggered)
-- **Section headers**: fade in + slide up 30px, duration 0.6s, triggered at 20% viewport
-- **Cards**: fade in + slide up 40px, stagger 0.1s between siblings, duration 0.5s
-- **Stats/numbers**: count-up animation from 0, duration 1.5s
-- **Images**: scale from 0.95 → 1.0 + fade in, duration 0.7s
+| Animation | Properties |
+|-----------|-----------|
+| Page enter | `opacity: 0→1, y: 20→0`, duration `0.6s`, ease `[0.25, 0.46, 0.45, 0.94]` |
+| Page exit | `opacity: 1→0`, duration `0.3s` |
+| Navbar enter | `y: -80→0`, duration `0.6s`, spring ease |
 
-### Micro-interactions
-- **Button hover**: scale 1.02, shadow increase, duration 0.2s
-- **Card hover**: translateY(-4px) + shadow-md → shadow-lg, duration 0.3s
-- **Nav links**: underline slides in from left, duration 0.3s
-- **Tab switch**: active indicator slides to new position, content crossfades
-- **Form focus**: border color transition + subtle glow, duration 0.2s
-- **Toast notifications**: slide in from top-right + fade, duration 0.4s
+### 2.2 Scroll Animations (Staggered)
 
-### Loading States
-- **Skeleton screens**: shimmer gradient animation, infinite loop
-- **Page spinner**: rotating RUNACOS logo or pulsing dots
-- **Submit buttons**: text → spinner → checkmark sequence
+| Element | Animation | Timing |
+|---------|-----------|--------|
+| Section headers | Fade up 30px | `0.6s`, triggered at viewport entry |
+| Card grids | Fade up 40px | Stagger `0.1s` between siblings |
+| Stats counters | Count from 0 | `1.5s`, triggered once on view |
+| Images | Scale 0.98→1 + fade | `0.5s` |
+| Hero text | Word-by-word reveal | Stagger `0.05s` |
+| Admin sidebar links | Slide from left 20px | Stagger `0.05s` |
 
-### Hero-specific
-- **Hero text**: letter-by-letter reveal or word-by-word fade-in, stagger 0.05s
-- **Hero CTA buttons**: bounce-in after text completes, stagger 0.15s
-- **Floating elements**: gentle parallax on scroll, subtle up/down float animation
+### 2.3 Micro-interactions
+
+| Element | Hover | Active |
+|---------|-------|--------|
+| Buttons | `scale(1.02)`, shadow increase | `scale(0.98)` |
+| Cards | `translateY(-2px)` to `(-6px)`, shadow elevation | — |
+| Nav links | Underline indicator slides (spring layout) | — |
+| Tab switch | Active indicator animates to position | — |
+| Inputs | Border color + ring glow transition | — |
+| Arrows | `translateX(+4px)` slide right | — |
+
+### 2.4 Tailwind Keyframe Animations
+
+| Name | Effect | Duration |
+|------|--------|----------|
+| `fadeIn` | Opacity 0→1 | 0.6s |
+| `fadeUp` | Opacity + Y(-30px→0) | 0.6s |
+| `fadeDown` | Opacity + Y(20px→0) | 0.5s |
+| `slideLeft` | Opacity + X(-30px→0) | 0.5s |
+| `slideRight` | Opacity + X(30px→0) | 0.5s |
+| `scaleIn` | Opacity + scale(0.9→1) | 0.4s |
+| `shimmer` | Background gradient shift | 2s infinite |
+| `float` | Y(-10px) oscillation | 3s infinite |
+| `pulseDot` | Scale + opacity pulse | 2s infinite |
+| `glowDrift` | Multi-point drift | 8s infinite |
+
+### 2.5 Loading States
+
+| Context | Pattern |
+|---------|---------|
+| Page loading | `Loader2` spinning icon, `text-electric` |
+| Skeleton screens | Shimmer gradient, 2s infinite loop |
+| Submit buttons | Text → spinner → success message |
+| Tab content | `AnimatePresence mode="wait"` crossfade |
+
+### 2.6 Reduced Motion
+
+All animations respect `@media (prefers-reduced-motion: reduce)` — animations are disabled for users who prefer reduced motion.
 
 ---
 
-## Component Specifications
+## 3. Component Specifications
 
-### Navbar
+### 3.1 Navbar
+
+```
+┌──────────────────────────────────────────────────────────────────────────┐
+│ [R logo] Redeemer's University    Home About News Events Articles       │
+│          ASSOC. OF COMPUTING      Past Questions Executives Alumni      │
+│          STUDENTS                 Contact  [Resources ▼]  [Membership] │
+└──────────────────────────────────────────────────────────────────────────┘
+```
+
+- **Height**: 72px
+- **Position**: Fixed top-0, z-50
+- **Background (default)**: White, `border-b border-surface-3/50`
+- **Background (hero pages)**: Transparent → glassmorphism on scroll (`backdrop-blur-xl bg-white/80`)
+- **Logo**: Mask-image technique with navy-800 / white toggle based on scroll state
+- **Nav links**: `text-[13px] font-medium`, color toggles between `text-gray-700` and `text-white/90`
+- **Active indicator**: 2px electric blue bar below active link, animated with `layoutId`
+- **Resources dropdown**: Hover-triggered, `rounded-xl border bg-white shadow-lg`, contains:
+  - Pay Dues → `/dues/pay`
+  - Generate Receipt → `/dues/receipt`
+  - Past Questions → `/past-questions`
+  - Report an Issue → `/frms/report`
+- **CTA button**: "Membership", `rounded-full bg-gradient-accent`, glow on hover
+- **Mobile**: Hamburger → slide-in drawer from right (300px wide, spring animation)
+- **Mobile menu**: Full nav links + Resources section + "Become a Member" CTA
+
+### 3.2 Footer
+
+```
+┌──────────────────────────────────────────────────────────────────────┐
+│  navy-900 background                                                 │
+│                                                                      │
+│  [R] RUNACOS            Quick Links      Resources      Connect      │
+│  Description text...    Home             Past Questions  Twitter/X   │
+│                         About Us         Articles        Instagram   │
+│                         News             Pay Dues        LinkedIn    │
+│                         Events           Generate Receipt Email Us   │
+│                         Contact          Report an Issue             │
+│                                          Constitution                │
+│──────────────────────────────────────────────────────────────────────│
+│  RUNACOS v2.0.0              Privacy Policy · Terms of Service       │
+└──────────────────────────────────────────────────────────────────────┘
+```
+
+- **Background**: `navy-900`
+- **Text**: White (headings), `navy-300` (links), `navy-400` (descriptions)
+- **Grid**: 4-column (lg) → 2-column (sm) → 1-column (mobile)
+- **Bottom bar**: `border-t border-white/10`, `font-mono text-[10px]`
+
+### 3.3 PageHero
+
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│ [R logo] RUNACOS              Home  About  Executives  News &  │
-│ ASSOC. OF COMPUTER            Events  Resources  Contact  🔍    │
-│ SCIENCE STUDENTS                              [Join Association]│
+│  gradient-hero background (midnight → navy-800)                  │
+│  bg-grid-dots-light overlay                                      │
+│                                                                  │
+│  Home / Page Name  (breadcrumb, mono, navy-400)                  │
+│                                                                  │
+│  Page Heading Text  (Space Grotesk, 4xl, white, gradient span)  │
+│  Subtitle description text  (navy-300, max-w-2xl)               │
+│                                                                  │
 └─────────────────────────────────────────────────────────────────┘
 ```
-- **Height**: 72px desktop, 64px mobile
-- **Background**: white, `shadow-sm`, sticky top-0
-- **Logo**: Dark navy circle with white "R" + text block
-- **Nav links**: Inter 500, 14px, gray-600, hover: navy-800, active: navy-800 with 2px bottom border (blue-500)
-- **Search icon**: `Search` from lucide-react, 20px, gray-500
-- **CTA button**: "Join Association", navy-800 bg, white text, rounded-lg, px-4 py-2
-- **Mobile**: Hamburger icon → slide-in drawer from right
-- **Animation**: Navbar slides down on page load, links fade in staggered
 
-### Footer
-```
-┌─────────────────────────────────────────────────────────────────┐
-│  navy-900 background                                            │
-│                                                                 │
-│  [R] RUNACOS          Quick Links     Resources    Contact Us   │
-│  Description text...  About Us        Dept Handbook  📍 Address │
-│                       Executive       Past Questions ✉️ Email   │
-│  [fb][tw][ig][li]     News & Events   Project DB    📞 Phone   │
-│                       Academic Cal    e-Library                  │
-│                       Student Portal  Course Materials           │
-│                                                                 │
-│─────────────────────────────────────────────────────────────────│
-│  © 2025 RUNACOS          Privacy Policy · Terms · Cookie Policy │
-└─────────────────────────────────────────────────────────────────┘
-```
-- **Background**: navy-900
-- **Text**: white (headings), gray-300 (body/links)
-- **Columns**: 4-column grid desktop, 2-col tablet, 1-col mobile
-- **Social icons**: 32px circles, navy-700 bg, white icons, hover: blue-500 bg
-- **Bottom bar**: border-t border-navy-700, py-4
-- **Animation**: Fade in on scroll into view
+- **Height**: `py-20 md:py-28`
+- **Breadcrumb**: `font-mono text-xs text-navy-400`
+- **Heading**: `font-heading text-4xl md:text-5xl font-extrabold text-white`
+- **Gradient text span**: `bg-gradient-to-r from-electric to-cyan bg-clip-text text-transparent`
+- **Content**: Dynamically loaded from `SiteSetting` (editable in admin)
 
-### NewsCard / EventCard / ArticleCard
-```
-┌──────────────────────────┐
-│  ┌──────────────────────┐│
-│  │     Cover Image      ││
-│  │     (16:10 ratio)    ││
-│  └──────────────────────┘│
-│  📅 Oct 15, 2023 · 🏷 Tag│
-│  **Card Title Here That  │
-│  Can Wrap Two Lines**    │
-│                          │
-│  Excerpt text truncated  │
-│  to 2-3 lines max...    │
-│                          │
-│  Read More →             │
-└──────────────────────────┘
-```
-- **Container**: white bg, rounded-lg, shadow-sm, border border-gray-100
-- **Image**: aspect-[16/10], object-cover, rounded-t-lg
-- **Date**: gray-500, 12px, with calendar icon
-- **Category tag**: colored pill badge (blue for Academic, orange for Events, green for Student Life)
-- **Title**: Merriweather 700, 18px, navy-800, line-clamp-2
-- **Excerpt**: Inter 400, 14px, gray-500, line-clamp-3
-- **Read More**: blue-500, 14px, 600 weight, with arrow icon → slides right on hover
-- **Hover**: translateY(-4px), shadow-md, image subtle scale 1.05
-- **Animation**: Fade up on scroll, stagger in grid
+### 3.4 Buttons
 
-### Button
+| Variant | Class Pattern |
+|---------|--------------|
+| Primary | `bg-navy-800 text-white rounded-[10px] shadow-sm hover:shadow-glow-sm hover:saturate-110 active:scale-[0.98]` |
+| Accent | `bg-gradient-accent text-white rounded-full shadow-sm hover:shadow-glow-blue hover:scale-[1.02]` |
+| Secondary | `border-[1.5px] border-navy-800 text-navy-800 hover:bg-navy-50` |
+| Ghost | `text-navy-800 hover:bg-surface-1` |
+| Danger | `bg-rose-500 text-white hover:bg-rose-600` |
+
+- **Sizes**: `sm` (px-3 py-1.5 text-xs), `md` (px-4 py-2.5 text-sm), `lg` (px-6 py-3 text-base)
+- **All**: `transition-all duration-200`, `font-medium`
+- **Disabled**: `opacity-50 cursor-not-allowed`
+- **Loading**: Spinner icon replaces text, button disabled
+
+### 3.5 Cards
+
+```
+┌──────────────────────────────┐
+│  ┌──────────────────────────┐│
+│  │     Cover Image          ││
+│  │     (16:10 or 21:9)      ││
+│  └──────────────────────────┘│
+│  Tag Badge      Date (mono)  │
+│  **Title (Space Grotesk)**   │
+│  Excerpt text line-clamp-2   │
+│  Read More →                 │
+└──────────────────────────────┘
+```
+
+- **Container**: `bg-surface-0 border border-surface-3 rounded-xl shadow-sm`
+- **Hover**: `translateY(-2px)`, `shadow-card-hover`, image `scale(1.03)`
+- **Image**: `aspect-[16/10] object-cover rounded-t-xl`
+- **Title**: `font-heading font-semibold text-gray-900`
+- **Excerpt**: `text-sm text-gray-500 line-clamp-2`
+- **Read More**: `text-electric font-medium text-sm`, arrow slides right on hover
+
+### 3.6 Event List Item
+
+```
+┌────────────────────────────────────────────────────────┐
+│ ┌────────┐                                     →       │
+│ │  MMM   │  Event Title                                │
+│ │  DD    │  Description line-clamp-1                   │
+│ │  YYYY  │  📍 Location    🕐 Time                     │
+│ └────────┘                                             │
+└────────────────────────────────────────────────────────┘
+```
+
+- **Date block**: `bg-navy-800 text-white`, `w-20 sm:w-24`
+- **Month**: `font-mono text-xs uppercase text-navy-300`
+- **Day**: `font-heading text-2xl font-bold`
+- **Year**: `font-mono text-[10px] text-navy-400`
+- **Meta**: `text-xs text-gray-400` with lucide icons (MapPin, Clock)
+
+### 3.7 Filter / Pill Tabs
+
+```
+  [Upcoming]  Past Events
+   ^^^^^^^^
+   active: navy-800 bg, white text, rounded-full, shadow
+   inactive: text-gray-600, hover:bg-surface-2, rounded-full
+```
+
+- **Padding**: `px-4 py-2`
+- **Font**: `text-sm font-medium`
+- **Transition**: Background and text color `duration-200`
+
+### 3.8 Badges / Status Indicators
+
 | Variant | Style |
 |---------|-------|
-| **Primary** | bg-navy-800, text-white, hover: bg-navy-700, active: bg-navy-600 |
-| **Secondary** | border-2 border-navy-800, text-navy-800, hover: bg-navy-50 |
-| **Ghost** | text-navy-800, hover: bg-gray-100 |
-| **Danger** | bg-red-500, text-white, hover: bg-red-600 |
-- Sizes: `sm` (px-3 py-1.5 text-sm), `md` (px-5 py-2.5 text-sm), `lg` (px-6 py-3 text-base)
-- All: rounded-lg, font-medium, transition-all duration-200, hover scale-[1.02]
-- Disabled: opacity-50, cursor-not-allowed
-- Loading: spinner icon replaces text
+| `badge-keyword` | Blue bg, syntax-highlight style |
+| `badge-string` | Green bg |
+| `badge-warning` | Amber bg |
+| `badge-error` | Rose bg |
+| `badge-comment` | Gray bg |
 
-### Filter Tabs (Pill style)
-```
-[All News]  Academics   Events   Student Life
- ^^^^^^^^
- (active: navy-800 bg, white text, rounded-full)
- (inactive: text-gray-600, hover: bg-gray-100, rounded-full)
-```
-- **Height**: 36px
-- **Padding**: px-4 py-2
-- **Active transition**: bg color slides/morphs between tabs
-- **Font**: Inter 500, 14px
+- **Font**: `font-mono text-[11px] font-medium`
+- **Padding**: `px-2.5 py-1`
+- **Border radius**: `rounded-md`
 
-### Newsletter Section
-```
-┌─────────────────────────────────────────────┐
-│              ✉️ (icon, 48px)                │
-│     Subscribe to RUNACOS Weekly             │
-│  Get the latest department news, event      │
-│  reminders, and academic resources...       │
-│                                             │
-│  ┌─────────────────────────┐ ┌───────────┐ │
-│  │ Enter student email     │ │ Subscribe │ │
-│  └─────────────────────────┘ └───────────┘ │
-│  We respect your privacy. Unsubscribe...    │
-└─────────────────────────────────────────────┘
-```
-- **Background**: gray-50
-- **Icon**: Mail icon from lucide-react, 48px, navy-800
-- **Heading**: Merriweather 700, 24px
-- **Input + Button inline**: input rounded-l-lg, button rounded-r-lg, navy-800 bg
-- **Animation**: Section fades up, input field slides in from left, button from right
+### 3.9 Form Inputs
 
-### Pagination
+- **Style**: `rounded-[10px] border-[1.5px] border-surface-3 bg-surface-0 text-sm`
+- **Focus**: `ring-[3px] ring-electric/10 border-electric`
+- **Error**: `border-rose-400 ring-rose-500/10`
+- **Placeholder**: `text-gray-400`
+- **Label**: `text-sm font-medium text-gray-700 mb-1.5`
+
+### 3.10 Receipt Component
+
 ```
-« Previous  [1]  2  ...  4  Next »
+┌──────────────────────────────────────┐
+│  [RUNACOS logo]   PAYMENT RECEIPT    │
+│  Redeemer's University Association   │
+│  of Computer Science Students        │
+├──────────────────────────────────────┤
+│  ✓ VERIFIED   or   ⏳ PENDING       │
+│  (green/amber banner)               │
+├──────────────────────────────────────┤
+│  Member Name    │  Member ID         │
+│  Matric Number  │  Department        │
+│  Session        │  Amount            │
+│  Payment Ref    │  Date              │
+│  Method         │  Verified At       │
+├──────────────────────────────────────┤
+│  This receipt is computer generated  │
+│  and is valid without a signature    │
+│  runacos.org                         │
+└──────────────────────────────────────┘
 ```
-- Active page: navy-800 bg, white text, rounded-lg
-- Inactive: gray-600 text, hover: bg-gray-100
-- Disabled (prev/next): gray-300 text
-- Size: 36x36px squares
+
+- **Background**: White with subtle pattern
+- **Header**: Navy gradient with white text
+- **Status banner**: Green (verified) or amber (pending)
+- **Grid**: 2-column key-value pairs with `border-b border-dashed`
+- **Download**: `html2canvas` capture to PNG
+
+### 3.11 Alumni Card
+
+```
+┌──────────────────────────┐
+│  [Photo circle]          │
+│  👑 Former Executive     │
+│  (badge if applicable)   │
+│                          │
+│  Full Name               │
+│  Department              │
+│  Class of YYYY           │
+└──────────────────────────┘
+```
+
+- **Photo**: `w-20 h-20 rounded-full object-cover border-2 border-surface-3`
+- **Executive badge**: `Crown` icon with amber accent
+- **Name**: `font-heading font-semibold`
+- **Department**: `text-sm text-gray-500`
+- **Class year**: `font-mono text-xs text-gray-400`
+
+### 3.12 Glassmorphism
+
+| Variant | Style |
+|---------|-------|
+| `.glass` | `backdrop-blur-xl bg-white/72 border border-white/30 shadow-glass` |
+| `.glass-dark` | `backdrop-blur-xl bg-navy-900/80 border border-white/10` |
 
 ---
 
-## Page Specifications
+## 4. Page Specifications
+
+### 4.1 Home Page (`/`)
+
+**Hero Section** — Full-screen carousel (HeroSection component)
+- Carousel slides with image/video/Lottie backgrounds
+- `min-h-screen` with gradient overlay
+- Title + subtitle + CTA buttons per slide
+- Auto-play 8s with manual navigation dots
+- Background Ken Burns effect on images
+
+**Quick Access Cards** — 6-card grid
+- Cards: Pay Dues, Report Issue, Become a Member, Past Questions, Track Report, Contact
+- Each: Gradient icon box + title + description
+- `grid-cols-1 sm:grid-cols-2 lg:grid-cols-3`
+- Hover: lift + shadow + icon scale
+
+**Latest News** — Fetched from `/api/news?status=PUBLISHED`
+- 3-card grid with NewsCard component
+- "View All News" link
+- Skeleton loading state
+
+**Upcoming Events** — Fetched from `/api/events?status=PUBLISHED&type=upcoming`
+- Event list items with date blocks
+- "View All Events" link
+
+**Stats Section** — Animated counters
+- `bg-navy-800 text-white`, full-width
+- 4 stat counters: Members, Events, Projects, Awards
+- `AnimatedCounter` with count-up on viewport entry
+
+**Newsletter Section** — Subscription form
+- Input + subscribe button
+- Connected to `POST /api/newsletter`
+- Success toast on subscribe
+
+### 4.2 News Page (`/news`)
+
+- `PageHero` with "news" slug
+- Pill tab filters: All News, Academics, Events, Student Life
+- Grid: `grid-cols-1 sm:grid-cols-2 lg:grid-cols-3`
+- Pagination with page numbers
+- Loading: Spinner
+- Empty state: Newspaper icon + "No news found"
+
+### 4.3 News Detail (`/news/[slug]`)
+
+- Back link with arrow
+- Category badge + author + formatted date
+- Cover image: `aspect-[21/9] rounded-xl`
+- Content: `prose-custom` max-w-4xl
+- Slide-up animation
+
+### 4.4 Events Page (`/events`)
+
+- `PageHero` with "events" slug
+- Tabs: "Upcoming" / "Past Events"
+- Dynamic fetch: `/api/events?status=PUBLISHED&type=${tab}`
+- Event list items with date blocks
+- Loading spinner + error + empty states
+- `AnimatePresence mode="wait"` for tab transitions
+
+### 4.5 Event Detail (`/events/[slug]`)
+
+- Back link → `/events`
+- Cover image: `aspect-[21/9]` with fallback gradient
+- Content: Title + description paragraphs
+- Sidebar: Date, Time, Location, Registered attendees
+- Sidebar cards: `border-surface-3 bg-surface-0 rounded-xl shadow-sm`
+
+### 4.6 Articles Page (`/articles`)
+
+- Same pattern as News page
+- Category filter tabs
+- Grid of article cards
+- Pagination
+
+### 4.7 Executives Page (`/executives`)
+
+- `PageHero` with "executives" slug
+- Grid of executive cards: `grid-cols-1 sm:grid-cols-2 lg:grid-cols-3`
+- Card: Photo (96px circle), name, position, bio truncated
+- Hover: scale + shadow, icon overlay
+- Click: Detail modal with full info
+
+### 4.8 Alumni Page (`/alumni`)
+
+- `PageHero` with "alumni" slug
+- Grid of alumni cards
+- Former executives shown first with `Crown` badge
+- Search input for filtering
+- Loading / empty states
+
+### 4.9 Past Questions (`/past-questions`)
+
+- `PageHero` with "past-questions" slug
+- Search bar + department filter dropdown
+- Grid of PQ cards with file icon, title, course, year, download count
+- Download button per card
+- Pagination
+
+### 4.10 Membership Registration (`/membership`)
+
+- Multi-step form (3 steps)
+- Step 1: Personal info (name, email, phone, matric)
+- Step 2: Academic info (admission year, level, department, faculty, state, semester, session, passport upload)
+- Step 3: Review all fields
+- Step indicator: numbered circles with connecting lines
+- `AnimatePresence` slide transitions between steps
+- Success: Member ID display + links to Pay Dues and Download Card
+
+### 4.11 Pay Dues (`/dues/pay`)
+
+- Member lookup: Email or matric number input
+- Displays: Member info, computed level, current session, dues amount
+- Past payments table (session, amount, status, date)
+- "Pay Now" button → Paystack redirect
+- Loading / error / not-found states
+
+### 4.12 Receipt Page (`/dues/receipt/[reference]`)
+
+- DuesReceipt component with download
+- Status display (verified/pending/failed)
+- "Download Receipt" button (html2canvas)
+- Link to pay more dues
+
+### 4.13 FRMS Report (`/frms/report`)
+
+- Multi-step form (3 steps)
+- Step 1: Personal info
+- Step 2: Fault details (category, location, description, file upload)
+- Step 3: Review & submit
+- Success: Reference ID display (FRMS-YYYY-XXXXXX) + track link
+
+### 4.14 FRMS Track (`/frms/track/[referenceId]`)
+
+- Status badge (color-coded)
+- Vertical timeline with status history
+- Pulse animation on current status
+- Fault details: category, location, description, attachment
+- Admin notes display
+
+### 4.15 Contact Page (`/contact`)
+
+- 2-column: Form left, info right
+- Form: Name, email, subject, message textarea
+- Info cards: Address, email, phone with icons
+- Toast on successful submission
+
+### 4.16 Login Page (`/login`)
+
+- Split screen: Left navy gradient branding, right white form
+- Form: Email, password, sign-in button
+- Error toast on failed login
+- Redirect to `/admin` on success
 
 ---
 
-### 1. HOME PAGE (`/`)
+## 5. Admin Interface Specifications
 
-**Hero Section**
+### 5.1 Admin Layout
+
 ```
-┌──────────────────────────────────────────────────────┐
-│                                                      │
-│              ESTABLISHED 2005                        │
-│                                                      │
-│         Empowering the Future of                     │
-│      Technology & Innovation                         │
-│              (blue-500 highlight)                    │
-│                                                      │
-│  The official body representing the brilliant minds  │
-│  of the Department of Computer Science...            │
-│                                                      │
-│  [Read Our Constitution]  [Meet the Executives]      │
-│   (primary filled)        (secondary outlined)       │
-│                                                      │
-└──────────────────────────────────────────────────────┘
+┌────────────┬─────────────────────────────────────────────┐
+│  Sidebar   │ Topbar: [Search] [Notifications] [User ▼]  │
+│  (w-64)    ├─────────────────────────────────────────────┤
+│            │                                             │
+│ [R] RUNACOS│  Main Content Area                          │
+│ Admin Panel│  (p-4 md:p-6)                               │
+│            │                                             │
+│ Dashboard  │                                             │
+│ Pages      │                                             │
+│ Executives │                                             │
+│ FRMS       │                                             │
+│ News       │                                             │
+│ Events     │                                             │
+│ Articles   │                                             │
+│ Past Q.    │                                             │
+│ Members    │                                             │
+│ Payments   │                                             │
+│ Alumni     │                                             │
+│ Contact    │                                             │
+│ Users      │                                             │
+│            │                                             │
+│ ─────────  │                                             │
+│ Settings   │                                             │
+│ v2.0.0     │                                             │
+└────────────┴─────────────────────────────────────────────┘
 ```
-- **Background**: white with subtle gradient or geometric pattern (very faint)
-- **Label**: "ESTABLISHED 2005" - uppercase, letter-spacing 3px, blue-500, 12px, 600 weight
-- **H1**: Merriweather 800, 48px, "Technology & Innovation" in blue-500
-- **Subtitle**: Inter 400, 18px, gray-500, max-w-2xl, mx-auto
-- **Buttons**: side by side, gap-4
-- **Animation**: Label fades in first → H1 words reveal one by one → subtitle fades up → buttons bounce in
-- **Min height**: `min-h-[70vh]`, flex center
 
-**Quick Access Cards Section**
-```
-  ┌──────┐  ┌──────┐  ┌──────┐  ┌──────┐
-  │ 📰   │  │ 📅   │  │ ❓   │  │ 📝   │
-  │ News │  │Events│  │ PQ   │  │Report│
-  │      │  │      │  │      │  │Fault │
-  └──────┘  └──────┘  └──────┘  └──────┘
-```
-- 4-column grid, cards with icon (lucide, 40px), title, brief description
-- Each card: white bg, border, rounded-lg, p-6, hover: shadow-md + border-blue-500
-- Animation: Stagger fade up from bottom
+- **Sidebar**: `bg-midnight text-white w-64`, fixed, collapsible on mobile
+- **Active link**: `bg-electric/10 text-electric` with dot indicator
+- **Topbar**: `bg-surface-0 h-16 border-b`, search bar, notification bell, user dropdown
+- **User menu**: Name + email + sign out (rose-600)
+- **Mobile**: Hamburger toggle, backdrop overlay
 
-**Latest News Section**
-```
-  — Latest News
-  Stay updated with the latest...
+### 5.2 Admin Dashboard (`/admin`)
 
-  [NewsCard] [NewsCard] [NewsCard]
+- KPI cards: Total Members, Published News, Published Events, Open Faults
+- Payment Overview: Total Revenue (formatted Naira), Paid This Session, Alumni Count
+- Recent Activity tables
+- `grid-cols-1 sm:grid-cols-2 lg:grid-cols-4` layout
 
-                           [View All News →]
-```
-- Section label with em-dash prefix
-- 3-column grid of NewsCards
-- "View All News →" link aligned right
-- Animation: Section header slides in from left, cards stagger up
+### 5.3 Admin Data Tables (Common Pattern)
 
-**Upcoming Events Section**
-```
-  — Upcoming Events
+- Header: Page title + description + "Create New" button
+- Filters: Search input + category/status dropdowns
+- Table: `border border-surface-3 rounded-xl overflow-hidden`
+- Header row: `bg-surface-1 text-xs font-mono uppercase text-gray-500`
+- Data rows: `border-t border-surface-3 hover:bg-surface-1`
+- Status badges with color coding
+- Action buttons: View, Edit, Delete
+- Pagination at bottom
+- Mobile: Responsive card view with hidden columns
 
-  [EventCard] [EventCard] [EventCard]
+### 5.4 Admin Form Pages (News/Events/Articles Create/Edit)
 
-                           [View All Events →]
-```
-- Same pattern as news
-- Event cards show date prominently (large day number + month)
-- Animation: Same stagger pattern
+- Rich text editor (TipTap) for content
+- Cover image upload with preview
+- Status dropdown (Draft/Published/Archived)
+- Category/author fields
+- Save as Draft / Publish buttons
+- `sonner` toast on success/error
 
-**Featured Articles Section** (same grid pattern)
+### 5.5 Admin Payments (`/admin/payments`)
 
-**Stats/Counter Section**
-```
-┌───────────────────────────────────────────────┐
-│  navy-800 background                          │
-│                                               │
-│   500+        50+        10+       15+        │
-│  Members   Events Held  Projects  Awards      │
-│                                               │
-└───────────────────────────────────────────────┘
-```
-- Dark navy background, white text
-- Numbers: Merriweather 800, 48px, count-up animation
-- Labels: Inter 400, 16px, gray-300
-- Animation: Numbers count up from 0 when section enters viewport
+- Session filter dropdown
+- Status filter (All/Pending/Verified/Failed)
+- Table: Member, Matric, Session, Amount, Status, Date, Actions
+- "Map Payment" modal: Member search + session + amount
+- "Export CSV" button
+- Verify button for pending payments
 
-**Newsletter Section** (as specified above)
+### 5.6 Admin Alumni (`/admin/alumni`)
+
+- Search input
+- Filter tabs: All Members / Alumni / Eligible
+- Table: Name, Email, Matric, Admission Year, Level (computed), Alumni status
+- Toggle alumni button per row
+- "Auto-Detect Eligible" button
+- Stats cards at top
+
+### 5.7 Admin Settings (`/admin/settings`)
+
+- Sections: General, Academic, Pages, Mailing Preferences
+- General: Site name, description, contact info
+- Academic: Session, semester, fees
+- Pages: Page hero content management
+- Mailing: Toggle switches for Send to Subscribers / Members / Alumni
+- Save button per section with loading state
 
 ---
 
-### 2. ABOUT PAGE (`/about`)
+## 6. Responsive Design
 
-**Hero**
-- Same label style: "ABOUT US" uppercase, blue-500
-- H1: "Empowering the Future of **Technology & Innovation**"
-- Subtitle + 2 CTA buttons
+### 6.1 Breakpoints
 
-**About Split Section**
-```
-┌──────────────────┬─────────────────────────────────┐
-│ About RUNACOS    │ — Association Overview           │
-│ Description...   │                                  │
-│                  │ Body text with bold org name...  │
-│ ┌──────────────┐ │                                  │
-│ │ QUICK FACTS  │ │ [Image with caption]             │
-│ │ Founded 2015 │ │                                  │
-│ │ Members 500+ │ │ More body text...                │
-│ │ Dept CS      │ │                                  │
-│ │ Location Ede │ │                                  │
-│ └──────────────┘ │                                  │
-│                  │                                  │
-│ Get in Touch     │                                  │
-│ ✉️ info@...      │                                  │
-└──────────────────┴─────────────────────────────────┘
-```
-- Left sidebar: ~30% width, sticky on scroll
-- Quick Facts: gray-50 bg, rounded-lg, p-4, grid of key-value pairs
-- Right content: ~70% width, article-style prose
-- Animation: Left panel slides in from left, right content fades up
+| Breakpoint | Width | Layout |
+|------------|-------|--------|
+| Base | < 640px | Single column, mobile nav, stacked cards |
+| `sm` | 640px | 2-column grids |
+| `md` | 768px | Show desktop elements, 2-3 column grids |
+| `lg` | 1024px | Full desktop nav, 3-4 column grids, sidebar |
+| `xl` | 1280px | Max container width |
 
-**Vision & Mission Cards**
-```
-  ┌─────────────────────┐  ┌─────────────────────────┐
-  │ 👁 (icon)           │  │ 🎯 (icon)               │
-  │                     │  │         navy-800 bg      │
-  │ Our Vision          │  │ Our Mission              │
-  │ Description text... │  │ Description text...      │
-  │ (white bg)          │  │ (white text)             │
-  └─────────────────────┘  └─────────────────────────┘
-```
-- 2-column grid
-- Vision: white bg, border, icon in blue-100 circle
-- Mission: navy-800 bg, white text, icon in navy-600 circle
-- Animation: Cards flip in or scale up from center
+### 6.2 Mobile Adaptations
 
-**Core Values Section**
-```
-  — Core Values
-  Our values define who we are...
-
-  [Icon] Excellence    [Icon] Innovation
-  [Icon] Integrity     [Icon] Community
-```
-- Grid of value cards with icons, title, description
-- Animation: Stagger reveal
+- Navbar → Hamburger + slide-in drawer
+- Admin sidebar → Hidden, toggle with overlay
+- Card grids → Single column stack
+- Tables → Card-based list view with priority columns
+- Hero text → Size reduction ~35%
+- Section padding → Reduction ~40%
+- Search bars → Full width
+- Modals → Full-screen on mobile
 
 ---
 
-### 3. NEWS LISTING (`/news`)
+## 7. Accessibility
 
-**Page Header**
-```
-  DEPARTMENTAL UPDATES (label)
-  News & Announcements (H1)
-  Stay informed with the latest... (subtitle)
-```
-- Centered text, bg-white
-- Animation: Fade down from top
-
-**Filter Bar**
-```
-  [All News] [Academics] [Events] [Student Life]     Sort by: [Newest First ▼]
-```
-- Left: pill tabs
-- Right: sort dropdown
-- Animation: Tabs slide in from left, sort slides from right
-
-**News Grid**
-- 3-column grid of NewsCards
-- Animation: Stagger fade up
-- Infinite scroll or pagination at bottom
-
-**Pagination**
-- Centered, below grid
-- Animation: Fade in after cards load
+- **Focus**: `focus-visible:ring-[3px] ring-electric/10` on all interactive elements
+- **Contrast**: WCAG AA minimum (4.5:1 text, 3:1 large text)
+- **Motion**: `prefers-reduced-motion` respected, all animations disabled
+- **Semantic HTML**: `nav`, `main`, `article`, `section`, `aside`, `footer`
+- **Alt text**: All images have meaningful alt text
+- **Form labels**: Every input has associated label
+- **ARIA**: `aria-label` on icon-only buttons
+- **Smooth scroll**: `scroll-behavior: smooth` with reduced-motion override
 
 ---
 
-### 4. NEWS DETAIL (`/news/[slug]`)
-```
-┌──────────────────────────────────────────────┐
-│  ← Back to News                              │
-│                                              │
-│  [Academic] tag                              │
-│  **News Title Here**                         │
-│  📅 October 15, 2023 · 👤 Author Name       │
-│                                              │
-│  ┌────────────────────────────────────────┐  │
-│  │          Cover Image (full width)      │  │
-│  │          aspect-[21/9]                 │  │
-│  └────────────────────────────────────────┘  │
-│                                              │
-│  Article prose content...                    │
-│  (max-w-3xl, mx-auto, prose styling)        │
-│                                              │
-│  ─────────────────────────────────────────   │
-│                                              │
-│  Related News                                │
-│  [NewsCard] [NewsCard] [NewsCard]            │
-└──────────────────────────────────────────────┘
-```
-- Animation: Image fades in, text slides up, related cards stagger in
+## 8. Icon System
+
+All icons from **lucide-react** library. Common sizes:
+
+| Context | Size |
+|---------|------|
+| Inline with text | `h-3 w-3` to `h-4 w-4` |
+| Card/button icons | `h-5 w-5` |
+| Feature icons | `h-6 w-6` |
+| Empty state icons | `h-12 w-12` |
+| Hero decorative | `h-16 w-16` |
+
+Key icons used:
+- Navigation: `Menu`, `X`, `ChevronRight`, `ChevronDown`, `ArrowLeft`, `ArrowRight`
+- Content: `Newspaper`, `Calendar`, `FileText`, `FileQuestion`, `Users`
+- Actions: `Search`, `Bell`, `LogOut`, `Settings`, `Download`, `Upload`
+- Status: `Loader2` (spinning), `Check`, `AlertTriangle`
+- Features: `MapPin`, `Clock`, `Mail`, `Phone`, `CreditCard`, `GraduationCap`, `Crown`, `Bug`
 
 ---
 
-### 5. EVENTS LISTING (`/events`)
-Similar to news but with:
-- **Event cards** show large date block: `┌─────┐ │ 15  │ │ OCT │ └─────┘`
-- Tabs: Upcoming / Past Events
-- Each card shows: location icon + venue, clock icon + time
-- Animation: Same stagger pattern
+## 9. Toast Notifications
 
-### 6. EVENT DETAIL (`/events/[slug]`)
-- Full cover image hero
-- Event info sidebar: Date, Time, Location, Category
-- Description content area
-- Registration CTA button → opens modal form
-- Animation: Info cards slide in from right
+Using **sonner** library:
 
----
+| Type | Pattern |
+|------|---------|
+| Success | `toast.success("Message")` — Green accent |
+| Error | `toast.error("Message")` — Red accent |
+| Loading | `toast.loading("Message")` — Spinner |
 
-### 7. ARTICLES LISTING (`/articles`)
-- Same layout as news
-- Filter by category
-- Grid of ArticleCards
-
-### 8. ARTICLE DETAIL (`/articles/[slug]`)
-- Same layout as news detail
-- Reading time estimate shown
-- Author card at bottom
-
----
-
-### 9. EXECUTIVES PAGE (`/executives`)
-```
-  LEADERSHIP (label)
-  Meet Our Executives (H1)
-
-  ┌──────────┐ ┌──────────┐ ┌──────────┐
-  │ [Photo]  │ │ [Photo]  │ │ [Photo]  │
-  │  circle  │ │  circle  │ │  circle  │
-  │ Name     │ │ Name     │ │ Name     │
-  │ Position │ │ Position │ │ Position │
-  └──────────┘ └──────────┘ └──────────┘
-```
-- Profile photos in circles (w-32 h-32), with navy-800 ring on hover
-- Name: Merriweather 600, 18px
-- Position: Inter 400, 14px, blue-500
-- Hover: photo scales 1.05, name color → blue-500
-- Animation: Cards pop in with scale + fade, staggered
-
----
-
-### 10. STAFF PAGE (`/staff`)
-- Same as executives but table/list format or grid
-- Shows department staff members
-
----
-
-### 11. CONTACT PAGE (`/contact`)
-```
-  ┌─────────────────────────────┬────────────────────────┐
-  │ Contact Form                │ Contact Information    │
-  │                             │                        │
-  │ [Name input]                │ 📍 Address             │
-  │ [Email input]               │ ✉️ Email               │
-  │ [Subject input]             │ 📞 Phone               │
-  │ [Message textarea]          │ 🕐 Office Hours        │
-  │                             │                        │
-  │ [Send Message] button       │ [Map Embed]            │
-  │                             │                        │
-  └─────────────────────────────┴────────────────────────┘
-```
-- 2-column layout: form left, info right
-- Form fields: gray-50 bg, border, focus: border-blue-500 + ring
-- Contact info: icon cards with navy-800 icons
-- Animation: Form slides from left, info from right, map fades in
-
----
-
-### 12. PAST QUESTIONS (`/past-questions`)
-```
-  ACADEMIC RESOURCES (label)
-  Past Questions (H1)
-
-  ┌──────────────────────────────────────────┐
-  │ 🔍 [Search input]                       │
-  │ [Department ▼] [Course ▼] [Year ▼]      │
-  └──────────────────────────────────────────┘
-
-  ┌──────────┐ ┌──────────┐ ┌──────────┐
-  │ 📄 PDF   │ │ 📄 PDF   │ │ 📄 PDF   │
-  │ Title    │ │ Title    │ │ Title    │
-  │ Course   │ │ Course   │ │ Course   │
-  │ Year     │ │ Year     │ │ Year     │
-  │ [⬇ DL]  │ │ [⬇ DL]  │ │ [⬇ DL]  │
-  └──────────┘ └──────────┘ └──────────┘
-```
-- Search + filters at top
-- Grid of PQ cards with file type icon, download button
-- Download count badge
-- Animation: Filter bar slides down, cards stagger in
-
----
-
-### 13. FRMS REPORT (`/frms/report`)
-```
-  FAULT REPORTING (label)
-  Report a Fault (H1)
-  Submit maintenance issues...
-
-  ┌─────────────────────────────────────────┐
-  │  Step indicator: [1]──[2]──[3]          │
-  │                                         │
-  │  Multi-step form:                       │
-  │  Step 1: Personal Info (name,email,ph)  │
-  │  Step 2: Fault Details (category,loc,   │
-  │           description, file upload)     │
-  │  Step 3: Review & Submit                │
-  │                                         │
-  │  [Previous] [Next/Submit]               │
-  └─────────────────────────────────────────┘
-
-  ┌─────────────────────────────────────────┐
-  │  ✅ Success!                            │
-  │  Your Reference ID: FRMS-2024-XXXX     │
-  │  Save this ID to track your report.    │
-  │  [Track My Report] [Submit Another]     │
-  └─────────────────────────────────────────┘
-```
-- Multi-step with animated step indicator
-- File upload with drag-and-drop zone
-- Success state with confetti animation
-- Animation: Steps slide left/right on navigation
-
----
-
-### 14. FRMS TRACK (`/frms/track`)
-```
-  FAULT TRACKING (label)
-  Track Your Report (H1)
-
-  ┌─────────────────────────────────────────┐
-  │ Enter Reference ID: [FRMS-____-____]    │
-  │ [Track Report]                          │
-  └─────────────────────────────────────────┘
-```
-
-### 15. FRMS TRACK RESULT (`/frms/track/[referenceId]`)
-```
-  Reference: FRMS-2024-XXXX
-  Status: [IN PROGRESS] badge
-
-  ┌─────────────────────────────────────────┐
-  │ Timeline:                               │
-  │  ● Submitted ─── Oct 1, 2023           │
-  │  │  Initial report filed               │
-  │  ● Assigned ──── Oct 2, 2023           │
-  │  │  Assigned to maintenance staff      │
-  │  ○ In Progress ─ Oct 3, 2023           │
-  │  │  Technician dispatched              │
-  │  ○ (Resolved) ── Pending               │
-  └─────────────────────────────────────────┘
-
-  Fault Details:
-  Category | Location | Description | Attachment
-```
-- Vertical timeline with animated dots (pulse on current status)
-- Status badge with color coding
-- Animation: Timeline dots/lines draw in sequentially
-
----
-
-### 16. ADMIN LAYOUT
-```
-┌────────┬──────────────────────────────────────┐
-│Sidebar │ Topbar: Search | Notifications | User│
-│        ├──────────────────────────────────────┤
-│ [R]    │                                      │
-│ RUNACOS│  Main Content Area                   │
-│        │                                      │
-│ 📊 Dash│                                      │
-│ 🐛 FRMS│                                      │
-│ 📰 News│                                      │
-│ 📅 Evnt│                                      │
-│ 📝 Art │                                      │
-│ 📄 PQ  │                                      │
-│ 👥 User│                                      │
-│        │                                      │
-│ ⚙ Set │                                      │
-└────────┴──────────────────────────────────────┘
-```
-- Sidebar: navy-900 bg, w-64, collapsible on mobile
-- Active link: bg-navy-700, white text, left border accent
-- Topbar: white, h-16, shadow-sm
-- Animation: Sidebar links fade in staggered on load
-
-### 17. ADMIN FRMS DASHBOARD
-```
-  KPI Cards: [Total Faults] [Open] [In Progress] [Resolved]
-
-  Filters: [Status ▼] [Category ▼] [Date Range] [Search]
-
-  ┌──────────────────────────────────────────────────┐
-  │ ID    │ Title  │ Category │ Status │ Date │ Actn │
-  │ FRMS..│ ...    │ ...      │ [badge]│ ...  │ 👁   │
-  └──────────────────────────────────────────────────┘
-
-  Pagination
-```
-- KPI cards with icon, number (animated count-up), label
-- Filterable/searchable table
-- Status badges color-coded
-- Animation: KPIs count up, table rows fade in
-
-### 18. LOGIN PAGE (`/login`)
-```
-┌──────────────────────────────────────────────┐
-│                                              │
-│  Split layout:                               │
-│  Left: Navy bg with RUNACOS branding         │
-│  Right: Login form                           │
-│                                              │
-│  ┌──────────┬─────────────────┐              │
-│  │ RUNACOS  │  Welcome Back   │              │
-│  │ branding │                 │              │
-│  │ + tagline│  [Email]        │              │
-│  │          │  [Password]     │              │
-│  │          │  [Remember me]  │              │
-│  │          │  [Sign In]      │              │
-│  └──────────┴─────────────────┘              │
-└──────────────────────────────────────────────┘
-```
-- Split screen: left navy-800 with logo, right white with form
-- Animation: Left panel slides in, form fields stagger from right
-
----
-
-### 19. PRIVACY POLICY / TERMS OF SERVICE
-- Standard prose layout
-- max-w-3xl, mx-auto
-- Table of contents sidebar (optional)
-- Last updated date
-
-### 20. 404 PAGE
-```
-  [Large "404" text, navy-800, 120px]
-  Page Not Found
-  The page you're looking for doesn't exist.
-  [Go Home] [Go Back]
-```
-- Centered, min-h-screen
-- Animation: 404 text bounces in, then settles
-- Floating geometric shapes in background (subtle)
-
----
-
-## Responsive Breakpoints
-
-| Breakpoint | Width | Layout Changes |
-|------------|-------|----------------|
-| `sm` | 640px | Single column cards |
-| `md` | 768px | 2-column grids, show more nav items |
-| `lg` | 1024px | 3-column grids, full navbar |
-| `xl` | 1280px | Max container width reached |
-
-### Mobile-specific
-- Hamburger menu → slide-in drawer
-- Cards stack to single column
-- Admin sidebar → bottom tab bar or hamburger
-- Tables → card-based list view on mobile
-- Hero text sizes reduce ~33%
-- Section padding reduces ~40%
-
----
-
-## Accessibility Requirements
-- All interactive elements: focus-visible ring (blue-500, 2px offset)
-- Color contrast: WCAG AA minimum (4.5:1 for text)
-- Animations: respect `prefers-reduced-motion`
-- All images: meaningful alt text
-- Form fields: proper labels, error messages, aria-describedby
-- Skip-to-content link
-- Semantic HTML (nav, main, article, section, aside, footer)
+Position: Top-right (`richColors` enabled).

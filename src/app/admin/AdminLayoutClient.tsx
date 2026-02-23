@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { signOut, useSession } from "next-auth/react";
@@ -52,6 +53,31 @@ export default function AdminLayoutClient({ children }: { children: React.ReactN
   const { data: session, status } = useSession();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchFocused, setSearchFocused] = useState(false);
+  const searchRef = useRef<HTMLDivElement>(null);
+
+  // Close search dropdown on outside click
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (searchRef.current && !searchRef.current.contains(e.target as Node)) {
+        setSearchFocused(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const allSearchLinks = [
+    ...sidebarLinks,
+    { label: "Settings", href: "/admin/settings", icon: Settings },
+  ];
+
+  const searchResults = searchQuery.trim()
+    ? allSearchLinks.filter((link) =>
+        link.label.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    : [];
 
   // Redirect to login if session is lost (e.g. after signOut)
   useEffect(() => {
@@ -66,7 +92,7 @@ export default function AdminLayoutClient({ children }: { children: React.ReactN
   };
 
   return (
-    <div className="min-h-screen bg-surface-1 flex">
+    <div className="min-h-screen bg-surface-1 flex overflow-x-hidden">
       {/* Sidebar */}
       <aside
         className={cn(
@@ -78,8 +104,7 @@ export default function AdminLayoutClient({ children }: { children: React.ReactN
           {/* Logo */}
           <div className="flex items-center gap-3 px-6 py-5 border-b border-white/10">
             <div className="w-10 h-10 bg-electric rounded-xl flex items-center justify-center flex-shrink-0">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/logo.png" alt="RUNACOS" className="h-6 w-6 object-contain" style={{ filter: "brightness(0) invert(1)" }} />
+              <Image src="/logo.png" alt="RUNACOS" width={24} height={24} className="object-contain" style={{ filter: "brightness(0) invert(1)" }} />
             </div>
             <div>
               <h1 className="font-bold font-heading text-sm text-white">RUNACOS</h1>
@@ -159,7 +184,7 @@ export default function AdminLayoutClient({ children }: { children: React.ReactN
       </AnimatePresence>
 
       {/* Main content */}
-      <div className="flex-1 flex flex-col min-h-screen lg:ml-64">
+      <div className="flex-1 flex flex-col min-h-screen min-w-0 lg:ml-64">
         {/* Topbar */}
         <header className="bg-surface-0 h-16 border-b border-surface-3 flex items-center justify-between px-4 md:px-6 sticky top-0 z-30">
           <div className="flex items-center gap-4">
@@ -169,13 +194,50 @@ export default function AdminLayoutClient({ children }: { children: React.ReactN
             >
               <Menu className="w-6 h-6" />
             </button>
-            <div className="hidden md:flex items-center gap-2 bg-surface-1 rounded-xl px-3 py-2 w-64 border border-surface-3">
-              <Search className="w-4 h-4 text-gray-400" />
-              <input
-                type="text"
-                placeholder="Search..."
-                className="bg-transparent outline-none text-sm text-gray-600 w-full font-mono"
-              />
+            <div ref={searchRef} className="hidden md:block relative w-64">
+              <div className="flex items-center gap-2 bg-surface-1 rounded-xl px-3 py-2 border border-surface-3">
+                <Search className="w-4 h-4 text-gray-400" />
+                <input
+                  type="text"
+                  placeholder="Search pages..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onFocus={() => setSearchFocused(true)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Escape") {
+                      setSearchFocused(false);
+                      setSearchQuery("");
+                    }
+                    if (e.key === "Enter" && searchResults.length > 0) {
+                      router.push(searchResults[0].href);
+                      setSearchQuery("");
+                      setSearchFocused(false);
+                    }
+                  }}
+                  className="bg-transparent outline-none text-sm text-gray-600 w-full font-mono"
+                />
+              </div>
+              {searchFocused && searchResults.length > 0 && (
+                <div className="absolute top-full mt-1 w-full bg-surface-0 rounded-xl shadow-lg border border-surface-3 py-1 z-50">
+                  {searchResults.map((result) => {
+                    const Icon = result.icon;
+                    return (
+                      <button
+                        key={result.href}
+                        onClick={() => {
+                          router.push(result.href);
+                          setSearchQuery("");
+                          setSearchFocused(false);
+                        }}
+                        className="flex items-center gap-3 w-full px-4 py-2.5 text-sm text-gray-700 hover:bg-surface-1 transition-colors"
+                      >
+                        <Icon className="w-4 h-4 text-gray-400" />
+                        {result.label}
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
             </div>
           </div>
 
@@ -231,7 +293,7 @@ export default function AdminLayoutClient({ children }: { children: React.ReactN
         </header>
 
         {/* Page Content */}
-        <main className="flex-1 p-4 md:p-6">{children}</main>
+        <main className="flex-1 min-w-0 overflow-x-hidden p-4 md:p-6">{children}</main>
       </div>
     </div>
   );

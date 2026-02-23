@@ -53,6 +53,7 @@ export async function POST(req: NextRequest) {
         department: validated.department,
         faculty: validated.faculty,
         stateOfOrigin: validated.stateOfOrigin,
+        admissionYear: validated.admissionYear,
         academicSession: validated.academicSession,
         semester: validated.semester,
         passportUrl: validated.passportUrl,

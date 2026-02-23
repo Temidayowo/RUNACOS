@@ -58,4 +58,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       return session;
     },
   },
+  events: {
+    async signOut() {
+      // Ensure clean session clearing with JWT strategy
+    },
+  },
 });

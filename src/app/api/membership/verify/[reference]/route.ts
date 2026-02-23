@@ -8,14 +8,17 @@ export async function GET(
   try {
     const { reference } = params;
 
-    // Find member by payment reference
-    const member = await prisma.member.findUnique({
+    // Find payment by reference
+    const payment = await prisma.duesPayment.findUnique({
       where: { paymentRef: reference },
+      include: { member: true },
     });
 
-    if (!member) {
-      return NextResponse.json({ error: "Member not found" }, { status: 404 });
+    if (!payment) {
+      return NextResponse.json({ error: "Payment not found" }, { status: 404 });
     }
+
+    const member = payment.member;
 
     // Fetch badge template setting
     const badgeTemplateSetting = await prisma.siteSetting.findUnique({
@@ -24,8 +27,27 @@ export async function GET(
     const badgeTemplateUrl = badgeTemplateSetting?.value || null;
 
     // If already verified, return member data
-    if (member.paymentStatus === "VERIFIED") {
-      return NextResponse.json({ data: { ...member, badgeTemplateUrl } });
+    if (payment.paymentStatus === "VERIFIED") {
+      return NextResponse.json({
+        data: {
+          memberId: member.memberId,
+          firstName: member.firstName,
+          lastName: member.lastName,
+          email: member.email,
+          matricNumber: member.matricNumber,
+          level: member.level,
+          passportUrl: member.passportUrl,
+          paidAt: payment.verifiedAt?.toISOString() || payment.createdAt.toISOString(),
+          paymentStatus: "VERIFIED",
+          gender: member.gender,
+          department: member.department,
+          faculty: member.faculty,
+          stateOfOrigin: member.stateOfOrigin,
+          academicSession: member.academicSession,
+          semester: member.semester,
+          badgeTemplateUrl,
+        },
+      });
     }
 
     // Verify payment with Paystack
@@ -46,19 +68,38 @@ export async function GET(
     const verifyData = await verifyResponse.json();
 
     if (verifyData.status && verifyData.data.status === "success") {
-      // Update member payment status
-      const updatedMember = await prisma.member.update({
+      // Update payment status
+      await prisma.duesPayment.update({
         where: { paymentRef: reference },
         data: {
           paymentStatus: "VERIFIED",
-          paidAt: new Date(),
+          verifiedAt: new Date(),
         },
       });
 
-      return NextResponse.json({ data: { ...updatedMember, badgeTemplateUrl } });
+      return NextResponse.json({
+        data: {
+          memberId: member.memberId,
+          firstName: member.firstName,
+          lastName: member.lastName,
+          email: member.email,
+          matricNumber: member.matricNumber,
+          level: member.level,
+          passportUrl: member.passportUrl,
+          paidAt: new Date().toISOString(),
+          paymentStatus: "VERIFIED",
+          gender: member.gender,
+          department: member.department,
+          faculty: member.faculty,
+          stateOfOrigin: member.stateOfOrigin,
+          academicSession: member.academicSession,
+          semester: member.semester,
+          badgeTemplateUrl,
+        },
+      });
     } else {
       // Mark as failed
-      await prisma.member.update({
+      await prisma.duesPayment.update({
         where: { paymentRef: reference },
         data: { paymentStatus: "FAILED" },
       });

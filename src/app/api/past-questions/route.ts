@@ -46,7 +46,7 @@ export async function GET(req: NextRequest) {
       prisma.pastQuestion.count({ where }),
     ]);
 
-    return NextResponse.json({
+    const res = NextResponse.json({
       data,
       pagination: {
         page,
@@ -55,6 +55,8 @@ export async function GET(req: NextRequest) {
         totalPages: Math.ceil(total / limit),
       },
     });
+    res.headers.set("Cache-Control", "public, s-maxage=120, stale-while-revalidate=600");
+    return res;
   } catch (error) {
     return NextResponse.json({ error: "Failed to fetch past questions" }, { status: 500 });
   }

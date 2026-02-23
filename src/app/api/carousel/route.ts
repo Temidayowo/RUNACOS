@@ -79,7 +79,9 @@ export async function GET() {
     });
 
     if (!setting) {
-      return NextResponse.json({ data: defaultSlides });
+      const res = NextResponse.json({ data: defaultSlides });
+      res.headers.set("Cache-Control", "public, s-maxage=120, stale-while-revalidate=600");
+      return res;
     }
 
     const slides = JSON.parse(setting.value);
@@ -87,9 +89,13 @@ export async function GET() {
       .filter((s: any) => s.active)
       .sort((a: any, b: any) => a.order - b.order);
 
-    return NextResponse.json({ data: active.length > 0 ? active : defaultSlides });
+    const res = NextResponse.json({ data: active.length > 0 ? active : defaultSlides });
+    res.headers.set("Cache-Control", "public, s-maxage=120, stale-while-revalidate=600");
+    return res;
   } catch {
-    return NextResponse.json({ data: defaultSlides });
+    const res = NextResponse.json({ data: defaultSlides });
+    res.headers.set("Cache-Control", "public, s-maxage=120, stale-while-revalidate=600");
+    return res;
   }
 }
 

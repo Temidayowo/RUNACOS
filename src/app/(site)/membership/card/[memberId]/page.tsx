@@ -16,6 +16,11 @@ interface CardData {
   level: string;
   passportUrl: string;
   paidAt: string | null;
+  department?: string;
+  faculty?: string;
+  academicSession?: string;
+  semester?: string;
+  badgeTemplateUrl?: string;
 }
 
 export default function CardPage() {
@@ -115,6 +120,11 @@ export default function CardPage() {
                   memberId={data.memberId}
                   passportUrl={data.passportUrl}
                   paidAt={data.paidAt}
+                  department={data.department}
+                  faculty={data.faculty}
+                  academicSession={data.academicSession}
+                  semester={data.semester}
+                  badgeTemplateUrl={data.badgeTemplateUrl}
                 />
               </div>
             </motion.div>

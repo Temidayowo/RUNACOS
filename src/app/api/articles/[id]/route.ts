@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
 import { articleSchema } from "@/lib/validations/content";
 import { slugify } from "@/lib/utils";
+import { sendBulkEmail, getMailingRecipients, buildContentEmail } from "@/lib/brevo";
 
 export async function GET(
   req: NextRequest,
@@ -63,6 +64,16 @@ export async function PUT(
             : existing.publishedAt,
       },
     });
+
+    // Send email notification if newly published
+    if (validated.status === "PUBLISHED" && existing.status !== "PUBLISHED") {
+      getMailingRecipients().then((recipients) => {
+        if (recipients.length > 0) {
+          const html = buildContentEmail("article", article.title, article.excerpt, article.slug);
+          sendBulkEmail(recipients, `RUNACOS: ${article.title}`, html).catch(console.error);
+        }
+      }).catch(console.error);
+    }
 
     return NextResponse.json({ data: article });
   } catch (error: any) {

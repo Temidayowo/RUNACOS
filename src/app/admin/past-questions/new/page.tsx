@@ -8,6 +8,7 @@ import { ArrowLeft, FileQuestion } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { PQ_DEPARTMENTS } from "@/lib/constants";
 import { toast } from "sonner";
+import { FileUpload } from "@/components/admin/FileUpload";
 
 export default function AddPastQuestionPage() {
   const router = useRouter();
@@ -33,6 +34,12 @@ export default function AddPastQuestionPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitting(true);
+
+    if (!form.fileUrl) {
+      toast.error("Please upload a file");
+      setSubmitting(false);
+      return;
+    }
 
     try {
       const body = {
@@ -186,74 +193,21 @@ export default function AddPastQuestionPage() {
           />
         </div>
 
-        {/* File URL */}
-        <div>
-          <label htmlFor="fileUrl" className="block text-sm font-medium text-gray-700 mb-1.5">
-            File URL <span className="text-red-500">*</span>
-          </label>
-          <input
-            type="url"
-            id="fileUrl"
-            name="fileUrl"
-            required
-            value={form.fileUrl}
-            onChange={handleChange}
-            placeholder="https://example.com/files/past-question.pdf"
-            className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-navy-800/20 focus:border-navy-800"
-          />
-        </div>
-
-        {/* File Name & File Type */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div>
-            <label htmlFor="fileName" className="block text-sm font-medium text-gray-700 mb-1.5">
-              File Name <span className="text-red-500">*</span>
-            </label>
-            <input
-              type="text"
-              id="fileName"
-              name="fileName"
-              required
-              value={form.fileName}
-              onChange={handleChange}
-              placeholder="e.g. CSC201-2024.pdf"
-              className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-navy-800/20 focus:border-navy-800"
-            />
-          </div>
-          <div>
-            <label htmlFor="fileType" className="block text-sm font-medium text-gray-700 mb-1.5">
-              File Type <span className="text-red-500">*</span>
-            </label>
-            <input
-              type="text"
-              id="fileType"
-              name="fileType"
-              required
-              value={form.fileType}
-              onChange={handleChange}
-              placeholder="e.g. application/pdf"
-              className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-navy-800/20 focus:border-navy-800"
-            />
-          </div>
-        </div>
-
-        {/* File Size */}
-        <div>
-          <label htmlFor="fileSize" className="block text-sm font-medium text-gray-700 mb-1.5">
-            File Size (bytes) <span className="text-red-500">*</span>
-          </label>
-          <input
-            type="number"
-            id="fileSize"
-            name="fileSize"
-            required
-            min={0}
-            value={form.fileSize}
-            onChange={handleChange}
-            placeholder="e.g. 1048576"
-            className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-navy-800/20 focus:border-navy-800"
-          />
-        </div>
+        {/* File Upload */}
+        <FileUpload
+          value={{ url: form.fileUrl, name: form.fileName, size: parseInt(form.fileSize) || 0, type: form.fileType }}
+          onChange={(file) => setForm((prev) => ({
+            ...prev,
+            fileUrl: file.url,
+            fileName: file.name,
+            fileSize: file.size.toString(),
+            fileType: file.type,
+          }))}
+          folder="past-questions"
+          label="Past Question File *"
+          accept=".pdf,.doc,.docx,.pptx"
+          maxSize={10 * 1024 * 1024}
+        />
 
         {/* Actions */}
         <div className="flex items-center justify-end gap-3 pt-4 border-t border-surface-3">

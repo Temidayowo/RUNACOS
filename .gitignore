@@ -41,4 +41,8 @@ next-env.d.ts
 prisma/dev.db
 prisma/dev.db-journal
 
+# uploaded files (local storage)
+public/uploads/*
+!public/uploads/.gitkeep
+
 .vercel

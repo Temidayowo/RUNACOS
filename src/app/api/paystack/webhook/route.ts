@@ -27,17 +27,17 @@ export async function POST(req: NextRequest) {
     if (event.event === "charge.success") {
       const reference = event.data.reference;
 
-      // Find and update member
-      const member = await prisma.member.findUnique({
+      // Find DuesPayment by paymentRef
+      const duesPayment = await prisma.duesPayment.findUnique({
         where: { paymentRef: reference },
       });
 
-      if (member && member.paymentStatus !== "VERIFIED") {
-        await prisma.member.update({
+      if (duesPayment && duesPayment.paymentStatus !== "VERIFIED") {
+        await prisma.duesPayment.update({
           where: { paymentRef: reference },
           data: {
             paymentStatus: "VERIFIED",
-            paidAt: new Date(),
+            verifiedAt: new Date(),
           },
         });
       }

@@ -1,8 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import useSWR from "swr";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, Loader2, Newspaper } from "lucide-react";
 import { NewsCard } from "@/components/news/NewsCard";
 import {
   StaggerContainer,
@@ -11,30 +12,36 @@ import {
 } from "@/components/ui/MotionWrapper";
 import { NEWS_CATEGORIES } from "@/lib/constants";
 import { PageHero } from "@/components/ui/PageHero";
+import { fetcher } from "@/lib/fetcher";
 
-const allNews = [
-  { id: "1", title: "Computer Science Department Accreditation Success", slug: "cs-accreditation-success", excerpt: "We are pleased to announce that the NUC accreditation team has fully accredited our Computer Science program for another five years.", coverImage: "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=800&q=80&fit=crop", category: "Academics", publishedAt: "2024-10-15", author: "RUNACOS Admin" },
-  { id: "2", title: 'Annual RUNACOS Hackathon: "Innovating for Nigeria"', slug: "annual-hackathon-2024", excerpt: "Join us for a 48-hour coding marathon challenge. Students develop practical solutions for local challenges using cutting-edge technology.", coverImage: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=800&q=80&fit=crop", category: "Events", publishedAt: "2024-10-12", author: "RUNACOS Admin" },
-  { id: "3", title: "Meet the New RUNACOS Executive Council 2023/2024", slug: "new-executive-council", excerpt: "The elections have concluded, an entire new set of leaders has emerged to steer the association forward.", coverImage: "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=800&q=80&fit=crop", category: "Student Life", publishedAt: "2024-09-28", author: "RUNACOS Admin" },
-  { id: "4", title: "Important: First Semester Examination Schedule Released", slug: "exam-schedule-released", excerpt: "The examination timetable for the current academic session is now available on the notice board and student portal.", coverImage: "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=800&q=80&fit=crop", category: "Academics", publishedAt: "2024-09-15", author: "RUNACOS Admin" },
-  { id: "5", title: "Faculty Spotlight: Dr. Adebayo's AI Research Breakthrough", slug: "faculty-spotlight-ai", excerpt: "Our very own Dr. Adebayo's research has published a groundbreaking paper on AI applications in African agriculture.", coverImage: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&q=80&fit=crop", category: "Academics", publishedAt: "2024-08-25", author: "RUNACOS Admin" },
-  { id: "6", title: "Tech Career Fair 2023: Bridging the Gap", slug: "career-fair-2023", excerpt: "Top tech companies in Lagos are coming to campus. Prepare your CVs and portfolios for a chance to network and secure internships.", coverImage: "https://images.unsplash.com/photo-1560472355-536de3962603?w=800&q=80&fit=crop", category: "Events", publishedAt: "2024-08-15", author: "RUNACOS Admin" },
-];
+interface NewsItem {
+  id: string;
+  title: string;
+  slug: string;
+  excerpt: string;
+  coverImage: string | null;
+  category: string;
+  publishedAt: string | null;
+  author: string;
+}
 
 export function NewsContent() {
   const [activeCategory, setActiveCategory] = useState("All News");
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 6;
+  const itemsPerPage = 9;
 
-  const filteredNews = activeCategory === "All News"
-    ? allNews
-    : allNews.filter((n) => n.category === activeCategory);
+  const params = new URLSearchParams({
+    status: "PUBLISHED",
+    page: String(currentPage),
+    limit: String(itemsPerPage),
+  });
+  if (activeCategory !== "All News") {
+    params.set("category", activeCategory);
+  }
 
-  const totalPages = Math.ceil(filteredNews.length / itemsPerPage);
-  const paginatedNews = filteredNews.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
+  const { data, isLoading: loading } = useSWR(`/api/news?${params}`, fetcher);
+  const news: NewsItem[] = data?.data || [];
+  const totalPages: number = data?.pagination?.totalPages || 1;
 
   return (
     <PageTransition>
@@ -75,23 +82,34 @@ export function NewsContent() {
       {/* Grid */}
       <section className="py-12 md:py-16 bg-surface-1">
         <div className="container-custom">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={activeCategory + currentPage}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.3 }}
-            >
-              <StaggerContainer className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                {paginatedNews.map((item) => (
-                  <StaggerItem key={item.id}>
-                    <NewsCard news={item} />
-                  </StaggerItem>
-                ))}
-              </StaggerContainer>
-            </motion.div>
-          </AnimatePresence>
+          {loading ? (
+            <div className="flex items-center justify-center py-16">
+              <Loader2 className="h-6 w-6 animate-spin text-gray-400" />
+            </div>
+          ) : news.length === 0 ? (
+            <div className="flex flex-col items-center justify-center py-16 text-center">
+              <Newspaper className="h-10 w-10 text-gray-300 mb-3" />
+              <p className="text-gray-500 text-sm">No news articles found.</p>
+            </div>
+          ) : (
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeCategory + currentPage}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.3 }}
+              >
+                <StaggerContainer className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                  {news.map((item) => (
+                    <StaggerItem key={item.id}>
+                      <NewsCard news={item} />
+                    </StaggerItem>
+                  ))}
+                </StaggerContainer>
+              </motion.div>
+            </AnimatePresence>
+          )}
 
           {/* Pagination */}
           {totalPages > 1 && (

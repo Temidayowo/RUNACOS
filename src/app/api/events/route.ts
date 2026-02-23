@@ -4,6 +4,7 @@ import { auth } from "@/lib/auth";
 import { eventSchema } from "@/lib/validations/content";
 import { slugify } from "@/lib/utils";
 import { ITEMS_PER_PAGE } from "@/lib/constants";
+import { sendBulkEmail, getMailingRecipients, buildContentEmail } from "@/lib/brevo";
 
 export async function GET(req: NextRequest) {
   try {
@@ -46,7 +47,7 @@ export async function GET(req: NextRequest) {
       prisma.event.count({ where }),
     ]);
 
-    return NextResponse.json({
+    const res = NextResponse.json({
       data,
       pagination: {
         page,
@@ -55,6 +56,10 @@ export async function GET(req: NextRequest) {
         totalPages: Math.ceil(total / limit),
       },
     });
+    if (!session) {
+      res.headers.set("Cache-Control", "public, s-maxage=60, stale-while-revalidate=300");
+    }
+    return res;
   } catch (error) {
     return NextResponse.json({ error: "Failed to fetch events" }, { status: 500 });
   }
@@ -87,11 +92,23 @@ export async function POST(req: NextRequest) {
       },
     });
 
+    // Send email notification if published directly
+    if (event.status === "PUBLISHED") {
+      getMailingRecipients().then((recipients) => {
+        if (recipients.length > 0) {
+          const html = buildContentEmail("event", event.title, event.description.substring(0, 200), event.slug);
+          sendBulkEmail(recipients, `RUNACOS Event: ${event.title}`, html).catch(console.error);
+        }
+      }).catch(console.error);
+    }
+
     return NextResponse.json({ data: event }, { status: 201 });
   } catch (error: any) {
     if (error.name === "ZodError") {
-      return NextResponse.json({ error: "Validation failed", details: error.errors }, { status: 400 });
+      const messages = error.errors.map((e: any) => e.message).join(", ");
+      return NextResponse.json({ error: messages, details: error.errors }, { status: 400 });
     }
+    console.error("Event creation error:", error);
     return NextResponse.json({ error: "Failed to create event" }, { status: 500 });
   }
 }

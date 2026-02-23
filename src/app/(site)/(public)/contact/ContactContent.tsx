@@ -1,8 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import useSWR from "swr";
 import { motion } from "framer-motion";
-import { MapPin, Mail, Phone, Clock, Send, CheckCircle, Loader2 } from "lucide-react";
+import { MapPin, Mail, Phone, Clock, Send, CheckCircle, Loader2, Twitter, Instagram, Linkedin } from "lucide-react";
 import { toast } from "sonner";
 import {
   AnimateOnScroll,
@@ -11,6 +12,7 @@ import {
   PageTransition,
 } from "@/components/ui/MotionWrapper";
 import { PageHero } from "@/components/ui/PageHero";
+import { fetcher } from "@/lib/fetcher";
 
 const contactInfo = [
   { icon: MapPin, label: "Address", value: "Department of Computer Science,\nRedeemer's University, Ede, Osun State", href: undefined },
@@ -23,6 +25,14 @@ export function ContactContent() {
   const [loading, setLoading] = useState(false);
   const [sent, setSent] = useState(false);
   const [form, setForm] = useState({ name: "", email: "", subject: "", message: "" });
+  const { data: settingsData } = useSWR("/api/settings", fetcher);
+  const settings = settingsData?.data || {};
+
+  const socialLinks = [
+    { icon: Twitter, label: "Twitter / X", href: settings.social_twitter },
+    { icon: Instagram, label: "Instagram", href: settings.social_instagram },
+    { icon: Linkedin, label: "LinkedIn", href: settings.social_linkedin },
+  ].filter((s) => s.href);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -147,6 +157,33 @@ export function ContactContent() {
                     </div>
                   </motion.div>
                 ))}
+
+                {/* Social Media Links */}
+                {socialLinks.length > 0 && (
+                  <motion.div
+                    initial={{ opacity: 0, x: 20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.32 }}
+                    className="rounded-xl border border-surface-3 bg-surface-0 p-4"
+                  >
+                    <h4 className="text-sm font-semibold text-gray-900 mb-3">Follow Us</h4>
+                    <div className="flex gap-2">
+                      {socialLinks.map((social) => (
+                        <a
+                          key={social.label}
+                          href={social.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          title={social.label}
+                          className="flex h-10 w-10 items-center justify-center rounded-xl bg-electric/5 text-gray-400 hover:bg-electric hover:text-white transition-colors"
+                        >
+                          <social.icon className="h-4 w-4" />
+                        </a>
+                      ))}
+                    </div>
+                  </motion.div>
+                )}
               </div>
             </AnimateOnScroll>
           </div>

@@ -1,15 +1,16 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import useSWR from "swr";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { Linkedin, Twitter, Mail } from "lucide-react";
+import { Linkedin, Twitter, Instagram, Mail } from "lucide-react";
 import {
   StaggerContainer,
   StaggerItem,
   PageTransition,
 } from "@/components/ui/MotionWrapper";
 import { PageHero } from "@/components/ui/PageHero";
+import { fetcher } from "@/lib/fetcher";
 
 interface Executive {
   id: string;
@@ -17,32 +18,25 @@ interface Executive {
   position: string;
   image: string | null;
   email: string | null;
+  linkedin: string | null;
+  twitter: string | null;
+  instagram: string | null;
 }
 
-const fallbackExecs = [
-  { id: "f1", name: "Adebayo Olamide", position: "President", image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=256&q=80&fit=crop&crop=face", email: null },
-  { id: "f2", name: "Chidinma Okoro", position: "Vice President", image: "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=256&q=80&fit=crop&crop=face", email: null },
-  { id: "f3", name: "Tunde Akinwale", position: "General Secretary", image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=256&q=80&fit=crop&crop=face", email: null },
-  { id: "f4", name: "Blessing Eze", position: "Financial Secretary", image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=256&q=80&fit=crop&crop=face", email: null },
-  { id: "f5", name: "Femi Adeyemi", position: "Director of Socials", image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=256&q=80&fit=crop&crop=face", email: null },
-  { id: "f6", name: "Grace Nwosu", position: "Public Relations Officer", image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=256&q=80&fit=crop&crop=face", email: null },
-  { id: "f7", name: "Yusuf Ibrahim", position: "Director of Sports", image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=256&q=80&fit=crop&crop=face", email: null },
-  { id: "f8", name: "Amina Bello", position: "Welfare Director", image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=256&q=80&fit=crop&crop=face", email: null },
+const fallbackExecs: Executive[] = [
+  { id: "f1", name: "Adebayo Olamide", position: "President", image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=256&q=80&fit=crop&crop=face", email: null, linkedin: null, twitter: null, instagram: null },
+  { id: "f2", name: "Chidinma Okoro", position: "Vice President", image: "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=256&q=80&fit=crop&crop=face", email: null, linkedin: null, twitter: null, instagram: null },
+  { id: "f3", name: "Tunde Akinwale", position: "General Secretary", image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=256&q=80&fit=crop&crop=face", email: null, linkedin: null, twitter: null, instagram: null },
+  { id: "f4", name: "Blessing Eze", position: "Financial Secretary", image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=256&q=80&fit=crop&crop=face", email: null, linkedin: null, twitter: null, instagram: null },
+  { id: "f5", name: "Femi Adeyemi", position: "Director of Socials", image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=256&q=80&fit=crop&crop=face", email: null, linkedin: null, twitter: null, instagram: null },
+  { id: "f6", name: "Grace Nwosu", position: "Public Relations Officer", image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=256&q=80&fit=crop&crop=face", email: null, linkedin: null, twitter: null, instagram: null },
+  { id: "f7", name: "Yusuf Ibrahim", position: "Director of Sports", image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=256&q=80&fit=crop&crop=face", email: null, linkedin: null, twitter: null, instagram: null },
+  { id: "f8", name: "Amina Bello", position: "Welfare Director", image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=256&q=80&fit=crop&crop=face", email: null, linkedin: null, twitter: null, instagram: null },
 ];
 
 export function ExecutivesContent() {
-  const [executives, setExecutives] = useState<Executive[]>(fallbackExecs);
-
-  useEffect(() => {
-    fetch("/api/executives")
-      .then((res) => res.json())
-      .then((res) => {
-        if (res.data && res.data.length > 0) {
-          setExecutives(res.data);
-        }
-      })
-      .catch(() => {});
-  }, []);
+  const { data } = useSWR("/api/executives", fetcher);
+  const executives: Executive[] = data?.data?.length > 0 ? data.data : fallbackExecs;
 
   const president = executives[0];
   const otherExecs = executives.slice(1);
@@ -89,13 +83,16 @@ export function ExecutivesContent() {
                   <p className="mt-1 text-sm text-gray-500">Department of Computer Science</p>
                   <div className="mt-4 flex justify-center gap-2 md:justify-start">
                     {[
-                      { Icon: Linkedin, href: "#" },
-                      { Icon: Twitter, href: "#" },
-                      { Icon: Mail, href: president.email ? `mailto:${president.email}` : "#" },
+                      ...(president.linkedin ? [{ Icon: Linkedin, href: president.linkedin }] : []),
+                      ...(president.twitter ? [{ Icon: Twitter, href: president.twitter }] : []),
+                      ...(president.instagram ? [{ Icon: Instagram, href: president.instagram }] : []),
+                      ...(president.email ? [{ Icon: Mail, href: `mailto:${president.email}` }] : []),
                     ].map(({ Icon, href }, i) => (
                       <motion.a
                         key={i}
                         href={href}
+                        target={href.startsWith("mailto:") ? undefined : "_blank"}
+                        rel={href.startsWith("mailto:") ? undefined : "noopener noreferrer"}
                         whileHover={{ scale: 1.1 }}
                         className="flex h-9 w-9 items-center justify-center rounded-lg bg-surface-2 text-gray-400 hover:bg-electric hover:text-white transition-colors"
                       >
@@ -139,14 +136,16 @@ export function ExecutivesContent() {
                   <p className="mt-0.5 text-xs text-electric">{exec.position}</p>
                   <div className="mt-3 flex justify-center gap-1.5">
                     {[
+                      ...(exec.linkedin ? [{ Icon: Linkedin, href: exec.linkedin }] : []),
+                      ...(exec.twitter ? [{ Icon: Twitter, href: exec.twitter }] : []),
+                      ...(exec.instagram ? [{ Icon: Instagram, href: exec.instagram }] : []),
                       ...(exec.email ? [{ Icon: Mail, href: `mailto:${exec.email}` }] : []),
-                      { Icon: Linkedin, href: "#" },
-                      { Icon: Twitter, href: "#" },
-                      ...(!exec.email ? [{ Icon: Mail, href: "#" }] : []),
                     ].map(({ Icon, href }, i) => (
                       <motion.a
                         key={i}
                         href={href}
+                        target={href.startsWith("mailto:") ? undefined : "_blank"}
+                        rel={href.startsWith("mailto:") ? undefined : "noopener noreferrer"}
                         whileHover={{ scale: 1.15 }}
                         className="flex h-7 w-7 items-center justify-center rounded-md bg-surface-2 text-gray-400 hover:bg-navy-800 hover:text-white transition-colors"
                       >

@@ -8,6 +8,7 @@ import { ArrowLeft, FileText } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { CONTENT_STATUSES } from "@/lib/constants";
 import { toast } from "sonner";
+import { ImageUpload } from "@/components/admin/ImageUpload";
 
 export default function CreateArticlePage() {
   const router = useRouter();
@@ -170,21 +171,13 @@ export default function CreateArticlePage() {
           </div>
         </div>
 
-        {/* Cover Image URL */}
-        <div>
-          <label htmlFor="coverImage" className="block text-sm font-medium text-gray-700 mb-1.5">
-            Cover Image URL
-          </label>
-          <input
-            type="url"
-            id="coverImage"
-            name="coverImage"
-            value={form.coverImage}
-            onChange={handleChange}
-            placeholder="https://example.com/image.jpg"
-            className="w-full px-4 py-2.5 border border-surface-3 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-navy-800/20 focus:border-navy-800"
-          />
-        </div>
+        {/* Cover Image */}
+        <ImageUpload
+          value={form.coverImage}
+          onChange={(url) => setForm((prev) => ({ ...prev, coverImage: url }))}
+          folder="articles"
+          label="Cover Image"
+        />
 
         {/* Status */}
         <div>

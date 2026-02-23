@@ -1,11 +1,13 @@
 "use client";
 
 import { useState, useEffect, useCallback, useRef } from "react";
+import useSWR from "swr";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight, Users, Calendar, Award } from "lucide-react";
 import Lottie from "lottie-react";
+import { fetcher } from "@/lib/fetcher";
 
 interface Slide {
   id: string;
@@ -81,23 +83,13 @@ const floatingStats = [
 ];
 
 export function HeroSection() {
-  const [slides, setSlides] = useState<Slide[]>(fallbackSlides);
+  const { data: carouselData } = useSWR("/api/carousel", fetcher);
+  const slides: Slide[] = carouselData?.data?.length > 0 ? carouselData.data : fallbackSlides;
   const [current, setCurrent] = useState(0);
   const [direction, setDirection] = useState(1);
   const videoRef = useRef<HTMLVideoElement>(null);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [lottieCache, setLottieCache] = useState<Record<string, any>>({});
-
-  useEffect(() => {
-    fetch("/api/carousel")
-      .then((res) => res.json())
-      .then((res) => {
-        if (res.data && res.data.length > 0) {
-          setSlides(res.data);
-        }
-      })
-      .catch(() => {});
-  }, []);
 
   // Pre-fetch Lottie JSON data when slides change
   useEffect(() => {

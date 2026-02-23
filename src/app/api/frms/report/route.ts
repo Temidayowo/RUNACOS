@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { reportFaultSchema } from "@/lib/validations/frms";
 import { generateReferenceId } from "@/lib/reference-id";
+import { sendFaultConfirmation } from "@/lib/email";
 
 export async function POST(req: NextRequest) {
   try {
@@ -26,6 +27,15 @@ export async function POST(req: NextRequest) {
         statusHistory: true,
       },
     });
+
+    // Send confirmation email with tracking code (non-blocking)
+    sendFaultConfirmation({
+      referenceId,
+      email: validated.email,
+      name: validated.name,
+      location: validated.location,
+      category: fault.category.name,
+    }).catch(() => {});
 
     return NextResponse.json({ data: fault }, { status: 201 });
   } catch (error: any) {

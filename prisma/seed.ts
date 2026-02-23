@@ -378,6 +378,66 @@ async function main() {
     create: { key: "membership_fee", value: "5000" },
   });
 
+  await prisma.siteSetting.upsert({
+    where: { key: "dues_amount" },
+    update: {},
+    create: { key: "dues_amount", value: "5000" },
+  });
+
+  await prisma.siteSetting.upsert({
+    where: { key: "paystack_prefix" },
+    update: {},
+    create: { key: "paystack_prefix", value: "RUNACOS" },
+  });
+
+  await prisma.siteSetting.upsert({
+    where: { key: "academic_session" },
+    update: {},
+    create: { key: "academic_session", value: "2025/2026" },
+  });
+
+  await prisma.siteSetting.upsert({
+    where: { key: "current_semester" },
+    update: {},
+    create: { key: "current_semester", value: "Second" },
+  });
+
+  await prisma.siteSetting.upsert({
+    where: { key: "social_twitter" },
+    update: {},
+    create: { key: "social_twitter", value: "" },
+  });
+
+  await prisma.siteSetting.upsert({
+    where: { key: "social_instagram" },
+    update: {},
+    create: { key: "social_instagram", value: "" },
+  });
+
+  await prisma.siteSetting.upsert({
+    where: { key: "social_linkedin" },
+    update: {},
+    create: { key: "social_linkedin", value: "" },
+  });
+
+  await prisma.siteSetting.upsert({
+    where: { key: "mail_to_subscribers" },
+    update: {},
+    create: { key: "mail_to_subscribers", value: "true" },
+  });
+
+  await prisma.siteSetting.upsert({
+    where: { key: "mail_to_members" },
+    update: {},
+    create: { key: "mail_to_members", value: "true" },
+  });
+
+  await prisma.siteSetting.upsert({
+    where: { key: "mail_to_alumni" },
+    update: {},
+    create: { key: "mail_to_alumni", value: "false" },
+  });
+
   // Seed default page hero background images
   const pageHeroes: Record<string, { heading: string; subheading: string; backgroundImage: string }> = {
     about: {
@@ -449,6 +509,16 @@ async function main() {
       heading: "",
       subheading: "",
       backgroundImage: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1920&q=80",
+    },
+    alumni: {
+      heading: "",
+      subheading: "",
+      backgroundImage: "https://images.unsplash.com/photo-1523050854058-8df90110c7f1?w=1920&q=80",
+    },
+    "dues-pay": {
+      heading: "",
+      subheading: "",
+      backgroundImage: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=1920&q=80",
     },
   };
 

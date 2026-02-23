@@ -54,6 +54,7 @@ export const membershipRegistrationSchema = z.object({
   department: z.string().min(1, "Please select a department"),
   faculty: z.string().min(1, "Please select a faculty"),
   stateOfOrigin: z.string().min(1, "Please select state of origin"),
+  admissionYear: z.number().int().min(2000).max(new Date().getFullYear()),
   academicSession: z.string().optional(),
   semester: z.string().optional(),
   passportUrl: z.string().url("Passport photo is required"),

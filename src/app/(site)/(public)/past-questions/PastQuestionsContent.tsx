@@ -1,12 +1,14 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState } from "react";
+import useSWR from "swr";
 import { motion } from "framer-motion";
 import { Search, FileText, Download, Calendar, BookOpen } from "lucide-react";
 import { cn, formatFileSize } from "@/lib/utils";
 import { PQ_DEPARTMENTS, ITEMS_PER_PAGE } from "@/lib/constants";
 import { PageTransition } from "@/components/ui/MotionWrapper";
 import { PageHero } from "@/components/ui/PageHero";
+import { fetcher } from "@/lib/fetcher";
 
 interface PastQuestion {
   id: string;
@@ -30,9 +32,6 @@ interface Pagination {
 }
 
 export function PastQuestionsContent() {
-  const [questions, setQuestions] = useState<PastQuestion[]>([]);
-  const [pagination, setPagination] = useState<Pagination | null>(null);
-  const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [department, setDepartment] = useState("");
   const [year, setYear] = useState("");
@@ -41,30 +40,16 @@ export function PastQuestionsContent() {
   const currentYear = new Date().getFullYear();
   const years = Array.from({ length: currentYear - 1999 }, (_, i) => currentYear - i);
 
-  const fetchQuestions = useCallback(async () => {
-    setLoading(true);
-    try {
-      const params = new URLSearchParams();
-      params.set("page", String(page));
-      params.set("limit", String(ITEMS_PER_PAGE));
-      if (search) params.set("search", search);
-      if (department) params.set("department", department);
-      if (year) params.set("year", year);
+  const params = new URLSearchParams();
+  params.set("page", String(page));
+  params.set("limit", String(ITEMS_PER_PAGE));
+  if (search) params.set("search", search);
+  if (department) params.set("department", department);
+  if (year) params.set("year", year);
 
-      const res = await fetch(`/api/past-questions?${params}`);
-      const json = await res.json();
-      setQuestions(json.data || []);
-      setPagination(json.pagination);
-    } catch {
-      console.error("Failed to fetch past questions");
-    } finally {
-      setLoading(false);
-    }
-  }, [page, search, department, year]);
-
-  useEffect(() => {
-    fetchQuestions();
-  }, [fetchQuestions]);
+  const { data, isLoading: loading } = useSWR(`/api/past-questions?${params}`, fetcher);
+  const questions: PastQuestion[] = data?.data || [];
+  const pagination: Pagination | null = data?.pagination || null;
 
   const handleDownload = async (pq: PastQuestion) => {
     try {

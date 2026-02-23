@@ -1,54 +1,32 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import useSWR from "swr";
+import { ArrowRight, Loader2, Newspaper } from "lucide-react";
 import {
   AnimateOnScroll,
   StaggerContainer,
   StaggerItem,
 } from "@/components/ui/MotionWrapper";
 import { NewsCard } from "@/components/news/NewsCard";
+import { fetcher } from "@/lib/fetcher";
 
-const placeholderNews = [
-  {
-    id: "1",
-    title: "Computer Science Department Accreditation Success",
-    slug: "cs-accreditation-success",
-    excerpt:
-      "We are pleased to announce that the NUC accreditation team has fully accredited our Computer Science program for another five years.",
-    coverImage:
-      "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=800&q=80&fit=crop",
-    category: "Academics",
-    publishedAt: "2024-10-15",
-    author: "RUNACOS Admin",
-  },
-  {
-    id: "2",
-    title: 'Annual RUNACOS Hackathon: "Innovating for Nigeria"',
-    slug: "annual-hackathon-2024",
-    excerpt:
-      "Join us for a 48-hour coding marathon challenge. Students develop practical solutions for local challenges using cutting-edge technology.",
-    coverImage:
-      "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=800&q=80&fit=crop",
-    category: "Events",
-    publishedAt: "2024-10-12",
-    author: "RUNACOS Admin",
-  },
-  {
-    id: "3",
-    title: "Meet the New RUNACOS Executive Council 2023/2024",
-    slug: "new-executive-council",
-    excerpt:
-      "The elections have concluded, entire new set of leaders has emerged to steer the association forward. Get to know your President, VP, and more.",
-    coverImage:
-      "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=800&q=80&fit=crop",
-    category: "Student Life",
-    publishedAt: "2024-09-28",
-    author: "RUNACOS Admin",
-  },
-];
+interface NewsItem {
+  id: string;
+  title: string;
+  slug: string;
+  excerpt: string;
+  coverImage: string | null;
+  category: string;
+  publishedAt: string | null;
+  author: string;
+}
 
 export function LatestNews() {
+  const { data, isLoading } = useSWR("/api/news?status=PUBLISHED&limit=3", fetcher);
+  const news: NewsItem[] = data?.data || [];
+  const loading = isLoading;
+
   return (
     <section className="bg-surface-0 py-16 md:py-24">
       <div className="container-custom">
@@ -70,13 +48,24 @@ export function LatestNews() {
           </Link>
         </AnimateOnScroll>
 
-        <StaggerContainer className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {placeholderNews.map((item) => (
-            <StaggerItem key={item.id}>
-              <NewsCard news={item} />
-            </StaggerItem>
-          ))}
-        </StaggerContainer>
+        {loading ? (
+          <div className="flex items-center justify-center py-12">
+            <Loader2 className="h-6 w-6 animate-spin text-gray-400" />
+          </div>
+        ) : news.length === 0 ? (
+          <div className="flex flex-col items-center justify-center py-12 text-center">
+            <Newspaper className="h-10 w-10 text-gray-300 mb-3" />
+            <p className="text-gray-500 text-sm">No news articles yet.</p>
+          </div>
+        ) : (
+          <StaggerContainer className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {news.map((item) => (
+              <StaggerItem key={item.id}>
+                <NewsCard news={item} />
+              </StaggerItem>
+            ))}
+          </StaggerContainer>
+        )}
       </div>
     </section>
   );

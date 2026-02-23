@@ -1,5 +1,7 @@
 "use client";
 
+import { useState, useEffect } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
@@ -9,6 +11,26 @@ import { AnimateOnScroll, fadeUp } from "@/components/ui/MotionWrapper";
 
 export function Footer() {
   const pathname = usePathname();
+  const [socialLinks, setSocialLinks] = useState({
+    twitter: "#",
+    instagram: "#",
+    linkedin: "#",
+  });
+
+  useEffect(() => {
+    fetch("/api/settings")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.data) {
+          setSocialLinks({
+            twitter: data.data.social_twitter || "#",
+            instagram: data.data.social_instagram || "#",
+            linkedin: data.data.social_linkedin || "#",
+          });
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   if (pathname?.startsWith("/admin")) return null;
 
@@ -24,14 +46,13 @@ export function Footer() {
             <div>
               <div className="flex items-center gap-3 mb-5">
                 <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-white/10 backdrop-blur-sm">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src="/logo.png" alt="RUNACOS" className="h-7 w-7 object-contain" style={{ filter: "brightness(0) invert(1)" }} />
+                  <Image src="/logo.png" alt="RUNACOS" width={28} height={28} className="object-contain" style={{ filter: "brightness(0) invert(1)" }} />
                 </div>
                 <div>
                   <div className="text-sm font-bold text-white font-heading tracking-wide">
                     RUNACOS
                   </div>
-                  <div className="text-[10px] font-mono uppercase tracking-widest text-navy-300">
+                  <div className="text-[10px] font-mono uppercase tracking-widest text-navy-200">
                     Redeemer&apos;s University
                   </div>
                 </div>
@@ -43,9 +64,9 @@ export function Footer() {
               </p>
               <div className="flex gap-2.5">
                 {[
-                  { icon: Twitter, href: "#", label: "Twitter" },
-                  { icon: Instagram, href: "#", label: "Instagram" },
-                  { icon: Linkedin, href: "#", label: "LinkedIn" },
+                  { icon: Twitter, href: socialLinks.twitter, label: "Twitter" },
+                  { icon: Instagram, href: socialLinks.instagram, label: "Instagram" },
+                  { icon: Linkedin, href: socialLinks.linkedin, label: "LinkedIn" },
                   { icon: Mail, href: "mailto:info@runacos.org", label: "Email" },
                 ].map(({ icon: Icon, href, label }) => (
                   <motion.a
@@ -66,7 +87,7 @@ export function Footer() {
           {/* Quick Links */}
           <AnimateOnScroll variants={fadeUp} delay={0.1} className="lg:col-span-2">
             <div>
-              <h4 className="mb-4 text-xs font-mono font-semibold uppercase tracking-widest text-white/60">
+              <h4 className="mb-4 text-xs font-mono font-semibold uppercase tracking-widest text-white/80">
                 Quick Links
               </h4>
               <ul className="space-y-2.5">
@@ -87,7 +108,7 @@ export function Footer() {
           {/* Resources */}
           <AnimateOnScroll variants={fadeUp} delay={0.15} className="lg:col-span-2">
             <div>
-              <h4 className="mb-4 text-xs font-mono font-semibold uppercase tracking-widest text-white/60">
+              <h4 className="mb-4 text-xs font-mono font-semibold uppercase tracking-widest text-white/80">
                 Resources
               </h4>
               <ul className="space-y-2.5">
@@ -108,7 +129,7 @@ export function Footer() {
           {/* Contact */}
           <AnimateOnScroll variants={fadeUp} delay={0.2} className="lg:col-span-4">
             <div>
-              <h4 className="mb-4 text-xs font-mono font-semibold uppercase tracking-widest text-white/60">
+              <h4 className="mb-4 text-xs font-mono font-semibold uppercase tracking-widest text-white/80">
                 Get in Touch
               </h4>
               <ul className="space-y-3">
@@ -177,23 +198,23 @@ export function Footer() {
 
         {/* Bottom Bar */}
         <div className="flex flex-col items-center justify-between gap-3 sm:flex-row">
-          <p className="text-xs text-navy-400">
+          <p className="text-xs text-navy-300">
             &copy; {new Date().getFullYear()} RUNACOS &middot; Redeemer&apos;s University
           </p>
           <div className="flex items-center gap-4">
             <Link
               href="/privacy-policy"
-              className="text-xs text-navy-400 hover:text-navy-200 transition-colors"
+              className="text-xs text-navy-300 hover:text-white transition-colors"
             >
               Privacy
             </Link>
             <Link
               href="/terms-of-service"
-              className="text-xs text-navy-400 hover:text-navy-200 transition-colors"
+              className="text-xs text-navy-300 hover:text-white transition-colors"
             >
               Terms
             </Link>
-            <span className="text-[10px] font-mono text-navy-500">
+            <span className="text-[10px] font-mono text-navy-400">
               v{SITE_VERSION}
             </span>
           </div>

@@ -143,8 +143,8 @@ export function AboutContent() {
                   <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-white/10">
                     <Target className="h-5 w-5 text-cyan" />
                   </div>
-                  <h3 className="mb-3 font-heading text-xl font-bold">Our Mission</h3>
-                  <p className="text-sm leading-relaxed text-navy-200">
+                  <h3 className="mb-3 font-heading text-xl font-bold text-white">Our Mission</h3>
+                  <p className="text-sm leading-relaxed text-navy-100">
                     To create an enabling environment that fosters academic excellence,
                     encourages technological innovation, and promotes professional ethics
                     among computer science students through strategic partnerships and

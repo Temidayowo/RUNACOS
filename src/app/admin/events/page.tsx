@@ -181,7 +181,7 @@ export default function AdminEventsPage() {
         ) : (
           <>
             <div className="overflow-x-auto">
-              <table className="w-full">
+              <table className="w-full table-auto">
                 <thead>
                   <tr className="border-b border-surface-3 bg-surface-1">
                     <th className="text-left text-xs font-medium text-gray-500 uppercase tracking-wider px-6 py-3">

@@ -31,9 +31,8 @@ interface Member {
   academicSession: string | null;
   semester: string | null;
   passportUrl: string;
-  paymentStatus: string;
-  amountPaid: number;
-  paidAt: string | null;
+  admissionYear: number | null;
+  isAlumni: boolean;
   createdAt: string;
 }
 
@@ -93,7 +92,7 @@ export default function AdminMembersPage() {
     const headers = [
       "Name", "Matric No", "Email", "Phone", "Level", "Gender",
       "Department", "Faculty", "State of Origin", "Session", "Semester",
-      "Member ID", "Status", "Amount", "Date",
+      "Member ID", "Admission Year", "Alumni", "Date",
     ];
     const rows = members.map((m) => [
       `${m.firstName} ${m.lastName}`,
@@ -108,8 +107,8 @@ export default function AdminMembersPage() {
       m.academicSession || "",
       m.semester || "",
       m.memberId,
-      m.paymentStatus,
-      m.amountPaid,
+      m.admissionYear || "",
+      m.isAlumni ? "Yes" : "No",
       m.createdAt ? new Date(m.createdAt).toLocaleDateString() : "",
     ]);
     const csv = [headers.join(","), ...rows.map((r) => r.join(","))].join("\n");
@@ -122,19 +121,9 @@ export default function AdminMembersPage() {
     URL.revokeObjectURL(url);
   };
 
-  const statusColor = (status: string) => {
-    switch (status) {
-      case "VERIFIED":
-        return "bg-green-100 text-green-700";
-      case "PENDING":
-        return "bg-yellow-100 text-yellow-700";
-      case "FAILED":
-        return "bg-red-100 text-red-700";
-      case "UNPAID":
-        return "bg-gray-100 text-gray-600";
-      default:
-        return "bg-gray-100 text-gray-700";
-    }
+  const memberBadge = (m: Member) => {
+    if (m.isAlumni) return "bg-purple-100 text-purple-700";
+    return "bg-green-100 text-green-700";
   };
 
   return (
@@ -190,7 +179,8 @@ export default function AdminMembersPage() {
                 <th className="px-4 py-3 hidden md:table-cell">Email</th>
                 <th className="px-4 py-3 hidden sm:table-cell">Level</th>
                 <th className="px-4 py-3 hidden lg:table-cell">Member ID</th>
-                <th className="px-4 py-3">Status</th>
+                <th className="px-4 py-3 hidden sm:table-cell">Adm. Year</th>
+                <th className="px-4 py-3">Type</th>
                 <th className="px-4 py-3 hidden md:table-cell">Date</th>
                 <th className="px-4 py-3">Actions</th>
               </tr>
@@ -213,9 +203,12 @@ export default function AdminMembersPage() {
                   <td className="px-4 py-3 font-mono text-xs text-gray-500 hidden lg:table-cell">
                     {member.memberId}
                   </td>
+                  <td className="px-4 py-3 font-mono text-xs text-gray-600 hidden sm:table-cell">
+                    {member.admissionYear || "N/A"}
+                  </td>
                   <td className="px-4 py-3">
-                    <span className={`inline-flex rounded-md font-mono px-2 py-0.5 text-xs font-medium ${statusColor(member.paymentStatus)}`}>
-                      {member.paymentStatus}
+                    <span className={`inline-flex rounded-md font-mono px-2 py-0.5 text-xs font-medium ${memberBadge(member)}`}>
+                      {member.isAlumni ? "Alumni" : "Active"}
                     </span>
                   </td>
                   <td className="px-4 py-3 text-gray-500 hidden md:table-cell">
@@ -314,8 +307,8 @@ export default function AdminMembersPage() {
                     {selectedMember.firstName} {selectedMember.lastName}
                   </h2>
                   <p className="text-sm text-gray-500">{selectedMember.memberId}</p>
-                  <span className={`mt-1 inline-flex rounded-md font-mono px-2 py-0.5 text-xs font-medium ${statusColor(selectedMember.paymentStatus)}`}>
-                    {selectedMember.paymentStatus}
+                  <span className={`mt-1 inline-flex rounded-md font-mono px-2 py-0.5 text-xs font-medium ${memberBadge(selectedMember)}`}>
+                    {selectedMember.isAlumni ? "Alumni" : "Active Member"}
                   </span>
                 </div>
               </div>
@@ -330,10 +323,9 @@ export default function AdminMembersPage() {
                   { label: "Department", value: selectedMember.department || "N/A" },
                   { label: "Faculty", value: selectedMember.faculty || "N/A" },
                   { label: "State of Origin", value: selectedMember.stateOfOrigin || "N/A" },
+                  { label: "Admission Year", value: selectedMember.admissionYear ? String(selectedMember.admissionYear) : "N/A" },
                   { label: "Academic Session", value: selectedMember.academicSession || "N/A" },
                   { label: "Semester", value: selectedMember.semester || "N/A" },
-                  { label: "Amount Paid", value: selectedMember.amountPaid ? `\u20A6${selectedMember.amountPaid.toLocaleString()}` : "Not paid" },
-                  { label: "Payment Date", value: selectedMember.paidAt ? new Date(selectedMember.paidAt).toLocaleString() : "Not paid" },
                   { label: "Registration Date", value: new Date(selectedMember.createdAt).toLocaleString() },
                 ].map((item) => (
                   <div key={item.label} className="flex justify-between border-b border-surface-3 pb-2">

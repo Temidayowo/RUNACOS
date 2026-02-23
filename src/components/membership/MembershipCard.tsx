@@ -29,11 +29,9 @@ export function MembershipCard({
   semester,
   badgeTemplateUrl,
 }: MembershipCardProps) {
-  const sessionLabel = academicSession
-    ? `${academicSession} Session`
-    : paidAt
-      ? `${new Date(paidAt).getFullYear() - 1}/${new Date(paidAt).getFullYear()} Session`
-      : "2025/2026 Session";
+  const issuedDate = paidAt
+    ? new Date(paidAt).toLocaleDateString("en-NG", { month: "short", year: "numeric" })
+    : null;
 
   return (
     <div
@@ -132,7 +130,7 @@ export function MembershipCard({
                 </div>
               )}
             </div>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-3 gap-4">
               <div>
                 <p className="text-[10px] uppercase tracking-wider text-white/50 font-mono">
                   Member ID
@@ -141,13 +139,18 @@ export function MembershipCard({
               </div>
               <div>
                 <p className="text-[10px] uppercase tracking-wider text-white/50 font-mono">
-                  Valid
+                  Validity
                 </p>
-                <p className="text-sm font-medium">
-                  {sessionLabel}
-                  {semester ? ` (${semester})` : ""}
-                </p>
+                <p className="text-sm font-medium">Lifetime</p>
               </div>
+              {issuedDate && (
+                <div>
+                  <p className="text-[10px] uppercase tracking-wider text-white/50 font-mono">
+                    Issued
+                  </p>
+                  <p className="text-sm font-mono font-medium">{issuedDate}</p>
+                </div>
+              )}
             </div>
           </div>
 

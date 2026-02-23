@@ -18,7 +18,12 @@ export default auth((req) => {
   }
 
   // Protect admin API routes
-  if (pathname.startsWith("/api/users") || pathname.startsWith("/api/frms/categories")) {
+  if (
+    pathname.startsWith("/api/users") ||
+    pathname.startsWith("/api/frms/categories") ||
+    (pathname.startsWith("/api/dues") && req.method !== "GET" && req.method !== "POST") ||
+    (pathname.startsWith("/api/alumni") && req.method === "PATCH")
+  ) {
     if (!isLoggedIn) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
@@ -28,5 +33,11 @@ export default auth((req) => {
 });
 
 export const config = {
-  matcher: ["/admin/:path*", "/api/users/:path*", "/api/frms/categories/:path*"],
+  matcher: [
+    "/admin/:path*",
+    "/api/users/:path*",
+    "/api/frms/categories/:path*",
+    "/api/dues/:path*",
+    "/api/alumni/:path*",
+  ],
 };

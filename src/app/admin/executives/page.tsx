@@ -16,6 +16,9 @@ import {
   EyeOff,
   Save,
   UserPlus,
+  Linkedin,
+  Twitter,
+  Instagram,
 } from "lucide-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
@@ -28,6 +31,9 @@ interface Executive {
   email: string | null;
   phone: string | null;
   bio: string | null;
+  linkedin: string | null;
+  twitter: string | null;
+  instagram: string | null;
   order: number;
   active: boolean;
 }
@@ -53,6 +59,9 @@ const emptyForm = {
   email: "",
   phone: "",
   bio: "",
+  linkedin: "",
+  twitter: "",
+  instagram: "",
 };
 
 export default function ExecutivesAdmin() {
@@ -90,6 +99,9 @@ export default function ExecutivesAdmin() {
       email: exec.email || "",
       phone: exec.phone || "",
       bio: exec.bio || "",
+      linkedin: exec.linkedin || "",
+      twitter: exec.twitter || "",
+      instagram: exec.instagram || "",
     });
     setEditingId(exec.id);
     setShowModal(true);
@@ -138,6 +150,9 @@ export default function ExecutivesAdmin() {
           email: form.email || null,
           phone: form.phone || null,
           bio: form.bio || null,
+          linkedin: form.linkedin || null,
+          twitter: form.twitter || null,
+          instagram: form.instagram || null,
         }),
       });
 
@@ -562,6 +577,45 @@ export default function ExecutivesAdmin() {
                     rows={3}
                     className="input-field resize-none"
                   />
+                </div>
+
+                {/* Social Links */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Social Links
+                  </label>
+                  <div className="space-y-3">
+                    <div className="relative">
+                      <Linkedin className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+                      <input
+                        type="url"
+                        value={form.linkedin}
+                        onChange={(e) => setForm((p) => ({ ...p, linkedin: e.target.value }))}
+                        placeholder="LinkedIn profile URL"
+                        className="input-field pl-10"
+                      />
+                    </div>
+                    <div className="relative">
+                      <Twitter className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+                      <input
+                        type="url"
+                        value={form.twitter}
+                        onChange={(e) => setForm((p) => ({ ...p, twitter: e.target.value }))}
+                        placeholder="Twitter / X profile URL"
+                        className="input-field pl-10"
+                      />
+                    </div>
+                    <div className="relative">
+                      <Instagram className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+                      <input
+                        type="url"
+                        value={form.instagram}
+                        onChange={(e) => setForm((p) => ({ ...p, instagram: e.target.value }))}
+                        placeholder="Instagram profile URL"
+                        className="input-field pl-10"
+                      />
+                    </div>
+                  </div>
                 </div>
               </div>
 

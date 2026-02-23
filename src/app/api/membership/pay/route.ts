@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { nanoid } from "nanoid";
 
-// POST - Look up member and initiate payment
+// Legacy route — kept for backwards compatibility, redirects logic to /api/dues
+
+// POST - Initiate payment (redirects to /api/dues flow)
 export async function POST(req: NextRequest) {
   try {
     const { email, matricNumber } = await req.json();
@@ -14,9 +15,15 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Find member by email or matric number
+    // Find member
     const member = await prisma.member.findFirst({
       where: email ? { email } : { matricNumber },
+      include: {
+        duesPayments: {
+          where: { paymentStatus: "VERIFIED" },
+          take: 1,
+        },
+      },
     });
 
     if (!member) {
@@ -26,27 +33,12 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    if (member.paymentStatus === "VERIFIED") {
+    if (member.duesPayments.length > 0) {
       return NextResponse.json(
         { error: "Dues already paid", data: { memberId: member.memberId, alreadyPaid: true } },
         { status: 409 }
       );
     }
-
-    // Get membership fee from settings
-    const feeSetting = await prisma.siteSetting.findUnique({
-      where: { key: "membership_fee" },
-    });
-    const amount = feeSetting ? parseInt(feeSetting.value) : 5000;
-
-    // Generate payment reference
-    const paymentRef = `PAY-${nanoid(12)}`;
-
-    // Update member with payment reference
-    await prisma.member.update({
-      where: { id: member.id },
-      data: { paymentRef, amountPaid: amount },
-    });
 
     return NextResponse.json({
       data: {
@@ -54,8 +46,7 @@ export async function POST(req: NextRequest) {
         firstName: member.firstName,
         lastName: member.lastName,
         email: member.email,
-        paymentRef,
-        amount,
+        redirect: "/dues/pay",
       },
     });
   } catch (error) {
@@ -63,7 +54,7 @@ export async function POST(req: NextRequest) {
   }
 }
 
-// GET - Look up member details (without initiating payment)
+// GET - Look up member details
 export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
@@ -79,6 +70,13 @@ export async function GET(req: NextRequest) {
 
     const member = await prisma.member.findFirst({
       where: email ? { email } : { matricNumber: matricNumber! },
+      include: {
+        duesPayments: {
+          where: { paymentStatus: "VERIFIED" },
+          orderBy: { createdAt: "desc" },
+          take: 1,
+        },
+      },
     });
 
     if (!member) {
@@ -87,6 +85,8 @@ export async function GET(req: NextRequest) {
         { status: 404 }
       );
     }
+
+    const hasVerifiedPayment = member.duesPayments.length > 0;
 
     return NextResponse.json({
       data: {
@@ -98,7 +98,7 @@ export async function GET(req: NextRequest) {
         level: member.level,
         department: member.department,
         passportUrl: member.passportUrl,
-        paymentStatus: member.paymentStatus,
+        paymentStatus: hasVerifiedPayment ? "VERIFIED" : "PENDING",
       },
     });
   } catch (error) {

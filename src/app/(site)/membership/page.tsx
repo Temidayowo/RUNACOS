@@ -19,6 +19,7 @@ import {
   Building2,
   MapPin,
   CreditCard,
+  Calendar,
 } from "lucide-react";
 import Link from "next/link";
 import { toast } from "sonner";
@@ -48,6 +49,7 @@ export default function MembershipPage() {
     department: "",
     faculty: "",
     passportUrl: "",
+    admissionYear: "",
   });
 
   // Fetch academic settings
@@ -114,6 +116,7 @@ export default function MembershipPage() {
         form.level &&
         form.department &&
         form.faculty &&
+        form.admissionYear &&
         !duplicateErrors.matricNumber
       );
     }
@@ -149,6 +152,7 @@ export default function MembershipPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           ...form,
+          admissionYear: form.admissionYear ? parseInt(form.admissionYear) : undefined,
           academicSession: academicSession || undefined,
           semester: currentSemester || undefined,
         }),
@@ -234,7 +238,7 @@ export default function MembershipPage() {
                 </motion.div>
 
                 <div className="flex flex-col gap-3 sm:flex-row">
-                  <Link href="/membership/pay" className="btn-primary gap-2">
+                  <Link href="/dues/pay" className="btn-primary gap-2">
                     <CreditCard className="h-4 w-4" /> Pay Association Dues
                   </Link>
                   <Link href="/" className="btn-secondary">
@@ -456,6 +460,21 @@ export default function MembershipPage() {
                     </div>
                     <div>
                       <label className="mb-1.5 flex items-center gap-1.5 text-sm font-medium text-gray-700">
+                        <Calendar className="h-3.5 w-3.5" /> Admission Year *
+                      </label>
+                      <select
+                        value={form.admissionYear}
+                        onChange={(e) => updateForm("admissionYear", e.target.value)}
+                        className="input-field"
+                      >
+                        <option value="">Select year of admission (100L entry)</option>
+                        {Array.from({ length: new Date().getFullYear() - 2014 }, (_, i) => new Date().getFullYear() - i).map((year) => (
+                          <option key={year} value={year}>{year}</option>
+                        ))}
+                      </select>
+                    </div>
+                    <div>
+                      <label className="mb-1.5 flex items-center gap-1.5 text-sm font-medium text-gray-700">
                         <Building2 className="h-3.5 w-3.5" /> Faculty *
                       </label>
                       <select
@@ -600,6 +619,7 @@ export default function MembershipPage() {
                           { label: "State of Origin", value: form.stateOfOrigin },
                           { label: "Matric Number", value: form.matricNumber },
                           { label: "Level", value: `${form.level} Level` },
+                          { label: "Admission Year", value: form.admissionYear || "N/A" },
                           { label: "Faculty", value: form.faculty },
                           { label: "Department", value: form.department },
                           ...(academicSession ? [{ label: "Session", value: `${academicSession} (${currentSemester || "N/A"} Semester)` }] : []),

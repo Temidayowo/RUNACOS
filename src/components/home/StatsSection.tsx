@@ -45,7 +45,7 @@ export function StatsSection() {
                 </div>
 
                 {/* Label */}
-                <p className="mt-2 text-sm text-navy-200 sm:text-base">
+                <p className="mt-2 text-sm text-navy-100 sm:text-base">
                   {stat.label}
                 </p>
               </div>

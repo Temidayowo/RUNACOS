@@ -1,9 +1,10 @@
 "use client";
 
 import { useState } from "react";
+import useSWR from "swr";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { MapPin, Clock, Calendar, ArrowRight } from "lucide-react";
+import { MapPin, Clock, Calendar, ArrowRight, Loader2 } from "lucide-react";
 import { format } from "date-fns";
 import {
   StaggerContainer,
@@ -11,21 +12,25 @@ import {
   PageTransition,
 } from "@/components/ui/MotionWrapper";
 import { PageHero } from "@/components/ui/PageHero";
+import { fetcher } from "@/lib/fetcher";
 
-const events = [
-  { id: "1", title: "RUNACOS Tech Summit 2024", slug: "tech-summit-2024", location: "Main Auditorium, RUN", eventDate: "2025-03-15T09:00:00Z", description: "Annual technology summit featuring keynote speakers from top tech companies." },
-  { id: "2", title: "Workshop: Introduction to AI & ML", slug: "ai-ml-workshop", location: "CS Lab 2, Block B", eventDate: "2025-03-20T14:00:00Z", description: "Hands-on workshop covering the fundamentals of artificial intelligence and machine learning." },
-  { id: "3", title: "Career Fair: Meet Tech Companies", slug: "career-fair-2024", location: "University Hall", eventDate: "2025-04-05T10:00:00Z", description: "Connect with leading tech companies and explore internship and job opportunities." },
-  { id: "4", title: "Coding Bootcamp: Web Development", slug: "web-dev-bootcamp", location: "CS Lab 1", eventDate: "2024-12-10T09:00:00Z", description: "Intensive 3-day bootcamp covering modern web development with React and Next.js." },
-  { id: "5", title: "RUNACOS Game Night", slug: "game-night", location: "Student Center", eventDate: "2024-11-25T18:00:00Z", description: "Relax and unwind with board games, video games, and fun activities." },
-];
+interface EventItem {
+  id: string;
+  title: string;
+  slug: string;
+  location: string;
+  eventDate: string;
+  description: string;
+  coverImage: string | null;
+}
 
 export function EventsContent() {
   const [tab, setTab] = useState<"upcoming" | "past">("upcoming");
-  const now = new Date();
-  const filtered = events.filter((e) =>
-    tab === "upcoming" ? new Date(e.eventDate) >= now : new Date(e.eventDate) < now
+  const { data, isLoading: loading, error } = useSWR(
+    `/api/events?status=PUBLISHED&type=${tab}&limit=50`,
+    fetcher
   );
+  const events: EventItem[] = data?.data || [];
 
   return (
     <PageTransition>
@@ -63,7 +68,19 @@ export function EventsContent() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
             >
-              {filtered.length === 0 ? (
+              {loading ? (
+                <div className="flex items-center justify-center py-20">
+                  <Loader2 className="h-8 w-8 animate-spin text-electric" />
+                </div>
+              ) : error ? (
+                <div className="py-20 text-center">
+                  <Calendar className="mx-auto mb-3 h-12 w-12 text-gray-300" />
+                  <p className="text-lg font-heading font-semibold text-gray-400">
+                    Failed to load events
+                  </p>
+                  <p className="mt-1 text-sm text-gray-400">Please try again later.</p>
+                </div>
+              ) : events.length === 0 ? (
                 <div className="py-20 text-center">
                   <Calendar className="mx-auto mb-3 h-12 w-12 text-gray-300" />
                   <p className="text-lg font-heading font-semibold text-gray-400">No {tab} events</p>
@@ -71,7 +88,7 @@ export function EventsContent() {
                 </div>
               ) : (
                 <StaggerContainer className="space-y-4">
-                  {filtered.map((event) => (
+                  {events.map((event) => (
                     <StaggerItem key={event.id}>
                       <Link href={`/events/${event.slug}`}>
                         <motion.div

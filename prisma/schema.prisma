@@ -219,12 +219,14 @@ model Member {
   academicSession String?
   semester        String?
   passportUrl     String
-  paymentRef      String?   @unique
-  paymentStatus   String    @default("UNPAID")
-  amountPaid      Int       @default(0)
-  paidAt          DateTime?
+  admissionYear   Int?
+  isAlumni        Boolean   @default(false)
+  alumniSince     DateTime?
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
+
+  duesPayments DuesPayment[]
+  executive    Executive?
 
   @@map("members")
 }
@@ -238,17 +240,54 @@ model SiteSetting {
 }
 
 model Executive {
-  id        String   @id @default(cuid())
-  name      String
-  position  String
-  image     String?
-  email     String?
-  phone     String?
-  bio       String?  @db.Text
-  order     Int      @default(0)
-  active    Boolean  @default(true)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id             String    @id @default(cuid())
+  name           String
+  position       String
+  image          String?
+  email          String?
+  phone          String?
+  bio            String?   @db.Text
+  linkedin       String?
+  twitter        String?
+  instagram      String?
+  order          Int       @default(0)
+  active         Boolean   @default(true)
+  memberId       String?   @unique
+  impeachedAt    DateTime?
+  impeachReason  String?   @db.Text
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  member Member? @relation(fields: [memberId], references: [id])
 
   @@map("executives")
+}
+
+model DuesPayment {
+  id              String    @id @default(cuid())
+  memberId        String
+  academicSession String
+  amount          Int
+  paymentRef      String    @unique
+  paymentStatus   String    @default("PENDING")
+  paymentMethod   String    @default("PAYSTACK")
+  verifiedAt      DateTime?
+  verifiedBy      String?
+  createdAt       DateTime  @default(now())
+
+  member Member @relation(fields: [memberId], references: [id])
+
+  @@unique([memberId, academicSession])
+  @@map("dues_payments")
+}
+
+model NewsletterSubscriber {
+  id             String    @id @default(cuid())
+  email          String    @unique
+  name           String?
+  active         Boolean   @default(true)
+  subscribedAt   DateTime  @default(now())
+  unsubscribedAt DateTime?
+
+  @@map("newsletter_subscribers")
 }
