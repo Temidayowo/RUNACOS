@@ -314,6 +314,35 @@ async function main() {
 
   console.log("✅ Demo fault reports seeded:", faults.length);
 
+  // Seed executives
+  const executivesList = [
+    { name: "Olumide Akinwale", position: "President", email: "president@runacos.org", order: 0 },
+    { name: "Adaeze Okonkwo", position: "Vice President", email: "vp@runacos.org", order: 1 },
+    { name: "Bolu Oladipo", position: "General Secretary", email: "gensec@runacos.org", order: 2 },
+    { name: "Chioma Nwankwo", position: "Financial Secretary", email: null, order: 3 },
+    { name: "Yusuf Ibrahim", position: "Public Relations Officer", email: null, order: 4 },
+    { name: "Grace Nwosu", position: "Director of Socials", email: null, order: 5 },
+    { name: "Tunde Akinwale", position: "Director of Sports", email: null, order: 6 },
+    { name: "Amina Bello", position: "Welfare Director", email: null, order: 7 },
+  ];
+
+  for (const exec of executivesList) {
+    const existing = await prisma.executive.findFirst({ where: { position: exec.position } });
+    if (!existing) {
+      await prisma.executive.create({
+        data: {
+          name: exec.name,
+          position: exec.position,
+          email: exec.email,
+          order: exec.order,
+          active: true,
+        },
+      });
+    }
+  }
+
+  console.log("✅ Executives seeded:", executivesList.length);
+
   // Seed demo contact submissions
   const contacts = [
     {
@@ -344,6 +373,88 @@ async function main() {
     update: {},
     create: { key: "membership_fee", value: "5000" },
   });
+
+  // Seed default page hero background images
+  const pageHeroes: Record<string, { heading: string; subheading: string; backgroundImage: string }> = {
+    about: {
+      heading: "",
+      subheading: "",
+      backgroundImage: "https://images.unsplash.com/photo-1562774053-701939374585?w=1920&q=80",
+    },
+    contact: {
+      heading: "",
+      subheading: "",
+      backgroundImage: "https://images.unsplash.com/photo-1423666639041-f56000c27a9a?w=1920&q=80",
+    },
+    events: {
+      heading: "",
+      subheading: "",
+      backgroundImage: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1920&q=80",
+    },
+    news: {
+      heading: "",
+      subheading: "",
+      backgroundImage: "https://images.unsplash.com/photo-1504711434969-e33886168d5c?w=1920&q=80",
+    },
+    articles: {
+      heading: "",
+      subheading: "",
+      backgroundImage: "https://images.unsplash.com/photo-1457369804613-52c61a468e7d?w=1920&q=80",
+    },
+    executives: {
+      heading: "",
+      subheading: "",
+      backgroundImage: "https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=1920&q=80",
+    },
+    staff: {
+      heading: "",
+      subheading: "",
+      backgroundImage: "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=1920&q=80",
+    },
+    "past-questions": {
+      heading: "",
+      subheading: "",
+      backgroundImage: "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=1920&q=80",
+    },
+    constitution: {
+      heading: "",
+      subheading: "",
+      backgroundImage: "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=1920&q=80",
+    },
+    "privacy-policy": {
+      heading: "",
+      subheading: "",
+      backgroundImage: "https://images.unsplash.com/photo-1563986768609-322da13575f2?w=1920&q=80",
+    },
+    "terms-of-service": {
+      heading: "",
+      subheading: "",
+      backgroundImage: "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=1920&q=80",
+    },
+    membership: {
+      heading: "",
+      subheading: "",
+      backgroundImage: "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=1920&q=80",
+    },
+    "frms-report": {
+      heading: "",
+      subheading: "",
+      backgroundImage: "https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=1920&q=80",
+    },
+    "frms-track": {
+      heading: "",
+      subheading: "",
+      backgroundImage: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1920&q=80",
+    },
+  };
+
+  await prisma.siteSetting.upsert({
+    where: { key: "page_heroes" },
+    update: {},
+    create: { key: "page_heroes", value: JSON.stringify(pageHeroes) },
+  });
+
+  console.log("✅ Page hero images seeded:", Object.keys(pageHeroes).length, "pages");
 
   console.log("✅ Site settings seeded");
 

@@ -14,6 +14,7 @@ import {
   scaleIn,
   PageTransition,
 } from "@/components/ui/MotionWrapper";
+import { PageHero } from "@/components/ui/PageHero";
 
 const coreValues = [
   { icon: Heart, title: "Excellence", description: "We strive for the highest standards in academics, leadership, and community service." },
@@ -32,34 +33,12 @@ const quickFacts = [
 export function AboutContent() {
   return (
     <PageTransition>
-      {/* Page Hero */}
-      <section className="page-hero text-center">
-        <div className="relative container-custom">
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="font-mono text-xs uppercase tracking-widest text-electric mb-1"
-          >
-            Home / About
-          </motion.p>
-          <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="mx-auto max-w-3xl font-heading text-3xl font-bold text-white sm:text-4xl md:text-5xl"
-          >
-            About <span className="bg-gradient-to-r from-electric to-cyan bg-clip-text text-transparent">RUNACOS</span>
-          </motion.h1>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="mx-auto mt-4 max-w-2xl text-navy-200"
-          >
-            Our mission, vision, and the story behind the association.
-          </motion.p>
-        </div>
-      </section>
+      <PageHero
+        slug="about"
+        defaultHeading="About {highlight}RUNACOS{/highlight}"
+        defaultSubheading="Our mission, vision, and the story behind the association."
+        breadcrumb="Home / About"
+      />
 
       {/* About Split */}
       <section className="py-16 md:py-24 bg-surface-0">

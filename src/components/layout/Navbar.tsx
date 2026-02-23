@@ -60,22 +60,38 @@ export function Navbar() {
           <Link href="/" className="flex items-center gap-3 group">
             <motion.div
               whileHover={{ scale: 1.05 }}
-              className={`flex h-10 w-10 items-center justify-center rounded-xl transition-colors ${
+              className={`flex h-10 w-10 items-center justify-center rounded-xl transition-all duration-300 ${
                 isScrolled || !isTransparentHero
-                  ? "bg-navy-800 group-hover:bg-navy-700"
+                  ? "bg-navy-800/10 group-hover:bg-navy-800/20"
                   : "bg-white/15 backdrop-blur-sm group-hover:bg-white/25"
               }`}
             >
-              <span className="text-lg font-bold text-white font-heading">R</span>
+              <div
+                className={`h-6 w-6 transition-colors duration-300 ${
+                  isScrolled || !isTransparentHero ? "bg-navy-800" : "bg-white"
+                }`}
+                role="img"
+                aria-label="RUNACOS logo"
+                style={{
+                  WebkitMaskImage: "url(/logo.png)",
+                  maskImage: "url(/logo.png)",
+                  WebkitMaskSize: "contain",
+                  maskSize: "contain",
+                  WebkitMaskRepeat: "no-repeat",
+                  maskRepeat: "no-repeat",
+                  WebkitMaskPosition: "center",
+                  maskPosition: "center",
+                }}
+              />
             </motion.div>
             <div className="hidden sm:block">
               <div className={`text-sm font-bold leading-tight font-heading ${logoColor}`}>
-                RUNACOS
+                Redeemer&apos;s University
               </div>
               <div className={`text-[10px] font-mono uppercase tracking-wider leading-tight ${
                 isScrolled || !isTransparentHero ? "text-gray-400" : "text-white/50"
               }`}>
-                Computer Science
+                Ass&apos; of Computing Students
               </div>
             </div>
           </Link>

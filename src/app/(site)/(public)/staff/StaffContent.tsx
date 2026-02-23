@@ -9,6 +9,7 @@ import {
   StaggerItem,
   PageTransition,
 } from "@/components/ui/MotionWrapper";
+import { PageHero } from "@/components/ui/PageHero";
 
 const staff = [
   { name: "Prof. Adebayo Johnson", title: "Head of Department", specialty: "Artificial Intelligence", email: "ajohnson@run.edu.ng", image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=256&q=80&fit=crop&crop=face" },
@@ -22,29 +23,12 @@ const staff = [
 export function StaffContent() {
   return (
     <PageTransition>
-      <section className="page-hero text-center">
-        <div className="relative container-custom">
-          <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="font-mono text-xs uppercase tracking-widest text-electric mb-1">
-            Home / Staff
-          </motion.p>
-          <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="font-heading text-3xl font-bold text-white sm:text-4xl md:text-5xl"
-          >
-            Department Staff
-          </motion.h1>
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.2 }}
-            className="mx-auto mt-4 max-w-2xl text-navy-200"
-          >
-            The brilliant minds shaping the next generation of computer scientists.
-          </motion.p>
-        </div>
-      </section>
+      <PageHero
+        slug="staff"
+        defaultHeading="Department Staff"
+        defaultSubheading="The brilliant minds shaping the next generation of computer scientists."
+        breadcrumb="Home / Staff"
+      />
 
       <section className="pb-16 md:pb-24">
         <div className="container-custom">

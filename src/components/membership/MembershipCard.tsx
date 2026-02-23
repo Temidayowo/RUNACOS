@@ -66,7 +66,17 @@ export function MembershipCard({
           {/* Header */}
           <div className="flex items-start justify-between">
             <div>
-              <h3 className="text-lg font-bold tracking-wide font-heading">RUNACOS</h3>
+              <h3 className="flex items-center text-lg font-bold tracking-wide font-heading">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/logo.png"
+                  alt="R"
+                  className="inline-block h-6 w-6 object-contain"
+                  crossOrigin="anonymous"
+                  style={{ filter: "brightness(0) invert(1)", marginRight: 1 }}
+                />
+                <span>UNACOS</span>
+              </h3>
               <p className="text-xs font-mono text-white/60">Membership Card</p>
             </div>
             <div className="h-20 w-16 flex-shrink-0 overflow-hidden rounded-xl border-2 border-white/20 bg-white/10 backdrop-blur-sm">

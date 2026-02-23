@@ -29,7 +29,7 @@ import { cn, getInitials } from "@/lib/utils";
 
 const sidebarLinks = [
   { label: "Dashboard", href: "/admin", icon: LayoutDashboard },
-  { label: "Carousel", href: "/admin/carousel", icon: SlidersHorizontal },
+  { label: "Pages", href: "/admin/pages", icon: SlidersHorizontal },
   { label: "Executives", href: "/admin/executives", icon: Crown },
   { label: "FRMS", href: "/admin/frms", icon: Bug },
   { label: "News", href: "/admin/news", icon: Newspaper },
@@ -65,7 +65,8 @@ export default function AdminLayoutClient({ children }: { children: React.ReactN
           {/* Logo */}
           <div className="flex items-center gap-3 px-6 py-5 border-b border-white/10">
             <div className="w-10 h-10 bg-electric rounded-xl flex items-center justify-center flex-shrink-0">
-              <span className="text-white text-lg font-bold font-heading">R</span>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/logo.png" alt="RUNACOS" className="h-6 w-6 object-contain" style={{ filter: "brightness(0) invert(1)" }} />
             </div>
             <div>
               <h1 className="font-bold font-heading text-sm">RUNACOS</h1>

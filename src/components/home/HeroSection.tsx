@@ -5,10 +5,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight, Users, Calendar, Award } from "lucide-react";
+import Lottie from "lottie-react";
 
 interface Slide {
   id: string;
-  type: "image" | "video";
+  type: "image" | "video" | "lottie";
   mediaUrl: string;
   title: string;
   highlight: string;
@@ -84,6 +85,8 @@ export function HeroSection() {
   const [current, setCurrent] = useState(0);
   const [direction, setDirection] = useState(1);
   const videoRef = useRef<HTMLVideoElement>(null);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [lottieCache, setLottieCache] = useState<Record<string, any>>({});
 
   useEffect(() => {
     fetch("/api/carousel")
@@ -95,6 +98,20 @@ export function HeroSection() {
       })
       .catch(() => {});
   }, []);
+
+  // Pre-fetch Lottie JSON data when slides change
+  useEffect(() => {
+    slides.forEach((slide) => {
+      if (slide.type === "lottie" && slide.mediaUrl && !lottieCache[slide.mediaUrl]) {
+        fetch(slide.mediaUrl)
+          .then((res) => res.json())
+          .then((data) => {
+            setLottieCache((prev) => ({ ...prev, [slide.mediaUrl]: data }));
+          })
+          .catch(() => {});
+      }
+    });
+  }, [slides, lottieCache]);
 
   const nextSlide = useCallback(() => {
     setDirection(1);
@@ -179,6 +196,16 @@ export function HeroSection() {
               transition={{ duration: 8, ease: "linear" }}
               className="absolute inset-0 h-full w-full object-cover"
             />
+          ) : currentSlide.type === "lottie" && lottieCache[currentSlide.mediaUrl] ? (
+            <div className="absolute inset-0 flex items-center justify-center bg-midnight">
+              <Lottie
+                animationData={lottieCache[currentSlide.mediaUrl]}
+                loop
+                className="h-full w-full object-cover"
+              />
+            </div>
+          ) : currentSlide.type === "lottie" ? (
+            <div className="absolute inset-0 bg-midnight" />
           ) : (
             <motion.div
               initial={{ scale: 1 }}

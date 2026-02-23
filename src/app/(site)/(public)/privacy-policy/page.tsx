@@ -1,24 +1,17 @@
 import type { Metadata } from "next";
+import { PageHero } from "@/components/ui/PageHero";
 
 export const metadata: Metadata = { title: "Privacy Policy" };
 
 export default function PrivacyPolicyPage() {
   return (
     <>
-      {/* Hero */}
-      <section className="page-hero text-center">
-        <div className="relative container-custom">
-          <p className="font-mono text-xs uppercase tracking-widest text-electric mb-1">
-            Home / Privacy Policy
-          </p>
-          <h1 className="font-heading text-3xl font-bold text-white sm:text-4xl md:text-5xl">
-            Privacy Policy
-          </h1>
-          <p className="mx-auto mt-4 max-w-2xl text-navy-200">
-            How we collect, use, and protect your personal information.
-          </p>
-        </div>
-      </section>
+      <PageHero
+        slug="privacy-policy"
+        defaultHeading="Privacy Policy"
+        defaultSubheading="How we collect, use, and protect your personal information."
+        breadcrumb="Home / Privacy Policy"
+      />
 
       <div className="container-custom py-16 md:py-24">
         <div className="mx-auto max-w-3xl">

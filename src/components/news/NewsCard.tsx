@@ -45,7 +45,8 @@ export function NewsCard({ news }: NewsCardProps) {
             />
           ) : (
             <div className="flex h-full items-center justify-center bg-gradient-hero">
-              <span className="text-3xl font-bold text-white/20 font-heading">R</span>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/logo.png" alt="RUNACOS" className="h-10 w-10 object-contain opacity-20" style={{ filter: "brightness(0) invert(1)" }} />
             </div>
           )}
         </div>

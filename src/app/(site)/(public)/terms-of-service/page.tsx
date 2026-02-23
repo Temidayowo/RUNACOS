@@ -1,24 +1,17 @@
 import type { Metadata } from "next";
+import { PageHero } from "@/components/ui/PageHero";
 
 export const metadata: Metadata = { title: "Terms of Service" };
 
 export default function TermsOfServicePage() {
   return (
     <>
-      {/* Hero */}
-      <section className="page-hero text-center">
-        <div className="relative container-custom">
-          <p className="font-mono text-xs uppercase tracking-widest text-electric mb-1">
-            Home / Terms of Service
-          </p>
-          <h1 className="font-heading text-3xl font-bold text-white sm:text-4xl md:text-5xl">
-            Terms of Service
-          </h1>
-          <p className="mx-auto mt-4 max-w-2xl text-navy-200">
-            The rules and guidelines for using the RUNACOS website and services.
-          </p>
-        </div>
-      </section>
+      <PageHero
+        slug="terms-of-service"
+        defaultHeading="Terms of Service"
+        defaultSubheading="The rules and guidelines for using the RUNACOS website and services."
+        breadcrumb="Home / Terms of Service"
+      />
 
       <div className="container-custom py-16 md:py-24">
         <div className="mx-auto max-w-3xl">

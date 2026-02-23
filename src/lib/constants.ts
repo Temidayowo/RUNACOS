@@ -68,10 +68,13 @@ export const FOOTER_CONNECT = [
 ] as const;
 
 export const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/gif", "image/webp"];
+export const ACCEPTED_VIDEO_TYPES = ["video/mp4", "video/webm"];
+export const ACCEPTED_JSON_TYPES = ["application/json"];
 export const ACCEPTED_DOC_TYPES = [
   "application/pdf",
   "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
   "application/vnd.openxmlformats-officedocument.presentationml.presentation",
 ];
 export const MAX_IMAGE_SIZE = 5 * 1024 * 1024; // 5MB
+export const MAX_VIDEO_SIZE = 50 * 1024 * 1024; // 50MB
 export const MAX_DOC_SIZE = 10 * 1024 * 1024; // 10MB
