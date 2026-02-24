@@ -42,9 +42,9 @@ export function EventsContent() {
       />
 
       {/* Tabs */}
-      <section className="bg-surface-0 border-b border-surface-3 sticky top-[72px] z-30 backdrop-blur-xl bg-white/90">
+      <section className="border-b border-surface-3 sticky top-[72px] z-30 backdrop-blur-xl bg-white/90">
         <div className="container-custom">
-          <div className="flex gap-2 py-4">
+          <div className="flex overflow-x-auto flex-nowrap gap-2 py-4">
             {(["upcoming", "past"] as const).map((t) => (
               <button
                 key={t}

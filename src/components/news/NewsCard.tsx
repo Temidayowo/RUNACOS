@@ -17,6 +17,7 @@ interface NewsCardProps {
     publishedAt: string | Date | null;
     author?: string;
   };
+  basePath?: string;
 }
 
 const categoryBadge: Record<string, string> = {
@@ -26,9 +27,9 @@ const categoryBadge: Record<string, string> = {
   General: "badge-comment",
 };
 
-export function NewsCard({ news }: NewsCardProps) {
+export function NewsCard({ news, basePath = "/news" }: NewsCardProps) {
   return (
-    <Link href={`/news/${news.slug}`}>
+    <Link href={`${basePath}/${news.slug}`}>
       <motion.article
         whileHover={{ y: -4 }}
         transition={{ duration: 0.25 }}

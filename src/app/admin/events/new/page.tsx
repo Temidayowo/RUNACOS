@@ -187,6 +187,7 @@ export default function CreateEventPage() {
               <option value="DRAFT">Draft</option>
               <option value="PUBLISHED">Published</option>
             </select>
+            <p className="text-xs text-amber-600 mt-1">Only published items appear on the public site</p>
           </div>
         </div>
 

@@ -41,34 +41,53 @@ async function localDel(url: string): Promise<void> {
   }
 }
 
-// --- S3 storage (placeholder — implement when ready) ---
+// --- S3-compatible storage (Tigris) ---
+
+function getS3Client() {
+  const { S3Client } = require("@aws-sdk/client-s3") as typeof import("@aws-sdk/client-s3");
+  return new S3Client({
+    region: "auto",
+    endpoint: process.env.S3_ENDPOINT || "https://fly.storage.tigris.dev",
+    credentials: {
+      accessKeyId: process.env.S3_ACCESS_KEY_ID!,
+      secretAccessKey: process.env.S3_SECRET_ACCESS_KEY!,
+    },
+  });
+}
 
 async function s3Put(
   filePath: string,
   buffer: Buffer,
   contentType: string
 ): Promise<{ url: string }> {
-  // TODO: Implement S3 upload using @aws-sdk/client-s3
-  // const { S3Client, PutObjectCommand } = await import("@aws-sdk/client-s3");
-  // const client = new S3Client({ region: process.env.AWS_REGION });
-  // const bucket = process.env.S3_BUCKET!;
-  // await client.send(new PutObjectCommand({
-  //   Bucket: bucket,
-  //   Key: filePath,
-  //   Body: buffer,
-  //   ContentType: contentType,
-  //   ACL: "public-read",
-  // }));
-  // return { url: `https://${bucket}.s3.amazonaws.com/${filePath}` };
-  throw new Error("S3 storage not configured. Set STORAGE_PROVIDER=local or implement S3.");
+  const { PutObjectCommand } = require("@aws-sdk/client-s3") as typeof import("@aws-sdk/client-s3");
+  const client = getS3Client();
+  const bucket = process.env.S3_BUCKET!;
+
+  await client.send(new PutObjectCommand({
+    Bucket: bucket,
+    Key: filePath,
+    Body: buffer,
+    ContentType: contentType,
+  }));
+
+  const endpoint = process.env.S3_ENDPOINT || "https://fly.storage.tigris.dev";
+  return { url: `${endpoint}/${bucket}/${filePath}` };
 }
 
 async function s3Del(url: string): Promise<void> {
-  // TODO: Implement S3 delete
-  // const key = new URL(url).pathname.slice(1);
-  // const { S3Client, DeleteObjectCommand } = await import("@aws-sdk/client-s3");
-  // const client = new S3Client({ region: process.env.AWS_REGION });
-  // await client.send(new DeleteObjectCommand({ Bucket: process.env.S3_BUCKET!, Key: key }));
+  const { DeleteObjectCommand } = require("@aws-sdk/client-s3") as typeof import("@aws-sdk/client-s3");
+  const client = getS3Client();
+  const bucket = process.env.S3_BUCKET!;
+
+  // Extract key from full URL
+  const urlObj = new URL(url);
+  const key = urlObj.pathname.replace(`/${bucket}/`, "").replace(/^\//, "");
+
+  await client.send(new DeleteObjectCommand({
+    Bucket: bucket,
+    Key: key,
+  }));
 }
 
 // ---------------------------------------------------------------------------

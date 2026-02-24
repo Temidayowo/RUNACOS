@@ -168,7 +168,7 @@ export default function AdminArticlesPage() {
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.2 }}
-        className="bg-surface-0 rounded-xl border border-surface-3 overflow-hidden"
+        className="bg-surface-0 rounded-xl border border-surface-3 overflow-hidden min-w-0"
       >
         {loading ? (
           <div className="p-8">
@@ -201,22 +201,22 @@ export default function AdminArticlesPage() {
             <table className="w-full table-auto">
               <thead>
                 <tr className="border-b border-surface-3">
-                  <th className="text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Title
                   </th>
-                  <th className="text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider hidden sm:table-cell">
                     Category
                   </th>
-                  <th className="text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Status
                   </th>
-                  <th className="text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider hidden md:table-cell">
                     Author
                   </th>
-                  <th className="text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider hidden md:table-cell">
                     Date
                   </th>
-                  <th className="text-right px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="text-right px-4 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Actions
                   </th>
                 </tr>
@@ -230,7 +230,7 @@ export default function AdminArticlesPage() {
                     transition={{ delay: i * 0.03 }}
                     className="hover:bg-surface-1 transition-colors"
                   >
-                    <td className="px-6 py-4">
+                    <td className="px-4 py-4">
                       <div className="flex items-center gap-3">
                         <div className="w-8 h-8 bg-navy-800/10 rounded-lg flex items-center justify-center flex-shrink-0">
                           <FileText className="w-4 h-4 text-navy-800" />
@@ -240,21 +240,21 @@ export default function AdminArticlesPage() {
                         </span>
                       </div>
                     </td>
-                    <td className="px-6 py-4">
+                    <td className="px-4 py-4 hidden sm:table-cell">
                       <span className="text-sm text-gray-600">{article.category}</span>
                     </td>
-                    <td className="px-6 py-4">
+                    <td className="px-4 py-4">
                       {getStatusBadge(article.status)}
                     </td>
-                    <td className="px-6 py-4">
+                    <td className="px-4 py-4 hidden md:table-cell">
                       <span className="text-sm text-gray-600">{article.author}</span>
                     </td>
-                    <td className="px-6 py-4">
+                    <td className="px-4 py-4 hidden md:table-cell">
                       <span className="text-sm text-gray-500">
                         {formatDateShort(article.createdAt)}
                       </span>
                     </td>
-                    <td className="px-6 py-4">
+                    <td className="px-4 py-4">
                       <div className="flex items-center justify-end gap-2">
                         <button
                           onClick={() => router.push(`/admin/articles/${article.id}/edit`)}

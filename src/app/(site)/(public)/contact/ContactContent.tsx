@@ -32,7 +32,7 @@ export function ContactContent() {
     { icon: Twitter, label: "Twitter / X", href: settings.social_twitter },
     { icon: Instagram, label: "Instagram", href: settings.social_instagram },
     { icon: Linkedin, label: "LinkedIn", href: settings.social_linkedin },
-  ].filter((s) => s.href);
+  ];
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -159,17 +159,17 @@ export function ContactContent() {
                 ))}
 
                 {/* Social Media Links */}
-                {socialLinks.length > 0 && (
-                  <motion.div
-                    initial={{ opacity: 0, x: 20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: 0.32 }}
-                    className="rounded-xl border border-surface-3 bg-surface-0 p-4"
-                  >
-                    <h4 className="text-sm font-semibold text-gray-900 mb-3">Follow Us</h4>
-                    <div className="flex gap-2">
-                      {socialLinks.map((social) => (
+                <motion.div
+                  initial={{ opacity: 0, x: 20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.32 }}
+                  className="rounded-xl border border-surface-3 bg-surface-0 p-4"
+                >
+                  <h4 className="text-sm font-semibold text-gray-900 mb-3">Follow Us</h4>
+                  <div className="flex gap-2">
+                    {socialLinks.map((social) =>
+                      social.href ? (
                         <a
                           key={social.label}
                           href={social.href}
@@ -180,10 +180,18 @@ export function ContactContent() {
                         >
                           <social.icon className="h-4 w-4" />
                         </a>
-                      ))}
-                    </div>
-                  </motion.div>
-                )}
+                      ) : (
+                        <span
+                          key={social.label}
+                          title={`${social.label} - Coming soon`}
+                          className="flex h-10 w-10 items-center justify-center rounded-xl bg-surface-1 text-gray-300 opacity-40 cursor-default"
+                        >
+                          <social.icon className="h-4 w-4" />
+                        </span>
+                      )
+                    )}
+                  </div>
+                </motion.div>
               </div>
             </AnimateOnScroll>
           </div>

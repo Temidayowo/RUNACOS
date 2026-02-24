@@ -338,6 +338,27 @@ export default function ExecutivesAdmin() {
                 )}
               </div>
 
+              {/* Social Links */}
+              {(exec.linkedin || exec.twitter || exec.instagram) && (
+                <div className="flex gap-1.5 px-4 pb-3">
+                  {exec.linkedin && (
+                    <a href={exec.linkedin} target="_blank" rel="noopener noreferrer" className="p-1.5 rounded-lg bg-surface-1 text-gray-400 hover:text-blue-700 hover:bg-blue-50 transition-colors" title="LinkedIn">
+                      <Linkedin className="w-3.5 h-3.5" />
+                    </a>
+                  )}
+                  {exec.twitter && (
+                    <a href={exec.twitter} target="_blank" rel="noopener noreferrer" className="p-1.5 rounded-lg bg-surface-1 text-gray-400 hover:text-sky-500 hover:bg-sky-50 transition-colors" title="Twitter / X">
+                      <Twitter className="w-3.5 h-3.5" />
+                    </a>
+                  )}
+                  {exec.instagram && (
+                    <a href={exec.instagram} target="_blank" rel="noopener noreferrer" className="p-1.5 rounded-lg bg-surface-1 text-gray-400 hover:text-pink-500 hover:bg-pink-50 transition-colors" title="Instagram">
+                      <Instagram className="w-3.5 h-3.5" />
+                    </a>
+                  )}
+                </div>
+              )}
+
               {/* Actions */}
               <div className="flex items-center justify-between border-t border-surface-3 px-3 py-2">
                 <div className="flex gap-1">

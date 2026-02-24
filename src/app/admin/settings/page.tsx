@@ -78,7 +78,7 @@ export default function SettingsPage() {
           setLinkedinUrl(data.data.social_linkedin);
         }
       })
-      .catch(() => {})
+      .catch(() => toast.error("Failed to load settings"))
       .finally(() => setLoadingSettings(false));
   }, []);
 

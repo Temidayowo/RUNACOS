@@ -119,6 +119,7 @@ export default function CreateArticlePage() {
             placeholder="Brief summary of the article"
             className="w-full px-4 py-2.5 border border-surface-3 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-navy-800/20 focus:border-navy-800 resize-none"
           />
+          <p className="text-xs text-gray-400 mt-1">Minimum 10 characters</p>
         </div>
 
         {/* Content */}
@@ -194,6 +195,7 @@ export default function CreateArticlePage() {
             <option value="DRAFT">Draft</option>
             <option value="PUBLISHED">Published</option>
           </select>
+          <p className="text-xs text-amber-600 mt-1">Only published items appear on the public site</p>
         </div>
 
         {/* Actions */}

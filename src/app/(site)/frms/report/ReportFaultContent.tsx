@@ -36,6 +36,7 @@ export function ReportFaultContent() {
   const [loading, setLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [referenceId, setReferenceId] = useState<string | null>(null);
+  const [emailSent, setEmailSent] = useState(false);
   const [categories, setCategories] = useState<FaultCategory[]>([]);
   const [fileName, setFileName] = useState("");
   const [form, setForm] = useState({
@@ -77,7 +78,12 @@ export function ReportFaultContent() {
       const data = await res.json();
       if (res.ok) {
         setReferenceId(data.data.referenceId);
-        toast.success("Fault report submitted!");
+        setEmailSent(!!data.emailSent);
+        if (data.emailSent) {
+          toast.success(`Report submitted! Confirmation email sent to your address with tracking code: ${data.data.referenceId}`);
+        } else {
+          toast.success(`Report submitted! Your tracking code is: ${data.data.referenceId} (email unavailable)`);
+        }
       } else {
         toast.error(data.error || "Submission failed");
       }
@@ -119,8 +125,10 @@ export function ReportFaultContent() {
               Report Submitted!
             </h2>
             <p className="mt-2 text-gray-500">
-              Your fault report has been received. Use the reference ID below to
-              track your report status.
+              Your fault report has been received.
+              {emailSent
+                ? " A confirmation email has been sent to your address."
+                : " Use the reference ID below to track your report status."}
             </p>
 
             <motion.div
@@ -153,6 +161,7 @@ export function ReportFaultContent() {
               <button
                 onClick={() => {
                   setReferenceId(null);
+                  setEmailSent(false);
                   setCurrentStep(0);
                   setForm({
                     name: "",

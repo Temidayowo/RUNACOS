@@ -56,6 +56,7 @@ export default function AdminLayoutClient({ children }: { children: React.ReactN
   const [searchQuery, setSearchQuery] = useState("");
   const [searchFocused, setSearchFocused] = useState(false);
   const searchRef = useRef<HTMLDivElement>(null);
+  const searchInputRef = useRef<HTMLInputElement>(null);
 
   // Close search dropdown on outside click
   useEffect(() => {
@@ -66,6 +67,19 @@ export default function AdminLayoutClient({ children }: { children: React.ReactN
     }
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  // Ctrl+K keyboard shortcut to focus search
+  useEffect(() => {
+    function handleKeyDown(e: KeyboardEvent) {
+      if ((e.ctrlKey || e.metaKey) && e.key === "k") {
+        e.preventDefault();
+        searchInputRef.current?.focus();
+        setSearchFocused(true);
+      }
+    }
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
   }, []);
 
   const allSearchLinks = [
@@ -198,8 +212,9 @@ export default function AdminLayoutClient({ children }: { children: React.ReactN
               <div className="flex items-center gap-2 bg-surface-1 rounded-xl px-3 py-2 border border-surface-3">
                 <Search className="w-4 h-4 text-gray-400" />
                 <input
+                  ref={searchInputRef}
                   type="text"
-                  placeholder="Search pages..."
+                  placeholder="Search pages... (Ctrl+K)"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   onFocus={() => setSearchFocused(true)}
@@ -217,25 +232,29 @@ export default function AdminLayoutClient({ children }: { children: React.ReactN
                   className="bg-transparent outline-none text-sm text-gray-600 w-full font-mono"
                 />
               </div>
-              {searchFocused && searchResults.length > 0 && (
+              {searchFocused && searchQuery.trim() && (
                 <div className="absolute top-full mt-1 w-full bg-surface-0 rounded-xl shadow-lg border border-surface-3 py-1 z-50">
-                  {searchResults.map((result) => {
-                    const Icon = result.icon;
-                    return (
-                      <button
-                        key={result.href}
-                        onClick={() => {
-                          router.push(result.href);
-                          setSearchQuery("");
-                          setSearchFocused(false);
-                        }}
-                        className="flex items-center gap-3 w-full px-4 py-2.5 text-sm text-gray-700 hover:bg-surface-1 transition-colors"
-                      >
-                        <Icon className="w-4 h-4 text-gray-400" />
-                        {result.label}
-                      </button>
-                    );
-                  })}
+                  {searchResults.length > 0 ? (
+                    searchResults.map((result) => {
+                      const Icon = result.icon;
+                      return (
+                        <button
+                          key={result.href}
+                          onClick={() => {
+                            router.push(result.href);
+                            setSearchQuery("");
+                            setSearchFocused(false);
+                          }}
+                          className="flex items-center gap-3 w-full px-4 py-2.5 text-sm text-gray-700 hover:bg-surface-1 transition-colors"
+                        >
+                          <Icon className="w-4 h-4 text-gray-400" />
+                          {result.label}
+                        </button>
+                      );
+                    })
+                  ) : (
+                    <div className="px-4 py-3 text-sm text-gray-400">No pages found</div>
+                  )}
                 </div>
               )}
             </div>

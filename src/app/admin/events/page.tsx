@@ -155,7 +155,7 @@ export default function AdminEventsPage() {
       </div>
 
       {/* Table */}
-      <div className="bg-surface-0 rounded-xl border border-surface-3 overflow-hidden">
+      <div className="bg-surface-0 rounded-xl border border-surface-3 overflow-hidden min-w-0">
         {loading ? (
           <div className="p-8 space-y-4">
             {[...Array(5)].map((_, i) => (
@@ -184,19 +184,19 @@ export default function AdminEventsPage() {
               <table className="w-full table-auto">
                 <thead>
                   <tr className="border-b border-surface-3 bg-surface-1">
-                    <th className="text-left text-xs font-medium text-gray-500 uppercase tracking-wider px-6 py-3">
+                    <th className="text-left text-xs font-medium text-gray-500 uppercase tracking-wider px-4 py-3">
                       Title
                     </th>
-                    <th className="text-left text-xs font-medium text-gray-500 uppercase tracking-wider px-6 py-3">
+                    <th className="text-left text-xs font-medium text-gray-500 uppercase tracking-wider px-4 py-3 hidden sm:table-cell">
                       Location
                     </th>
-                    <th className="text-left text-xs font-medium text-gray-500 uppercase tracking-wider px-6 py-3">
+                    <th className="text-left text-xs font-medium text-gray-500 uppercase tracking-wider px-4 py-3 hidden md:table-cell">
                       Event Date
                     </th>
-                    <th className="text-left text-xs font-medium text-gray-500 uppercase tracking-wider px-6 py-3">
+                    <th className="text-left text-xs font-medium text-gray-500 uppercase tracking-wider px-4 py-3">
                       Status
                     </th>
-                    <th className="text-right text-xs font-medium text-gray-500 uppercase tracking-wider px-6 py-3">
+                    <th className="text-right text-xs font-medium text-gray-500 uppercase tracking-wider px-4 py-3">
                       Actions
                     </th>
                   </tr>
@@ -210,23 +210,23 @@ export default function AdminEventsPage() {
                       transition={{ delay: i * 0.05 }}
                       className="hover:bg-surface-1 transition-colors"
                     >
-                      <td className="px-6 py-4">
+                      <td className="px-4 py-4">
                         <p className="text-sm font-medium text-gray-900 truncate max-w-xs">
                           {item.title}
                         </p>
                       </td>
-                      <td className="px-6 py-4">
+                      <td className="px-4 py-4 hidden sm:table-cell">
                         <span className="text-sm text-gray-600">{item.location}</span>
                       </td>
-                      <td className="px-6 py-4">
+                      <td className="px-4 py-4 hidden md:table-cell">
                         <span className="text-sm text-gray-500">
                           {formatDateShort(item.eventDate)}
                         </span>
                       </td>
-                      <td className="px-6 py-4">
+                      <td className="px-4 py-4">
                         {getStatusBadge(item.status)}
                       </td>
-                      <td className="px-6 py-4">
+                      <td className="px-4 py-4">
                         <div className="flex items-center justify-end gap-2">
                           <Link
                             href={`/admin/events/${item.id}/edit`}

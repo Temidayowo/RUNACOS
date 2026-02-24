@@ -28,16 +28,20 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    // Send confirmation email with tracking code (non-blocking)
-    sendFaultConfirmation({
-      referenceId,
-      email: validated.email,
-      name: validated.name,
-      location: validated.location,
-      category: fault.category.name,
-    }).catch(() => {});
+    // Send confirmation email with tracking code
+    let emailSent = false;
+    try {
+      await sendFaultConfirmation({
+        referenceId,
+        email: validated.email,
+        name: validated.name,
+        location: validated.location,
+        category: fault.category.name,
+      });
+      emailSent = true;
+    } catch {}
 
-    return NextResponse.json({ data: fault }, { status: 201 });
+    return NextResponse.json({ data: fault, emailSent }, { status: 201 });
   } catch (error: any) {
     if (error.name === "ZodError") {
       return NextResponse.json({ error: "Validation failed", details: error.errors }, { status: 400 });

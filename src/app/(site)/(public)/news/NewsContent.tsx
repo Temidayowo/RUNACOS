@@ -53,7 +53,7 @@ export function NewsContent() {
       />
 
       {/* Filters */}
-      <section className="bg-surface-0 border-b border-surface-3 sticky top-[72px] z-30 backdrop-blur-xl bg-white/90">
+      <section className="border-b border-surface-3 sticky top-[72px] z-30 backdrop-blur-xl bg-white/90">
         <div className="container-custom">
           <motion.div
             initial={{ opacity: 0, y: 10 }}
@@ -61,7 +61,7 @@ export function NewsContent() {
             transition={{ delay: 0.3 }}
             className="flex flex-wrap items-center justify-between gap-4 py-4"
           >
-            <div className="flex flex-wrap gap-2">
+            <div className="flex overflow-x-auto flex-nowrap gap-2">
               {NEWS_CATEGORIES.map((cat) => (
                 <button
                   key={cat}
