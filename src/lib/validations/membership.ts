@@ -9,36 +9,13 @@ export const NIGERIAN_STATES = [
 ] as const;
 
 export const FACULTIES = [
-  "Sciences",
-  "Management Sciences",
-  "Humanities",
-  "Law",
-  "Engineering",
-  "Environmental Sciences",
-  "Social Sciences",
-  "Education",
+  "Computing and Digital Technology",
 ] as const;
 
 export const DEPARTMENTS = [
   "Computer Science",
-  "Mathematics",
-  "Physics",
-  "Chemistry",
-  "Biology",
-  "Biochemistry",
-  "Microbiology",
-  "Industrial Chemistry",
-  "Statistics",
-  "Economics",
-  "Accounting",
-  "Business Administration",
-  "Mass Communication",
-  "Political Science",
-  "English Language",
-  "History",
-  "International Relations",
-  "Sociology",
-  "Public Administration",
+  "Cyber Security",
+  "Information Technology",
 ] as const;
 
 export const membershipRegistrationSchema = z.object({
