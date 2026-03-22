@@ -11,7 +11,6 @@ import {
   FileQuestion,
   Users,
   UserCheck,
-  CreditCard,
   GraduationCap,
   AlertCircle,
   Clock,
@@ -29,7 +28,6 @@ interface DashboardData {
   unreadContacts: number;
   recentFaults: any[];
   members: { total: number; alumni: number };
-  payments: { total: number; verified: number; thisSession: number; totalRevenue: number };
 }
 
 function AnimatedCounter({ value, duration = 1.5 }: { value: number; duration?: number }) {
@@ -102,13 +100,6 @@ export default function AdminDashboard() {
     { label: "Members", value: data.members.total, icon: UserCheck, href: "/admin/members", iconBg: "bg-emerald-50", iconColor: "text-emerald-600" },
     { label: "Unread Messages", value: data.unreadContacts, icon: MessageSquare, href: "/admin/contact", iconBg: "bg-rose-50", iconColor: "text-rose-500" },
     { label: "Alumni", value: data.members?.alumni || 0, icon: GraduationCap, href: "/admin/alumni", iconBg: "bg-purple-50", iconColor: "text-purple-600" },
-  ];
-
-  const paymentCards = [
-    { label: "Total Revenue", value: `\u20A6${(data.payments?.totalRevenue || 0).toLocaleString()}`, raw: false, icon: CreditCard, iconBg: "bg-electric/10", iconColor: "text-electric" },
-    { label: "Total Payments", value: data.payments?.total || 0, raw: true, icon: CreditCard, iconBg: "bg-navy-50", iconColor: "text-navy-800" },
-    { label: "Verified", value: data.payments?.verified || 0, raw: true, icon: CheckCircle, iconBg: "bg-emerald-50", iconColor: "text-emerald-600" },
-    { label: "Paid This Session", value: data.payments?.thisSession || 0, raw: true, icon: Clock, iconBg: "bg-amber-50", iconColor: "text-amber-600" },
   ];
 
   return (
@@ -186,42 +177,7 @@ export default function AdminDashboard() {
         </div>
       </div>
 
-      {/* Row 3: Payments */}
-      <div>
-        <h2 className="text-sm font-medium font-mono uppercase tracking-wider text-gray-400 mb-3">Payments</h2>
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-          {paymentCards.map((card, i) => {
-            const Icon = card.icon;
-            return (
-              <motion.div
-                key={card.label}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.6 + i * 0.08 }}
-              >
-                <Link
-                  href="/admin/payments"
-                  className="block bg-surface-0 rounded-xl p-5 border border-surface-3 hover:shadow-card-hover transition-all"
-                >
-                  <div className="flex items-center gap-3">
-                    <div className={cn("w-10 h-10 rounded-xl flex items-center justify-center", card.iconBg)}>
-                      <Icon className={cn("w-5 h-5", card.iconColor)} />
-                    </div>
-                    <div>
-                      <p className="text-2xl font-bold font-mono text-gray-900">
-                        {card.raw ? <AnimatedCounter value={card.value as number} /> : card.value}
-                      </p>
-                      <p className="text-xs text-gray-500">{card.label}</p>
-                    </div>
-                  </div>
-                </Link>
-              </motion.div>
-            );
-          })}
-        </div>
-      </div>
-
-      {/* Row 4: Content Overview + Recent Faults (2/3 + 1/3) */}
+      {/* Row 3: Content Overview + Recent Faults (2/3 + 1/3) */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Content Stats */}
         <div className="lg:col-span-2">

@@ -40,14 +40,16 @@ export const NAV_LINKS = [
   { label: "News", href: "/news" },
   { label: "Events", href: "/events" },
   { label: "Articles", href: "/articles" },
-  { label: "Executives", href: "/executives" },
-  { label: "Alumni", href: "/alumni" },
   { label: "Contact", href: "/contact" },
 ] as const;
 
+export const NAV_PEOPLE = [
+  { label: "Executives", href: "/executives" },
+  { label: "Staff", href: "/staff" },
+  { label: "Alumni", href: "/alumni" },
+] as const;
+
 export const NAV_RESOURCES = [
-  { label: "Pay Dues", href: "/dues/pay" },
-  { label: "Generate Receipt", href: "/dues/receipt" },
   { label: "Past Questions", href: "/past-questions" },
   { label: "Report an Issue", href: "/frms/report" },
 ] as const;
@@ -63,8 +65,6 @@ export const FOOTER_QUICK_LINKS = [
 export const FOOTER_RESOURCES = [
   { label: "Past Questions", href: "/past-questions" },
   { label: "Articles", href: "/articles" },
-  { label: "Pay Dues", href: "/dues/pay" },
-  { label: "Generate Receipt", href: "/dues/receipt" },
   { label: "Report an Issue", href: "/frms/report" },
   { label: "Constitution", href: "/constitution" },
 ] as const;

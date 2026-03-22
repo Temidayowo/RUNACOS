@@ -21,7 +21,6 @@ export default auth((req) => {
   if (
     pathname.startsWith("/api/users") ||
     pathname.startsWith("/api/frms/categories") ||
-    (pathname.startsWith("/api/dues") && req.method !== "GET" && req.method !== "POST") ||
     (pathname.startsWith("/api/alumni") && req.method === "PATCH")
   ) {
     if (!isLoggedIn) {
@@ -37,7 +36,6 @@ export const config = {
     "/admin/:path*",
     "/api/users/:path*",
     "/api/frms/categories/:path*",
-    "/api/dues/:path*",
     "/api/alumni/:path*",
   ],
 };

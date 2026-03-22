@@ -18,7 +18,6 @@ import {
   AlertCircle,
   Building2,
   MapPin,
-  CreditCard,
   Calendar,
 } from "lucide-react";
 import Link from "next/link";
@@ -223,23 +222,9 @@ export default function MembershipPage() {
                   </span>
                 </motion.div>
 
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.4 }}
-                  className="w-full rounded-xl border border-amber-200 bg-amber-50 p-4 text-left"
-                >
-                  <p className="text-sm font-medium text-amber-800">
-                    Want your membership card?
-                  </p>
-                  <p className="mt-1 text-xs text-amber-700">
-                    Pay the association dues to unlock your digital membership card and access all member benefits.
-                  </p>
-                </motion.div>
-
                 <div className="flex flex-col gap-3 sm:flex-row">
-                  <Link href="/dues/pay" className="btn-primary gap-2">
-                    <CreditCard className="h-4 w-4" /> Pay Association Dues
+                  <Link href={`/membership/card/${registeredMember.memberId}`} className="btn-primary gap-2">
+                    <CheckCircle className="h-4 w-4" /> View Membership Card
                   </Link>
                   <Link href="/" className="btn-secondary">
                     Go to Homepage
@@ -637,7 +622,7 @@ export default function MembershipPage() {
                         Registration is free
                       </p>
                       <p className="mt-1 text-xs text-emerald-700">
-                        You can pay association dues later to get your membership card and access all member benefits.
+                        Once registered, you will receive your membership ID and can view your digital membership card.
                       </p>
                     </div>
                   </div>

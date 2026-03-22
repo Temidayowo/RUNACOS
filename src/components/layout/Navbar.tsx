@@ -5,12 +5,13 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, ChevronRight, ChevronDown } from "lucide-react";
-import { NAV_LINKS, NAV_RESOURCES } from "@/lib/constants";
+import { NAV_LINKS, NAV_PEOPLE, NAV_RESOURCES } from "@/lib/constants";
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [resourcesOpen, setResourcesOpen] = useState(false);
+  const [peopleOpen, setPeopleOpen] = useState(false);
   const pathname = usePathname();
 
   if (pathname?.startsWith("/admin")) return null;
@@ -133,11 +134,49 @@ export function Navbar() {
               );
             })}
 
-            {/* Resources Dropdown */}
+            {/* People Dropdown */}
             <motion.div
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 + NAV_LINKS.length * 0.04 }}
+              className="relative"
+              onMouseEnter={() => setPeopleOpen(true)}
+              onMouseLeave={() => setPeopleOpen(false)}
+            >
+              <button
+                className={`flex items-center gap-1 px-3 py-2 text-[13px] font-medium transition-colors duration-200 ${textColor} hover:${isScrolled || !isTransparentHero ? "text-navy-800" : "text-white"}`}
+              >
+                People
+                <ChevronDown className={`h-3 w-3 transition-transform ${peopleOpen ? "rotate-180" : ""}`} />
+              </button>
+              <AnimatePresence>
+                {peopleOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 8 }}
+                    transition={{ duration: 0.15 }}
+                    className="absolute top-full left-0 mt-1 w-52 rounded-xl border border-surface-3 bg-white py-2 shadow-lg"
+                  >
+                    {NAV_PEOPLE.map((item) => (
+                      <Link
+                        key={item.href}
+                        href={item.href}
+                        className="block px-4 py-2.5 text-sm text-gray-600 hover:bg-surface-1 hover:text-navy-800 transition-colors"
+                      >
+                        {item.label}
+                      </Link>
+                    ))}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </motion.div>
+
+            {/* Resources Dropdown */}
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.14 + NAV_LINKS.length * 0.04 }}
               className="relative"
               onMouseEnter={() => setResourcesOpen(true)}
               onMouseLeave={() => setResourcesOpen(false)}
@@ -271,6 +310,28 @@ export function Navbar() {
                   );
                 })}
 
+                {/* People section in mobile menu */}
+                <div className="mt-4 px-4">
+                  <p className="text-[10px] font-mono uppercase tracking-wider text-gray-400 mb-2">
+                    People
+                  </p>
+                </div>
+                {NAV_PEOPLE.map((item, i) => (
+                  <motion.div
+                    key={item.href}
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.3 + i * 0.04 }}
+                  >
+                    <Link
+                      href={item.href}
+                      className="flex items-center justify-between rounded-xl px-4 py-3 text-sm font-medium text-gray-600 hover:bg-surface-1 hover:text-navy-800 transition-colors"
+                    >
+                      {item.label}
+                    </Link>
+                  </motion.div>
+                ))}
+
                 {/* Resources section in mobile menu */}
                 <div className="mt-4 px-4">
                   <p className="text-[10px] font-mono uppercase tracking-wider text-gray-400 mb-2">
@@ -282,7 +343,7 @@ export function Navbar() {
                     key={item.href}
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.3 + i * 0.04 }}
+                    transition={{ delay: 0.4 + i * 0.04 }}
                   >
                     <Link
                       href={item.href}

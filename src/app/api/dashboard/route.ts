@@ -9,12 +9,6 @@ export async function GET() {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // Get current academic session from settings
-    const sessionSetting = await prisma.siteSetting.findUnique({
-      where: { key: "academic_session" },
-    });
-    const currentSession = sessionSetting?.value || "";
-
     const [
       totalFaults,
       openFaults,
@@ -30,10 +24,6 @@ export async function GET() {
       totalMembers,
       totalExecutives,
       totalAlumni,
-      totalPayments,
-      verifiedPayments,
-      sessionPayments,
-      totalRevenue,
     ] = await Promise.all([
       prisma.fault.count(),
       prisma.fault.count({ where: { status: "OPEN" } }),
@@ -53,17 +43,6 @@ export async function GET() {
       prisma.member.count(),
       prisma.executive.count({ where: { active: true } }),
       prisma.member.count({ where: { isAlumni: true } }),
-      prisma.duesPayment.count(),
-      prisma.duesPayment.count({ where: { paymentStatus: "VERIFIED" } }),
-      currentSession
-        ? prisma.duesPayment.count({
-            where: { academicSession: currentSession, paymentStatus: "VERIFIED" },
-          })
-        : Promise.resolve(0),
-      prisma.duesPayment.aggregate({
-        _sum: { amount: true },
-        where: { paymentStatus: "VERIFIED" },
-      }),
     ]);
 
     return NextResponse.json({
@@ -87,12 +66,6 @@ export async function GET() {
         members: {
           total: totalMembers,
           alumni: totalAlumni,
-        },
-        payments: {
-          total: totalPayments,
-          verified: verifiedPayments,
-          thisSession: sessionPayments,
-          totalRevenue: totalRevenue._sum.amount || 0,
         },
       },
     });

@@ -1,8 +1,6 @@
 export type FaultStatus = "OPEN" | "IN_PROGRESS" | "RESOLVED" | "CLOSED";
 export type ContentStatus = "DRAFT" | "PUBLISHED" | "ARCHIVED";
 export type UserRole = "ADMIN" | "STAFF";
-export type PaymentStatus = "PENDING" | "VERIFIED" | "FAILED";
-
 export interface Member {
   id: string;
   memberId: string;
@@ -24,21 +22,22 @@ export interface Member {
   alumniSince: string | null;
   createdAt: string;
   updatedAt: string;
-  duesPayments?: DuesPayment[];
 }
 
-export interface DuesPayment {
+export interface Staff {
   id: string;
-  memberId: string;
-  academicSession: string;
-  amount: number;
-  paymentRef: string;
-  paymentStatus: PaymentStatus;
-  paymentMethod: string;
-  verifiedAt: string | null;
-  verifiedBy: string | null;
+  name: string;
+  title: string;
+  specialty: string | null;
+  department: string | null;
+  email: string | null;
+  phone: string | null;
+  image: string | null;
+  bio: string | null;
+  order: number;
+  active: boolean;
   createdAt: string;
-  member?: Member;
+  updatedAt: string;
 }
 
 export interface NewsletterSubscriber {
