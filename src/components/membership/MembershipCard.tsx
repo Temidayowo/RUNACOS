@@ -7,7 +7,7 @@ interface MembershipCardProps {
   level: string;
   memberId: string;
   passportUrl: string;
-  paidAt: string | null;
+  issuedAt: string | null;
   department?: string;
   faculty?: string;
   academicSession?: string;
@@ -22,15 +22,15 @@ export function MembershipCard({
   level,
   memberId,
   passportUrl,
-  paidAt,
+  issuedAt,
   department,
   faculty,
   academicSession,
   semester,
   badgeTemplateUrl,
 }: MembershipCardProps) {
-  const issuedDate = paidAt
-    ? new Date(paidAt).toLocaleDateString("en-NG", { month: "short", year: "numeric" })
+  const issuedDate = issuedAt
+    ? new Date(issuedAt).toLocaleDateString("en-NG", { month: "short", year: "numeric" })
     : null;
 
   return (

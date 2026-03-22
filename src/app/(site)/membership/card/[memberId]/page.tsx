@@ -15,7 +15,7 @@ interface CardData {
   matricNumber: string;
   level: string;
   passportUrl: string;
-  paidAt: string | null;
+  issuedAt: string | null;
   department?: string;
   faculty?: string;
   academicSession?: string;
@@ -119,7 +119,7 @@ export default function CardPage() {
                   level={data.level}
                   memberId={data.memberId}
                   passportUrl={data.passportUrl}
-                  paidAt={data.paidAt}
+                  issuedAt={data.issuedAt}
                   department={data.department}
                   faculty={data.faculty}
                   academicSession={data.academicSession}

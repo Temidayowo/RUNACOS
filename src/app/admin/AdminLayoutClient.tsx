@@ -26,8 +26,8 @@ import {
   IdCard,
   SlidersHorizontal,
   Crown,
-  CreditCard,
   GraduationCap,
+  Briefcase,
 } from "lucide-react";
 import { cn, getInitials } from "@/lib/utils";
 
@@ -35,13 +35,13 @@ const sidebarLinks = [
   { label: "Dashboard", href: "/admin", icon: LayoutDashboard },
   { label: "Pages", href: "/admin/pages", icon: SlidersHorizontal },
   { label: "Executives", href: "/admin/executives", icon: Crown },
+  { label: "Staff", href: "/admin/staff", icon: Briefcase },
   { label: "FRMS", href: "/admin/frms", icon: Bug },
   { label: "News", href: "/admin/news", icon: Newspaper },
   { label: "Events", href: "/admin/events", icon: Calendar },
   { label: "Articles", href: "/admin/articles", icon: FileText },
   { label: "Past Questions", href: "/admin/past-questions", icon: FileQuestion },
   { label: "Members", href: "/admin/members", icon: IdCard },
-  { label: "Payments", href: "/admin/payments", icon: CreditCard },
   { label: "Alumni", href: "/admin/alumni", icon: GraduationCap },
   { label: "Contact Messages", href: "/admin/contact", icon: MessageSquare },
   { label: "Users", href: "/admin/users", icon: Users },

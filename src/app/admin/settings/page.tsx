@@ -3,15 +3,13 @@
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { motion } from "framer-motion";
-import { Settings, Users, Mail, CreditCard, Loader2, Save, Calendar, Image, Upload, X, Tag, Share2, Twitter, Instagram, Linkedin } from "lucide-react";
+import { Settings, Users, Mail, Loader2, Save, Calendar, Image, Upload, X, Share2, Twitter, Instagram, Linkedin } from "lucide-react";
 import { cn, getInitials } from "@/lib/utils";
 import { toast } from "sonner";
 
 export default function SettingsPage() {
   const { data: session, status } = useSession();
   const [fee, setFee] = useState("");
-  const [duesAmount, setDuesAmount] = useState("");
-  const [paystackPrefix, setPaystackPrefix] = useState("");
   const [savingFee, setSavingFee] = useState(false);
   const [loadingSettings, setLoadingSettings] = useState(true);
 
@@ -43,12 +41,6 @@ export default function SettingsPage() {
       .then((data) => {
         if (data.data?.membership_fee) {
           setFee(data.data.membership_fee);
-        }
-        if (data.data?.dues_amount) {
-          setDuesAmount(data.data.dues_amount);
-        }
-        if (data.data?.paystack_prefix) {
-          setPaystackPrefix(data.data.paystack_prefix);
         }
         if (data.data?.academic_session) {
           setAcademicSession(data.data.academic_session);
@@ -87,16 +79,10 @@ export default function SettingsPage() {
       toast.error("Please enter a valid membership card fee");
       return;
     }
-    if (!duesAmount || isNaN(Number(duesAmount))) {
-      toast.error("Please enter a valid dues amount");
-      return;
-    }
     setSavingFee(true);
     try {
       const settings = [
         { key: "membership_fee", value: fee },
-        { key: "dues_amount", value: duesAmount },
-        { key: "paystack_prefix", value: paystackPrefix || "RUNACOS" },
       ];
       const res = await fetch("/api/settings", {
         method: "PUT",
@@ -105,12 +91,12 @@ export default function SettingsPage() {
       });
       const data = await res.json();
       if (res.ok) {
-        toast.success("Fees & payment settings updated");
+        toast.success("Membership fee updated");
       } else {
-        toast.error(data.error || "Failed to update fees");
+        toast.error(data.error || "Failed to update fee");
       }
     } catch {
-      toast.error("Failed to update fees");
+      toast.error("Failed to update fee");
     } finally {
       setSavingFee(false);
     }
@@ -371,7 +357,7 @@ export default function SettingsPage() {
         </motion.div>
       </div>
 
-      {/* Fees & Payments */}
+      {/* Membership Fee */}
       {(session?.user as any)?.role === "ADMIN" && (
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -382,14 +368,14 @@ export default function SettingsPage() {
           <div className="px-6 py-4 border-b border-surface-3">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 bg-navy-800 rounded-lg flex items-center justify-center">
-                <CreditCard className="w-5 h-5 text-white" />
+                <Settings className="w-5 h-5 text-white" />
               </div>
               <div>
                 <h2 className="text-lg font-semibold font-heading text-gray-900">
-                  Fees & Payments
+                  Membership Fee
                 </h2>
                 <p className="text-xs text-gray-500">
-                  Configure membership card fee, per-session dues amount, and payment prefix
+                  Configure the membership card fee
                 </p>
               </div>
             </div>
@@ -402,59 +388,22 @@ export default function SettingsPage() {
               </div>
             ) : (
               <div className="space-y-5">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-xs font-medium text-gray-500 uppercase tracking-wider mb-1.5">
-                      Membership Card Fee (Naira)
-                    </label>
-                    <p className="text-[11px] text-gray-400 mb-1.5">One-time fee to get membership card</p>
-                    <div className="relative">
-                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm">
-                        &#8358;
-                      </span>
-                      <input
-                        type="number"
-                        value={fee}
-                        onChange={(e) => setFee(e.target.value)}
-                        placeholder="5000"
-                        className="input-field pl-8"
-                        min="0"
-                      />
-                    </div>
-                  </div>
-                  <div>
-                    <label className="block text-xs font-medium text-gray-500 uppercase tracking-wider mb-1.5">
-                      Session Dues Amount (Naira)
-                    </label>
-                    <p className="text-[11px] text-gray-400 mb-1.5">Per-session association dues</p>
-                    <div className="relative">
-                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm">
-                        &#8358;
-                      </span>
-                      <input
-                        type="number"
-                        value={duesAmount}
-                        onChange={(e) => setDuesAmount(e.target.value)}
-                        placeholder="5000"
-                        className="input-field pl-8"
-                        min="0"
-                      />
-                    </div>
-                  </div>
-                </div>
                 <div className="max-w-xs">
                   <label className="block text-xs font-medium text-gray-500 uppercase tracking-wider mb-1.5">
-                    Payment Reference Prefix
+                    Membership Card Fee (Naira)
                   </label>
-                  <p className="text-[11px] text-gray-400 mb-1.5">Prefix for Paystack payment references (e.g. RUNACOS-20252026-XXXX)</p>
+                  <p className="text-[11px] text-gray-400 mb-1.5">One-time fee to get membership card</p>
                   <div className="relative">
-                    <Tag className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 h-3.5 w-3.5" />
+                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm">
+                      &#8358;
+                    </span>
                     <input
-                      type="text"
-                      value={paystackPrefix}
-                      onChange={(e) => setPaystackPrefix(e.target.value.toUpperCase())}
-                      placeholder="RUNACOS"
-                      className="input-field pl-9"
+                      type="number"
+                      value={fee}
+                      onChange={(e) => setFee(e.target.value)}
+                      placeholder="5000"
+                      className="input-field pl-8"
+                      min="0"
                     />
                   </div>
                 </div>
@@ -468,7 +417,7 @@ export default function SettingsPage() {
                   ) : (
                     <Save className="w-4 h-4" />
                   )}
-                  {savingFee ? "Saving..." : "Save Fees & Payment Settings"}
+                  {savingFee ? "Saving..." : "Save Membership Fee"}
                 </button>
               </div>
             )}

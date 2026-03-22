@@ -225,7 +225,6 @@ model Member {
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
 
-  duesPayments DuesPayment[]
   executive    Executive?
 
   @@map("members")
@@ -263,22 +262,22 @@ model Executive {
   @@map("executives")
 }
 
-model DuesPayment {
-  id              String    @id @default(cuid())
-  memberId        String
-  academicSession String
-  amount          Int
-  paymentRef      String    @unique
-  paymentStatus   String    @default("PENDING")
-  paymentMethod   String    @default("PAYSTACK")
-  verifiedAt      DateTime?
-  verifiedBy      String?
-  createdAt       DateTime  @default(now())
+model Staff {
+  id         String   @id @default(cuid())
+  name       String
+  title      String
+  specialty  String?
+  department String?
+  email      String?
+  phone      String?
+  image      String?
+  bio        String?  @db.Text
+  order      Int      @default(0)
+  active     Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 
-  member Member @relation(fields: [memberId], references: [id])
-
-  @@unique([memberId, academicSession])
-  @@map("dues_payments")
+  @@map("staff")
 }
 
 model NewsletterSubscriber {

@@ -19,7 +19,7 @@ const sections = [
   {
     title: "Article III — Membership",
     icon: Users,
-    content: `1. Membership of RUNACOS is open to all registered students of the Department of Computer Science, Redeemer's University.\n2. Membership is obtained upon payment of the prescribed association dues and registration.\n3. Every member shall be issued a unique Membership ID and a membership card.\n4. Membership is valid for the current academic session and must be renewed annually.`,
+    content: `1. Membership of RUNACOS is open to all registered students of the Department of Computer Science, Redeemer's University.\n2. Membership is obtained upon registration on the RUNACOS platform.\n3. Every member shall be issued a unique Membership ID and a membership card.\n4. Membership is valid for the current academic session and must be renewed annually.`,
   },
   {
     title: "Article IV — Executive Council",
@@ -27,9 +27,9 @@ const sections = [
     content: `The Executive Council shall consist of:\n\n1. President\n2. Vice President\n3. General Secretary\n4. Assistant General Secretary\n5. Financial Secretary\n6. Treasurer\n7. Public Relations Officer (PRO)\n8. Social Director\n9. Sports Director\n10. Welfare Director\n\nElections shall be held annually, and all executive positions are open to members in good standing.`,
   },
   {
-    title: "Article V — Dues & Finances",
+    title: "Article V — Finances",
     icon: Scale,
-    content: `1. The association dues shall be determined by the Executive Council at the beginning of each academic session.\n2. All financial records shall be kept by the Financial Secretary and audited by the Treasurer.\n3. No expenditure shall be made without the approval of the Executive Council.\n4. A financial report shall be presented at every general meeting.`,
+    content: `1. All financial records shall be kept by the Financial Secretary and audited by the Treasurer.\n2. No expenditure shall be made without the approval of the Executive Council.\n3. A financial report shall be presented at every general meeting.`,
   },
   {
     title: "Article VI — Meetings",

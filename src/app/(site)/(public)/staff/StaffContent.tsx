@@ -1,8 +1,9 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { Mail, BookOpen } from "lucide-react";
+import { Mail, BookOpen, Loader2 } from "lucide-react";
 import {
   AnimateOnScroll,
   StaggerContainer,
@@ -11,16 +12,28 @@ import {
 } from "@/components/ui/MotionWrapper";
 import { PageHero } from "@/components/ui/PageHero";
 
-const staff = [
-  { name: "Prof. Adebayo Johnson", title: "Head of Department", specialty: "Artificial Intelligence", email: "ajohnson@run.edu.ng", image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=256&q=80&fit=crop&crop=face" },
-  { name: "Dr. Funke Oladipo", title: "Senior Lecturer", specialty: "Data Science & Machine Learning", email: "foladipo@run.edu.ng", image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=256&q=80&fit=crop&crop=face" },
-  { name: "Dr. Emeka Nwachukwu", title: "Lecturer I", specialty: "Software Engineering", email: "enwachukwu@run.edu.ng", image: "https://images.unsplash.com/photo-1566492031773-4f4e44671857?w=256&q=80&fit=crop&crop=face" },
-  { name: "Dr. Amina Yusuf", title: "Lecturer I", specialty: "Computer Networks & Security", email: "ayusuf@run.edu.ng", image: "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=256&q=80&fit=crop&crop=face" },
-  { name: "Mr. Samuel Okonkwo", title: "Lecturer II", specialty: "Web Technologies", email: "sokonkwo@run.edu.ng", image: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=256&q=80&fit=crop&crop=face" },
-  { name: "Mrs. Grace Adeniyi", title: "Lecturer II", specialty: "Database Systems", email: "gadeniyi@run.edu.ng", image: "https://images.unsplash.com/photo-1580894894513-541e068a3e2b?w=256&q=80&fit=crop&crop=face" },
-];
+interface StaffMember {
+  id: string;
+  name: string;
+  title: string;
+  specialty: string | null;
+  department: string | null;
+  email: string | null;
+  image: string | null;
+}
 
 export function StaffContent() {
+  const [staff, setStaff] = useState<StaffMember[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch("/api/staff")
+      .then((res) => res.json())
+      .then((res) => setStaff(res.data || []))
+      .catch(() => {})
+      .finally(() => setLoading(false));
+  }, []);
+
   return (
     <PageTransition>
       <PageHero
@@ -32,47 +45,61 @@ export function StaffContent() {
 
       <section className="pb-16 md:pb-24">
         <div className="container-custom">
-          <StaggerContainer className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {staff.map((member) => (
-              <StaggerItem key={member.name}>
-                <motion.div
-                  whileHover={{ y: -4 }}
-                  className="rounded-xl border border-surface-3 bg-surface-0 p-6 shadow-sm transition-shadow hover:shadow-md"
-                >
-                  <div className="relative mb-4 h-16 w-16 overflow-hidden rounded-full">
-                    {member.image ? (
-                      <Image
-                        src={member.image}
-                        alt={member.name}
-                        fill
-                        className="object-cover"
-                        sizes="64px"
-                      />
-                    ) : (
-                      <div className="flex h-full items-center justify-center bg-gradient-to-br from-navy-800 to-navy-600">
-                        <span className="text-xl font-bold text-white/70">
-                          {member.name.split(" ").slice(-1)[0][0]}
-                        </span>
+          {loading ? (
+            <div className="flex justify-center py-16">
+              <Loader2 className="h-8 w-8 animate-spin text-navy-600" />
+            </div>
+          ) : staff.length === 0 ? (
+            <div className="text-center py-16">
+              <p className="text-gray-500">No staff members to display at this time.</p>
+            </div>
+          ) : (
+            <StaggerContainer className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {staff.map((member) => (
+                <StaggerItem key={member.id}>
+                  <motion.div
+                    whileHover={{ y: -4 }}
+                    className="rounded-xl border border-surface-3 bg-surface-0 p-6 shadow-sm transition-shadow hover:shadow-md"
+                  >
+                    <div className="relative mb-4 h-16 w-16 overflow-hidden rounded-full">
+                      {member.image ? (
+                        <Image
+                          src={member.image}
+                          alt={member.name}
+                          fill
+                          className="object-cover"
+                          sizes="64px"
+                        />
+                      ) : (
+                        <div className="flex h-full items-center justify-center bg-gradient-to-br from-navy-800 to-navy-600">
+                          <span className="text-xl font-bold text-white/70">
+                            {member.name.split(" ").slice(-1)[0][0]}
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                    <h3 className="font-heading text-base font-bold text-gray-900">{member.name}</h3>
+                    <p className="text-sm font-medium text-blue-600">{member.title}</p>
+                    {member.specialty && (
+                      <div className="mt-3 flex items-center gap-1.5 text-xs text-gray-500">
+                        <BookOpen className="h-3 w-3" />
+                        {member.specialty}
                       </div>
                     )}
-                  </div>
-                  <h3 className="font-heading text-base font-bold text-gray-900">{member.name}</h3>
-                  <p className="text-sm font-medium text-blue-600">{member.title}</p>
-                  <div className="mt-3 flex items-center gap-1.5 text-xs text-gray-500">
-                    <BookOpen className="h-3 w-3" />
-                    {member.specialty}
-                  </div>
-                  <a
-                    href={`mailto:${member.email}`}
-                    className="mt-2 flex items-center gap-1.5 text-xs text-gray-400 hover:text-blue-600 transition-colors"
-                  >
-                    <Mail className="h-3 w-3" />
-                    {member.email}
-                  </a>
-                </motion.div>
-              </StaggerItem>
-            ))}
-          </StaggerContainer>
+                    {member.email && (
+                      <a
+                        href={`mailto:${member.email}`}
+                        className="mt-2 flex items-center gap-1.5 text-xs text-gray-400 hover:text-blue-600 transition-colors"
+                      >
+                        <Mail className="h-3 w-3" />
+                        {member.email}
+                      </a>
+                    )}
+                  </motion.div>
+                </StaggerItem>
+              ))}
+            </StaggerContainer>
+          )}
         </div>
       </section>
     </PageTransition>
