@@ -4,7 +4,7 @@ import { auth } from "@/lib/auth";
 import { deleteFile } from "@/lib/upload";
 
 export async function GET(
-  req: NextRequest,
+  _req: NextRequest,
   { params }: { params: { id: string } }
 ) {
   try {
@@ -27,8 +27,34 @@ export async function GET(
   }
 }
 
-export async function DELETE(
+export async function PATCH(
   req: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  try {
+    const session = await auth();
+    if (!session) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    const { isAlumni } = await req.json();
+
+    const member = await prisma.member.update({
+      where: { id: params.id },
+      data: {
+        isAlumni,
+        alumniSince: isAlumni ? new Date() : null,
+      },
+    });
+
+    return NextResponse.json({ data: member });
+  } catch (error) {
+    return NextResponse.json({ error: "Failed to update member" }, { status: 500 });
+  }
+}
+
+export async function DELETE(
+  _req: NextRequest,
   { params }: { params: { id: string } }
 ) {
   try {

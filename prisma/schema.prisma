@@ -92,12 +92,14 @@ model Event {
 }
 
 model EventRegistration {
-  id        String   @id @default(cuid())
-  eventId   String
-  name      String
-  email     String
-  phone     String?
-  createdAt DateTime @default(now())
+  id          String    @id @default(cuid())
+  eventId     String
+  name        String
+  email       String
+  phone       String?
+  checkedIn   Boolean   @default(false)
+  checkedInAt DateTime?
+  createdAt   DateTime  @default(now())
 
   event Event @relation(fields: [eventId], references: [id], onDelete: Cascade)
 

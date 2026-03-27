@@ -49,6 +49,7 @@ function getS3Client() {
   return new S3Client({
     region: "auto",
     endpoint: process.env.S3_ENDPOINT || "https://fly.storage.tigris.dev",
+    forcePathStyle: false,
     credentials: {
       accessKeyId: process.env.S3_ACCESS_KEY_ID!,
       secretAccessKey: process.env.S3_SECRET_ACCESS_KEY!,

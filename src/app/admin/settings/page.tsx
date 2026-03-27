@@ -3,25 +3,17 @@
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { motion } from "framer-motion";
-import { Settings, Users, Mail, Loader2, Save, Calendar, Image, Upload, X, Share2, Twitter, Instagram, Linkedin } from "lucide-react";
+import { Settings, Users, Mail, Loader2, Save, Calendar, Share2 } from "lucide-react";
+import { Twitter, Instagram, Linkedin } from "lucide-react";
 import { cn, getInitials } from "@/lib/utils";
 import { toast } from "sonner";
 
 export default function SettingsPage() {
   const { data: session, status } = useSession();
-  const [fee, setFee] = useState("");
-  const [savingFee, setSavingFee] = useState(false);
-  const [loadingSettings, setLoadingSettings] = useState(true);
-
   // Academic session state
   const [academicSession, setAcademicSession] = useState("");
   const [currentSemester, setCurrentSemester] = useState("");
   const [savingSession, setSavingSession] = useState(false);
-
-  // Badge template state
-  const [badgeTemplateUrl, setBadgeTemplateUrl] = useState("");
-  const [uploadingBadge, setUploadingBadge] = useState(false);
-  const [savingBadge, setSavingBadge] = useState(false);
 
   // Mailing preferences state
   const [mailToSubscribers, setMailToSubscribers] = useState(true);
@@ -39,17 +31,11 @@ export default function SettingsPage() {
     fetch("/api/settings")
       .then((res) => res.json())
       .then((data) => {
-        if (data.data?.membership_fee) {
-          setFee(data.data.membership_fee);
-        }
         if (data.data?.academic_session) {
           setAcademicSession(data.data.academic_session);
         }
         if (data.data?.current_semester) {
           setCurrentSemester(data.data.current_semester);
-        }
-        if (data.data?.badge_template) {
-          setBadgeTemplateUrl(data.data.badge_template);
         }
         if (data.data?.mail_to_subscribers !== undefined) {
           setMailToSubscribers(data.data.mail_to_subscribers === "true");
@@ -70,37 +56,8 @@ export default function SettingsPage() {
           setLinkedinUrl(data.data.social_linkedin);
         }
       })
-      .catch(() => toast.error("Failed to load settings"))
-      .finally(() => setLoadingSettings(false));
+      .catch(() => toast.error("Failed to load settings"));
   }, []);
-
-  const saveFees = async () => {
-    if (!fee || isNaN(Number(fee))) {
-      toast.error("Please enter a valid membership card fee");
-      return;
-    }
-    setSavingFee(true);
-    try {
-      const settings = [
-        { key: "membership_fee", value: fee },
-      ];
-      const res = await fetch("/api/settings", {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ settings }),
-      });
-      const data = await res.json();
-      if (res.ok) {
-        toast.success("Membership fee updated");
-      } else {
-        toast.error(data.error || "Failed to update fee");
-      }
-    } catch {
-      toast.error("Failed to update fee");
-    } finally {
-      setSavingFee(false);
-    }
-  };
 
   const saveAcademicSession = async () => {
     if (!academicSession) {
@@ -128,73 +85,6 @@ export default function SettingsPage() {
       toast.error("Failed to update academic session");
     } finally {
       setSavingSession(false);
-    }
-  };
-
-  const handleBadgeUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    if (file.size > 5 * 1024 * 1024) {
-      toast.error("File size must be less than 5MB");
-      return;
-    }
-    setUploadingBadge(true);
-    try {
-      const formData = new FormData();
-      formData.append("file", file);
-      formData.append("folder", "badges");
-      const res = await fetch("/api/upload", {
-        method: "POST",
-        body: formData,
-      });
-      const data = await res.json();
-      if (res.ok && data.data?.url) {
-        setBadgeTemplateUrl(data.data.url);
-        // Save to settings
-        setSavingBadge(true);
-        const saveRes = await fetch("/api/settings", {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            settings: [{ key: "badge_template", value: data.data.url }],
-          }),
-        });
-        if (saveRes.ok) {
-          toast.success("Badge template uploaded and saved");
-        } else {
-          toast.error("Badge uploaded but failed to save setting");
-        }
-      } else {
-        toast.error(data.error || "Upload failed");
-      }
-    } catch {
-      toast.error("Upload failed");
-    } finally {
-      setUploadingBadge(false);
-      setSavingBadge(false);
-    }
-  };
-
-  const removeBadgeTemplate = async () => {
-    setSavingBadge(true);
-    try {
-      const res = await fetch("/api/settings", {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          settings: [{ key: "badge_template", value: "" }],
-        }),
-      });
-      if (res.ok) {
-        setBadgeTemplateUrl("");
-        toast.success("Badge template removed");
-      } else {
-        toast.error("Failed to remove badge template");
-      }
-    } catch {
-      toast.error("Failed to remove badge template");
-    } finally {
-      setSavingBadge(false);
     }
   };
 
@@ -266,7 +156,7 @@ export default function SettingsPage() {
               <label className="block text-xs font-medium text-gray-500 uppercase tracking-wider mb-1">
                 Version
               </label>
-              <p className="text-sm text-gray-700">2.0.0</p>
+              <p className="text-sm text-gray-700">1.0.0</p>
             </div>
           </div>
         </motion.div>
@@ -357,74 +247,6 @@ export default function SettingsPage() {
         </motion.div>
       </div>
 
-      {/* Membership Fee */}
-      {(session?.user as any)?.role === "ADMIN" && (
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-          className="bg-surface-0 rounded-xl border border-surface-3"
-        >
-          <div className="px-6 py-4 border-b border-surface-3">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-navy-800 rounded-lg flex items-center justify-center">
-                <Settings className="w-5 h-5 text-white" />
-              </div>
-              <div>
-                <h2 className="text-lg font-semibold font-heading text-gray-900">
-                  Membership Fee
-                </h2>
-                <p className="text-xs text-gray-500">
-                  Configure the membership card fee
-                </p>
-              </div>
-            </div>
-          </div>
-          <div className="p-6">
-            {loadingSettings ? (
-              <div className="flex items-center gap-2 text-gray-400">
-                <Loader2 className="w-4 h-4 animate-spin" />
-                <span className="text-sm">Loading...</span>
-              </div>
-            ) : (
-              <div className="space-y-5">
-                <div className="max-w-xs">
-                  <label className="block text-xs font-medium text-gray-500 uppercase tracking-wider mb-1.5">
-                    Membership Card Fee (Naira)
-                  </label>
-                  <p className="text-[11px] text-gray-400 mb-1.5">One-time fee to get membership card</p>
-                  <div className="relative">
-                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm">
-                      &#8358;
-                    </span>
-                    <input
-                      type="number"
-                      value={fee}
-                      onChange={(e) => setFee(e.target.value)}
-                      placeholder="5000"
-                      className="input-field pl-8"
-                      min="0"
-                    />
-                  </div>
-                </div>
-                <button
-                  onClick={saveFees}
-                  disabled={savingFee}
-                  className="btn-primary gap-2 text-sm"
-                >
-                  {savingFee ? (
-                    <Loader2 className="w-4 h-4 animate-spin" />
-                  ) : (
-                    <Save className="w-4 h-4" />
-                  )}
-                  {savingFee ? "Saving..." : "Save Membership Fee"}
-                </button>
-              </div>
-            )}
-          </div>
-        </motion.div>
-      )}
-
       {/* Academic Session Settings */}
       {(session?.user as any)?.role === "ADMIN" && (
         <motion.div
@@ -489,91 +311,6 @@ export default function SettingsPage() {
                 {savingSession ? "Saving..." : "Save"}
               </button>
             </div>
-          </div>
-        </motion.div>
-      )}
-
-      {/* Badge Template Settings */}
-      {(session?.user as any)?.role === "ADMIN" && (
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4 }}
-          className="bg-surface-0 rounded-xl border border-surface-3"
-        >
-          <div className="px-6 py-4 border-b border-surface-3">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-navy-800 rounded-lg flex items-center justify-center">
-                <Image className="w-5 h-5 text-white" />
-              </div>
-              <div>
-                <h2 className="text-lg font-semibold font-heading text-gray-900">
-                  Badge Template
-                </h2>
-                <p className="text-xs text-gray-500">
-                  Upload a custom background image for the membership badge
-                </p>
-              </div>
-            </div>
-          </div>
-          <div className="p-6">
-            {badgeTemplateUrl ? (
-              <div className="space-y-4">
-                <div className="relative inline-block rounded-lg overflow-hidden border border-surface-3">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={badgeTemplateUrl}
-                    alt="Badge template preview"
-                    className="max-w-xs h-auto"
-                  />
-                </div>
-                <div className="flex gap-3">
-                  <label className="btn-secondary gap-2 text-sm cursor-pointer">
-                    {uploadingBadge ? (
-                      <Loader2 className="w-4 h-4 animate-spin" />
-                    ) : (
-                      <Upload className="w-4 h-4" />
-                    )}
-                    {uploadingBadge ? "Uploading..." : "Replace"}
-                    <input
-                      type="file"
-                      className="hidden"
-                      accept="image/jpeg,image/png,image/jpg"
-                      disabled={uploadingBadge}
-                      onChange={handleBadgeUpload}
-                    />
-                  </label>
-                  <button
-                    onClick={removeBadgeTemplate}
-                    disabled={savingBadge}
-                    className="btn-ghost gap-2 text-sm text-red-500 hover:text-red-700"
-                  >
-                    <X className="w-4 h-4" /> Remove
-                  </button>
-                </div>
-              </div>
-            ) : (
-              <label className="block cursor-pointer rounded-xl border-2 border-dashed border-surface-3 p-8 text-center transition-colors hover:border-blue-300 max-w-sm">
-                {uploadingBadge ? (
-                  <Loader2 className="mx-auto h-10 w-10 text-blue-400 animate-spin" />
-                ) : (
-                  <Upload className="mx-auto h-10 w-10 text-gray-300" />
-                )}
-                <p className="mt-2 text-sm font-medium text-gray-600">
-                  {uploadingBadge ? "Uploading..." : "Click to upload badge template"}
-                </p>
-                <p className="mt-1 text-xs text-gray-400">
-                  JPG or PNG, max 5MB. Recommended size: 600x380px
-                </p>
-                <input
-                  type="file"
-                  className="hidden"
-                  accept="image/jpeg,image/png,image/jpg"
-                  disabled={uploadingBadge}
-                  onChange={handleBadgeUpload}
-                />
-              </label>
-            )}
           </div>
         </motion.div>
       )}

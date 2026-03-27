@@ -18,7 +18,10 @@ export async function GET(req: NextRequest) {
         where: { key: "academic_session" },
       });
       const currentSession = sessionSetting?.value || "";
-      const sessionStart = parseInt(currentSession.split("/")[0]) || new Date().getFullYear();
+      // Use the END year of the session (e.g. 2026 from "2025/2026") so that
+      // students completing their 4th year within the current session are eligible.
+      const parts = currentSession.split("/");
+      const sessionEnd = parseInt(parts[1] || parts[0]) || new Date().getFullYear();
 
       const members = await prisma.member.findMany({
         orderBy: { firstName: "asc" },
@@ -29,7 +32,7 @@ export async function GET(req: NextRequest) {
 
       const data = members.map((m) => ({
         ...m,
-        eligible: m.admissionYear ? sessionStart - m.admissionYear >= 4 : false,
+        eligible: m.admissionYear ? sessionEnd - m.admissionYear >= 4 : false,
       }));
 
       return NextResponse.json({ data });

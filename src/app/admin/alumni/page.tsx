@@ -10,6 +10,10 @@ import {
   ToggleLeft,
   ToggleRight,
   Download,
+  Upload,
+  X,
+  CheckCircle,
+  AlertTriangle,
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -32,6 +36,13 @@ export default function AdminAlumniPage() {
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState<"all" | "alumni" | "eligible">("all");
   const [togglingId, setTogglingId] = useState<string | null>(null);
+  const [importing, setImporting] = useState(false);
+  const [importResult, setImportResult] = useState<{
+    total: number;
+    updated: number;
+    alreadyAlumni: number;
+    notFound: string[];
+  } | null>(null);
 
   const fetchData = () => {
     setLoading(true);
@@ -68,6 +79,33 @@ export default function AdminAlumniPage() {
       toast.error("Failed to update");
     } finally {
       setTogglingId(null);
+    }
+  };
+
+  const handleCSVImport = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    e.target.value = "";
+
+    if (!confirm(`Import "${file.name}" and mark matching members as alumni?`)) return;
+
+    setImporting(true);
+    setImportResult(null);
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      const res = await fetch("/api/alumni/import", { method: "POST", body: formData });
+      const data = await res.json();
+      if (res.ok) {
+        setImportResult(data.data);
+        fetchData();
+      } else {
+        toast.error(data.error || "Import failed");
+      }
+    } catch {
+      toast.error("Import failed");
+    } finally {
+      setImporting(false);
     }
   };
 
@@ -137,10 +175,15 @@ export default function AdminAlumniPage() {
             {alumniCount} alumni &middot; {eligibleCount} eligible non-alumni
           </p>
         </div>
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
           <button onClick={exportCSV} className="btn-secondary gap-2 text-sm">
             <Download className="h-4 w-4" /> Export CSV
           </button>
+          <label className={`btn-secondary gap-2 text-sm cursor-pointer ${importing ? "opacity-60 pointer-events-none" : ""}`}>
+            {importing ? <Loader2 className="h-4 w-4 animate-spin" /> : <Upload className="h-4 w-4" />}
+            {importing ? "Importing..." : "Import CSV"}
+            <input type="file" accept=".csv" className="hidden" onChange={handleCSVImport} disabled={importing} />
+          </label>
           <motion.button
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
@@ -151,6 +194,37 @@ export default function AdminAlumniPage() {
           </motion.button>
         </div>
       </div>
+
+      {/* Import Result Banner */}
+      {importResult && (
+        <div className="rounded-xl border border-surface-3 bg-surface-0 p-4">
+          <div className="flex items-start justify-between gap-3">
+            <div className="flex items-start gap-3">
+              <CheckCircle className="h-5 w-5 text-green-500 mt-0.5 shrink-0" />
+              <div>
+                <p className="text-sm font-semibold text-gray-900">Import Complete</p>
+                <p className="text-sm text-gray-500 mt-0.5">
+                  {importResult.updated} newly marked as alumni &middot; {importResult.alreadyAlumni} already alumni &middot; {importResult.total} total in CSV
+                </p>
+                {importResult.notFound.length > 0 && (
+                  <div className="mt-2">
+                    <p className="flex items-center gap-1 text-xs font-medium text-amber-600">
+                      <AlertTriangle className="h-3.5 w-3.5" />
+                      {importResult.notFound.length} matric number{importResult.notFound.length > 1 ? "s" : ""} not found in members table:
+                    </p>
+                    <p className="mt-1 text-xs text-gray-400 font-mono break-all">
+                      {importResult.notFound.join(", ")}
+                    </p>
+                  </div>
+                )}
+              </div>
+            </div>
+            <button onClick={() => setImportResult(null)} className="text-gray-400 hover:text-gray-600 shrink-0">
+              <X className="h-4 w-4" />
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Filters */}
       <div className="flex flex-col sm:flex-row gap-3">

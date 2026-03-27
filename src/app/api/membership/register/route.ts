@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { membershipRegistrationSchema } from "@/lib/validations/membership";
 import { nanoid } from "nanoid";
+import { sendMemberWelcomeEmail } from "@/lib/brevo";
 
 function generateMemberId(): string {
   const year = new Date().getFullYear();
@@ -59,6 +60,19 @@ export async function POST(req: NextRequest) {
         passportUrl: validated.passportUrl,
       },
     });
+
+    // Send welcome email with member ID (fire-and-forget)
+    sendMemberWelcomeEmail({
+      to: member.email,
+      firstName: member.firstName,
+      lastName: member.lastName,
+      memberId: member.memberId,
+      matricNumber: member.matricNumber,
+      level: member.level,
+      department: member.department,
+      faculty: member.faculty,
+      passportUrl: member.passportUrl,
+    }).catch(console.error);
 
     return NextResponse.json({ data: member }, { status: 201 });
   } catch (error: any) {

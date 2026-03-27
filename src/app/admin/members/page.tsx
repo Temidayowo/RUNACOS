@@ -12,6 +12,7 @@ import {
   Loader2,
   ChevronLeft,
   ChevronRight,
+  GraduationCap,
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -45,6 +46,7 @@ export default function AdminMembersPage() {
   const [total, setTotal] = useState(0);
   const [selectedMember, setSelectedMember] = useState<Member | null>(null);
   const [deleting, setDeleting] = useState<string | null>(null);
+  const [togglingAlumni, setTogglingAlumni] = useState<string | null>(null);
 
   const fetchMembers = useCallback(async () => {
     setLoading(true);
@@ -68,6 +70,28 @@ export default function AdminMembersPage() {
   useEffect(() => {
     fetchMembers();
   }, [fetchMembers]);
+
+  const handleAlumniToggle = async (member: Member) => {
+    setTogglingAlumni(member.id);
+    try {
+      const res = await fetch(`/api/members/${member.id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ isAlumni: !member.isAlumni }),
+      });
+      if (res.ok) {
+        toast.success(`${member.firstName} marked as ${member.isAlumni ? "active member" : "alumni"}`);
+        fetchMembers();
+        if (selectedMember?.id === member.id) setSelectedMember(null);
+      } else {
+        toast.error("Failed to update member status");
+      }
+    } catch {
+      toast.error("Failed to update member status");
+    } finally {
+      setTogglingAlumni(null);
+    }
+  };
 
   const handleDelete = async (id: string) => {
     if (!confirm("Are you sure you want to delete this member?")) return;
@@ -229,6 +253,18 @@ export default function AdminMembersPage() {
                         title="View"
                       >
                         <Eye className="h-4 w-4" />
+                      </button>
+                      <button
+                        onClick={() => handleAlumniToggle(member)}
+                        disabled={togglingAlumni === member.id}
+                        className="rounded-lg p-1.5 text-gray-400 hover:bg-purple-50 hover:text-purple-600"
+                        title={member.isAlumni ? "Mark as Active" : "Mark as Alumni"}
+                      >
+                        {togglingAlumni === member.id ? (
+                          <Loader2 className="h-4 w-4 animate-spin" />
+                        ) : (
+                          <GraduationCap className="h-4 w-4" />
+                        )}
                       </button>
                       <button
                         onClick={() => handleDelete(member.id)}

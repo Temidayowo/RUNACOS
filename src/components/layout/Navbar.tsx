@@ -370,12 +370,6 @@ export function Navbar() {
                 </motion.div>
               </nav>
 
-              {/* Bottom section */}
-              <div className="absolute bottom-0 left-0 right-0 border-t border-surface-3 px-8 py-4">
-                <p className="text-[10px] font-mono text-gray-400 tracking-wider">
-                  RUNACOS v1.0.0
-                </p>
-              </div>
             </motion.div>
           </motion.div>
         )}

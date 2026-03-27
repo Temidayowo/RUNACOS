@@ -43,6 +43,7 @@ export async function GET(req: NextRequest) {
         orderBy: { eventDate: type === "past" ? "desc" : "asc" },
         skip: (page - 1) * limit,
         take: limit,
+        include: { _count: { select: { registrations: true } } },
       }),
       prisma.event.count({ where }),
     ]);

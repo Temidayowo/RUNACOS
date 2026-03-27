@@ -49,7 +49,11 @@ export function ContactContent() {
         toast.success("Message sent successfully!");
       } else {
         const data = await res.json();
-        toast.error(data.error || "Failed to send message");
+        if (data.details && Array.isArray(data.details)) {
+          data.details.forEach((err: { message: string }) => toast.error(err.message));
+        } else {
+          toast.error(data.error || "Failed to send message");
+        }
       }
     } catch {
       toast.error("Something went wrong");

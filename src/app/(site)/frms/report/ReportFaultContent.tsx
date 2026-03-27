@@ -85,7 +85,11 @@ export function ReportFaultContent() {
           toast.success(`Report submitted! Your tracking code is: ${data.data.referenceId} (email unavailable)`);
         }
       } else {
-        toast.error(data.error || "Submission failed");
+        if (data.details && Array.isArray(data.details)) {
+          data.details.forEach((err: { message: string }) => toast.error(err.message));
+        } else {
+          toast.error(data.error || "Submission failed");
+        }
       }
     } catch {
       toast.error("Something went wrong");

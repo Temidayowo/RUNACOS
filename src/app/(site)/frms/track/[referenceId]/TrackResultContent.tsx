@@ -3,6 +3,7 @@
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import useSWR from "swr";
 import {
   ArrowLeft,
   CheckCircle,
@@ -15,42 +16,12 @@ import {
   FileText,
   Paperclip,
   Copy,
+  Loader2,
+  AlertTriangle,
 } from "lucide-react";
 import { toast } from "sonner";
 import { PageTransition, AnimateOnScroll, fadeUp } from "@/components/ui/MotionWrapper";
-
-// Placeholder timeline - in production this comes from API
-const timeline = [
-  {
-    status: "OPEN",
-    label: "Submitted",
-    date: "Oct 1, 2024 - 9:00 AM",
-    note: "Initial fault report filed",
-    completed: true,
-  },
-  {
-    status: "IN_PROGRESS",
-    label: "Assigned",
-    date: "Oct 2, 2024 - 11:30 AM",
-    note: "Assigned to maintenance staff",
-    completed: true,
-  },
-  {
-    status: "IN_PROGRESS",
-    label: "In Progress",
-    date: "Oct 3, 2024 - 2:00 PM",
-    note: "Technician dispatched to location",
-    completed: true,
-    current: true,
-  },
-  {
-    status: "RESOLVED",
-    label: "Resolved",
-    date: "Pending",
-    note: null,
-    completed: false,
-  },
-];
+import { fetcher } from "@/lib/fetcher";
 
 const statusColors: Record<string, string> = {
   OPEN: "badge-red",
@@ -59,14 +30,86 @@ const statusColors: Record<string, string> = {
   CLOSED: "badge-gray",
 };
 
+const statusLabels: Record<string, string> = {
+  OPEN: "Open",
+  IN_PROGRESS: "In Progress",
+  RESOLVED: "Resolved",
+  CLOSED: "Closed",
+};
+
+const statusOrder = ["OPEN", "IN_PROGRESS", "RESOLVED", "CLOSED"];
+
 export function TrackResultContent() {
   const params = useParams();
   const referenceId = params.referenceId as string;
+
+  const { data, error, isLoading } = useSWR(
+    referenceId ? `/api/frms/track/${referenceId}` : null,
+    fetcher
+  );
+
+  const fault = data?.data;
 
   const copyRefId = () => {
     navigator.clipboard.writeText(referenceId);
     toast.success("Reference ID copied!");
   };
+
+  if (isLoading) {
+    return (
+      <PageTransition>
+        <section className="flex min-h-[60vh] items-center justify-center bg-surface-1">
+          <Loader2 className="h-8 w-8 animate-spin text-navy-800" />
+        </section>
+      </PageTransition>
+    );
+  }
+
+  if (error || !fault) {
+    return (
+      <PageTransition>
+        <section className="flex min-h-[60vh] items-center justify-center bg-surface-1">
+          <div className="text-center">
+            <AlertTriangle className="mx-auto mb-3 h-10 w-10 text-rose-400" />
+            <h2 className="font-heading text-xl font-bold text-gray-900">Report Not Found</h2>
+            <p className="mt-1 text-sm text-gray-500">
+              No fault report found for reference ID <span className="font-mono font-semibold">{referenceId}</span>.
+            </p>
+            <Link href="/frms/track" className="btn-primary mt-6 inline-flex">
+              Try Another ID
+            </Link>
+          </div>
+        </section>
+      </PageTransition>
+    );
+  }
+
+  // Build timeline from status history
+  const historyMap: Record<string, { date: string; note: string | null }> = {};
+  for (const entry of fault.statusHistory ?? []) {
+    const d = new Date(entry.createdAt);
+    const pad = (n: number) => String(n).padStart(2, "0");
+    const months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+    const formatted = `${pad(d.getDate())} ${months[d.getMonth()]} ${d.getFullYear()}, ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+    historyMap[entry.status] = {
+      date: formatted,
+      note: entry.note ?? null,
+    };
+  }
+
+  const currentStatusIndex = statusOrder.indexOf(fault.status);
+
+  const timeline = statusOrder.map((status, i) => {
+    const reached = historyMap[status];
+    return {
+      status,
+      label: statusLabels[status],
+      date: reached?.date ?? "Pending",
+      note: reached?.note ?? null,
+      completed: i <= currentStatusIndex,
+      current: status === fault.status,
+    };
+  });
 
   return (
     <PageTransition>
@@ -74,10 +117,7 @@ export function TrackResultContent() {
         <div className="container-custom">
           <div className="mx-auto max-w-3xl">
             {/* Back */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-            >
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
               <Link
                 href="/frms/track"
                 className="mb-6 inline-flex items-center gap-1 text-sm text-gray-500 hover:text-navy-800 transition-colors"
@@ -106,8 +146,8 @@ export function TrackResultContent() {
                 </div>
                 <p className="text-sm text-gray-500">Fault Report Status</p>
               </div>
-              <span className={`${statusColors["IN_PROGRESS"]} text-sm px-3 py-1`}>
-                In Progress
+              <span className={`${statusColors[fault.status] ?? "badge-gray"} text-sm px-3 py-1`}>
+                {statusLabels[fault.status] ?? fault.status}
               </span>
             </motion.div>
 
@@ -118,20 +158,17 @@ export function TrackResultContent() {
                   Status Timeline
                 </h3>
                 <div className="relative ml-4">
-                  {/* Vertical line */}
                   <div className="absolute left-0 top-2 bottom-2 w-px bg-surface-3" />
-
                   <div className="space-y-8">
                     {timeline.map((entry, i) => (
                       <motion.div
-                        key={i}
+                        key={entry.status}
                         initial={{ opacity: 0, x: -10 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true }}
                         transition={{ delay: i * 0.15 }}
                         className="relative pl-8"
                       >
-                        {/* Dot */}
                         <div className="absolute left-0 top-1 -translate-x-1/2">
                           {entry.completed ? (
                             <motion.div
@@ -152,27 +189,15 @@ export function TrackResultContent() {
                             <Circle className="h-4 w-4 text-gray-300" />
                           )}
                         </div>
-
-                        {/* Content */}
                         <div>
                           <div className="flex items-center gap-2">
-                            <span
-                              className={`text-sm font-medium ${
-                                entry.completed
-                                  ? "text-gray-900"
-                                  : "text-gray-400"
-                              }`}
-                            >
+                            <span className={`text-sm font-medium ${entry.completed ? "text-gray-900" : "text-gray-400"}`}>
                               {entry.label}
                             </span>
-                            <span className="text-xs text-gray-400">
-                              {entry.date}
-                            </span>
+                            <span className="text-xs text-gray-400">{entry.date}</span>
                           </div>
                           {entry.note && (
-                            <p className="mt-0.5 text-sm text-gray-500">
-                              {entry.note}
-                            </p>
+                            <p className="mt-0.5 text-sm text-gray-500">{entry.note}</p>
                           )}
                         </div>
                       </motion.div>
@@ -190,24 +215,35 @@ export function TrackResultContent() {
                 </h3>
                 <div className="grid gap-4 sm:grid-cols-2">
                   {[
-                    { icon: Tag, label: "Category", value: "Electrical" },
-                    { icon: MapPin, label: "Location", value: "CS Lab 1, Block B" },
-                    { icon: User, label: "Reported By", value: "John Doe" },
-                    { icon: Mail, label: "Email", value: "john@run.edu.ng" },
-                    { icon: Clock, label: "Submitted", value: "Oct 1, 2024" },
+                    { icon: Tag, label: "Category", value: fault.category?.name ?? "—" },
+                    { icon: MapPin, label: "Location", value: fault.location },
+                    { icon: User, label: "Reported By", value: fault.name },
+                    { icon: Mail, label: "Email", value: fault.email },
+                    {
+                      icon: Clock,
+                      label: "Submitted",
+                      value: (() => { const d = new Date(fault.createdAt); const months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]; return `${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()}`; })(),
+                    },
                     {
                       icon: Paperclip,
                       label: "Attachment",
-                      value: "No attachment",
+                      value: fault.fileUrl ? "View attachment" : "No attachment",
+                      href: fault.fileUrl ?? undefined,
                     },
-                  ].map((item) => (
+                  ].map((item: any) => (
                     <div key={item.label} className="flex items-start gap-3">
                       <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-surface-1">
                         <item.icon className="h-4 w-4 text-gray-400" />
                       </div>
                       <div>
                         <p className="text-xs text-gray-400">{item.label}</p>
-                        <p className="text-sm text-gray-700">{item.value}</p>
+                        {item.href ? (
+                          <a href={item.href} target="_blank" rel="noopener noreferrer" className="text-sm text-electric hover:underline">
+                            {item.value}
+                          </a>
+                        ) : (
+                          <p className="text-sm text-gray-700">{item.value}</p>
+                        )}
                       </div>
                     </div>
                   ))}
@@ -220,13 +256,24 @@ export function TrackResultContent() {
                     </div>
                     <div>
                       <p className="text-xs text-gray-400">Description</p>
-                      <p className="text-sm text-gray-700">
-                        Power outlet in CS Lab 1 is not working. The outlet near
-                        workstation 5 has no power and shows signs of damage.
-                      </p>
+                      <p className="text-sm text-gray-700">{fault.description}</p>
                     </div>
                   </div>
                 </div>
+
+                {fault.adminNotes && (
+                  <div className="mt-4 border-t border-surface-3 pt-4">
+                    <div className="flex items-start gap-3">
+                      <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-blue-50">
+                        <FileText className="h-4 w-4 text-blue-400" />
+                      </div>
+                      <div>
+                        <p className="text-xs text-gray-400">Admin Notes</p>
+                        <p className="text-sm text-gray-700">{fault.adminNotes}</p>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
             </AnimateOnScroll>
           </div>
