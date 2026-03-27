@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { Plus, Pencil, Trash2, FileQuestion, Search, Download } from "lucide-react";
-import { cn, formatDateShort } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 import { PQ_DEPARTMENTS } from "@/lib/constants";
 import { toast } from "sonner";
 
@@ -52,6 +52,7 @@ export default function AdminPastQuestionsPage() {
       if (year) params.set("year", year);
       if (search) params.set("search", search);
 
+      params.set("t", Date.now().toString());
       const res = await fetch(`/api/past-questions?${params.toString()}`);
       const json = await res.json();
       setQuestions(json.data || []);
