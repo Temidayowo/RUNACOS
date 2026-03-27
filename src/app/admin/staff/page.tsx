@@ -525,7 +525,7 @@ export default function StaffAdmin() {
                     onChange={(e) =>
                       setForm((p) => ({ ...p, specialty: e.target.value }))
                     }
-                    placeholder="e.g. Artificial Intelligence"
+                    placeholder="e.g. Software Engineering"
                     className="input-field"
                   />
                 </div>

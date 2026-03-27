@@ -92,6 +92,7 @@ export default function EditPastQuestionPage() {
       }
 
       toast.success("Past question updated successfully");
+      router.refresh();
       router.push("/admin/past-questions");
     } catch (error: any) {
       toast.error(error.message || "Failed to update past question");

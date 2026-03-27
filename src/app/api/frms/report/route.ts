@@ -39,7 +39,9 @@ export async function POST(req: NextRequest) {
         category: fault.category.name,
       });
       emailSent = true;
-    } catch {}
+    } catch (emailError) {
+      console.error("[FRMS] Failed to send confirmation email:", emailError);
+    }
 
     return NextResponse.json({ data: fault, emailSent }, { status: 201 });
   } catch (error: any) {

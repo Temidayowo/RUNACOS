@@ -67,6 +67,7 @@ export default function AddPastQuestionPage() {
       }
 
       toast.success("Past question added successfully");
+      router.refresh();
       router.push("/admin/past-questions");
     } catch (error: any) {
       toast.error(error.message || "Failed to add past question");
