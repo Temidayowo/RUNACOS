@@ -75,7 +75,7 @@ export default function AdminPastQuestionsPage() {
       const res = await fetch(`/api/past-questions/${id}`, { method: "DELETE" });
       if (!res.ok) throw new Error();
       toast.success("Past question deleted successfully");
-      fetchQuestions();
+      setQuestions((prev) => prev.filter((q) => q.id !== id));
     } catch {
       toast.error("Failed to delete past question");
     }
