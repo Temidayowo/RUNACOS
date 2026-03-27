@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
 import { pastQuestionSchema } from "@/lib/validations/past-questions";
+import { deleteFile } from "@/lib/upload";
 
 export async function GET(
   req: NextRequest,
@@ -59,7 +60,9 @@ export async function DELETE(
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
+    const existing = await prisma.pastQuestion.findUnique({ where: { id: params.id } });
     await prisma.pastQuestion.delete({ where: { id: params.id } });
+    if (existing?.fileUrl) await deleteFile(existing.fileUrl);
     return NextResponse.json({ message: "Past question deleted" });
   } catch (error) {
     return NextResponse.json({ error: "Failed to delete past question" }, { status: 500 });

@@ -62,7 +62,8 @@ export default function AddPastQuestionPage() {
 
       if (!res.ok) {
         const err = await res.json();
-        throw new Error(err.error || "Failed to add past question");
+        const detail = err.details?.[0]?.message;
+        throw new Error(detail || err.error || "Failed to add past question");
       }
 
       toast.success("Past question added successfully");

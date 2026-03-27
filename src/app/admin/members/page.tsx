@@ -88,37 +88,44 @@ export default function AdminMembersPage() {
     }
   };
 
-  const exportCSV = () => {
-    const headers = [
-      "Name", "Matric No", "Email", "Phone", "Level", "Gender",
-      "Department", "Faculty", "State of Origin", "Session", "Semester",
-      "Member ID", "Admission Year", "Alumni", "Date",
-    ];
-    const rows = members.map((m) => [
-      `${m.firstName} ${m.lastName}`,
-      m.matricNumber,
-      m.email,
-      m.phone,
-      m.level,
-      m.gender || "",
-      m.department || "",
-      m.faculty || "",
-      m.stateOfOrigin || "",
-      m.academicSession || "",
-      m.semester || "",
-      m.memberId,
-      m.admissionYear || "",
-      m.isAlumni ? "Yes" : "No",
-      m.createdAt ? new Date(m.createdAt).toLocaleDateString() : "",
-    ]);
-    const csv = [headers.join(","), ...rows.map((r) => r.join(","))].join("\n");
-    const blob = new Blob([csv], { type: "text/csv" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "runacos-members.csv";
-    a.click();
-    URL.revokeObjectURL(url);
+  const exportCSV = async () => {
+    try {
+      const res = await fetch("/api/members?limit=10000");
+      const data = await res.json();
+      const all: Member[] = data.data || [];
+
+      const headers = [
+        "Member ID", "First Name", "Last Name", "Email", "Phone",
+        "Matric Number", "Level", "Department", "Faculty",
+        "Admission Year", "Academic Session", "Status", "Registration Date",
+      ];
+      const escape = (v: string) => `"${String(v).replace(/"/g, '""')}"`;
+      const rows = all.map((m) => [
+        escape(m.memberId),
+        escape(m.firstName),
+        escape(m.lastName),
+        escape(m.email),
+        escape(m.phone),
+        escape(m.matricNumber),
+        escape(m.level),
+        escape(m.department || ""),
+        escape(m.faculty || ""),
+        escape(m.admissionYear ? String(m.admissionYear) : ""),
+        escape(m.academicSession || ""),
+        escape(m.isAlumni ? "Alumni" : "Active"),
+        escape(m.createdAt ? new Date(m.createdAt).toLocaleDateString() : ""),
+      ]);
+      const csv = [headers.join(","), ...rows.map((r) => r.join(","))].join("\n");
+      const blob = new Blob([csv], { type: "text/csv" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `runacos-members-${new Date().toISOString().slice(0, 10)}.csv`;
+      a.click();
+      URL.revokeObjectURL(url);
+    } catch {
+      toast.error("Failed to export members");
+    }
   };
 
   const memberBadge = (m: Member) => {

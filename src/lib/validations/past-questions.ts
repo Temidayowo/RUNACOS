@@ -6,7 +6,7 @@ export const pastQuestionSchema = z.object({
   department: z.string().min(1, "Department is required"),
   course: z.string().min(1, "Course is required"),
   year: z.number().int().min(2000).max(2030),
-  fileUrl: z.string().url("File URL is required"),
+  fileUrl: z.string().min(1, "File URL is required"),
   fileName: z.string(),
   fileSize: z.number(),
   fileType: z.string(),

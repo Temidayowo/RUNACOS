@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Image from "next/image";
+
 import { motion } from "framer-motion";
 import { Mail, BookOpen, Loader2 } from "lucide-react";
 import {
@@ -63,12 +63,11 @@ export function StaffContent() {
                   >
                     <div className="relative mb-4 h-16 w-16 overflow-hidden rounded-full">
                       {member.image ? (
-                        <Image
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img
                           src={member.image}
                           alt={member.name}
-                          fill
-                          className="object-cover"
-                          sizes="64px"
+                          className="h-full w-full object-cover"
                         />
                       ) : (
                         <div className="flex h-full items-center justify-center bg-gradient-to-br from-navy-800 to-navy-600">

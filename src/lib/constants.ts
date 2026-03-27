@@ -81,6 +81,7 @@ export const ACCEPTED_VIDEO_TYPES = ["video/mp4", "video/webm"];
 export const ACCEPTED_JSON_TYPES = ["application/json"];
 export const ACCEPTED_DOC_TYPES = [
   "application/pdf",
+  "application/msword",
   "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
   "application/vnd.openxmlformats-officedocument.presentationml.presentation",
 ];

@@ -24,12 +24,13 @@ export async function POST(req: NextRequest) {
     const result = await uploadFile(file, folder);
 
     if (result.error) {
+      console.error("Upload error detail:", result.error);
       return NextResponse.json({ error: result.error }, { status: 400 });
     }
 
     return NextResponse.json({ data: { url: result.url } });
-  } catch (error) {
-    console.error("Upload error:", error);
-    return NextResponse.json({ error: "Upload failed" }, { status: 500 });
+  } catch (error: any) {
+    console.error("Upload error:", error?.message, error?.Code, error?.stack);
+    return NextResponse.json({ error: error?.message || "Upload failed" }, { status: 500 });
   }
 }

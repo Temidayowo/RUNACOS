@@ -2,14 +2,18 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
 
-// GET — list alumni (public: active alumni; admin: all with eligibility)
+// GET — list alumni (public: active alumni only; admin with ?admin=true: all with eligibility)
 export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
-    const session = await auth();
+    const isAdminView = searchParams.get("admin") === "true";
 
-    if (session) {
-      // Admin: return all members with alumni info and eligibility
+    if (isAdminView) {
+      const session = await auth();
+      if (!session) {
+        return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      }
+
       const sessionSetting = await prisma.siteSetting.findUnique({
         where: { key: "academic_session" },
       });
@@ -29,20 +33,20 @@ export async function GET(req: NextRequest) {
       }));
 
       return NextResponse.json({ data });
-    } else {
-      // Public: return active alumni only
-      const alumni = await prisma.member.findMany({
-        where: { isAlumni: true },
-        orderBy: { firstName: "asc" },
-        include: {
-          executive: { select: { id: true, position: true, active: true } },
-        },
-      });
-
-      const res = NextResponse.json({ data: alumni });
-      res.headers.set("Cache-Control", "public, s-maxage=120, stale-while-revalidate=600");
-      return res;
     }
+
+    // Public: always return only isAlumni = true members
+    const alumni = await prisma.member.findMany({
+      where: { isAlumni: true },
+      orderBy: { firstName: "asc" },
+      include: {
+        executive: { select: { id: true, position: true, active: true } },
+      },
+    });
+
+    const res = NextResponse.json({ data: alumni });
+    res.headers.set("Cache-Control", "public, s-maxage=120, stale-while-revalidate=600");
+    return res;
   } catch (error) {
     return NextResponse.json({ error: "Failed to fetch alumni" }, { status: 500 });
   }

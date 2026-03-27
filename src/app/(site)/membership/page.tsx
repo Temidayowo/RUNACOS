@@ -80,6 +80,15 @@ export default function MembershipPage() {
   // Check duplicates on blur
   const checkDuplicate = useCallback(async (field: "email" | "matricNumber", value: string) => {
     if (!value) return;
+    if (field === "email") {
+      if (!value.endsWith("@run.edu.ng")) {
+        setDuplicateErrors((prev) => ({
+          ...prev,
+          email: "Email must be a Redeemer's University address (@run.edu.ng)",
+        }));
+        return;
+      }
+    }
     try {
       const res = await fetch("/api/membership/check", {
         method: "POST",
@@ -102,7 +111,7 @@ export default function MembershipPage() {
       return (
         form.firstName &&
         form.lastName &&
-        form.email &&
+        form.email.endsWith("@run.edu.ng") &&
         form.phone &&
         form.gender &&
         form.stateOfOrigin &&
@@ -343,9 +352,10 @@ export default function MembershipPage() {
                         value={form.email}
                         onChange={(e) => updateForm("email", e.target.value)}
                         onBlur={() => checkDuplicate("email", form.email)}
-                        placeholder="your@email.com"
+                        placeholder="username@run.edu.ng"
                         className={`input-field ${duplicateErrors.email ? "border-red-300 focus:ring-red-500" : ""}`}
                       />
+                      <p className="mt-1 text-xs text-gray-400">Must be your Redeemer's University email (@run.edu.ng)</p>
                       {duplicateErrors.email && (
                         <p className="mt-1 flex items-center gap-1 text-xs text-red-500">
                           <AlertCircle className="h-3 w-3" /> {duplicateErrors.email}

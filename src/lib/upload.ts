@@ -14,7 +14,8 @@ import {
 // Storage provider abstraction — swap to S3 by changing STORAGE_PROVIDER
 // ---------------------------------------------------------------------------
 
-const STORAGE_PROVIDER = process.env.STORAGE_PROVIDER || "local"; // "local" | "s3"
+// Read at call-time so env vars are always current (avoids module-level caching)
+const getStorageProvider = () => process.env.STORAGE_PROVIDER || "local";
 
 // --- Local storage ---
 
@@ -71,8 +72,9 @@ async function s3Put(
     ContentType: contentType,
   }));
 
-  const endpoint = process.env.S3_ENDPOINT || "https://fly.storage.tigris.dev";
-  return { url: `${endpoint}/${bucket}/${filePath}` };
+  // S3_PUBLIC_URL is required for R2 (your bucket's public domain or r2.dev URL)
+  const publicBase = (process.env.S3_PUBLIC_URL || "").replace(/\/$/, "");
+  return { url: `${publicBase}/${filePath}` };
 }
 
 async function s3Del(url: string): Promise<void> {
@@ -80,9 +82,9 @@ async function s3Del(url: string): Promise<void> {
   const client = getS3Client();
   const bucket = process.env.S3_BUCKET!;
 
-  // Extract key from full URL
-  const urlObj = new URL(url);
-  const key = urlObj.pathname.replace(`/${bucket}/`, "").replace(/^\//, "");
+  // Extract key by stripping the public base URL (R2 public URLs don't include bucket in path)
+  const publicBase = (process.env.S3_PUBLIC_URL || "").replace(/\/$/, "");
+  const key = publicBase ? url.replace(`${publicBase}/`, "") : new URL(url).pathname.replace(/^\//, "");
 
   await client.send(new DeleteObjectCommand({
     Bucket: bucket,
@@ -120,7 +122,7 @@ export async function uploadFile(
     const filePath = `${folder}/${Date.now()}-${sanitizedName}`;
     const buffer = Buffer.from(await file.arrayBuffer());
 
-    if (STORAGE_PROVIDER === "s3") {
+    if (getStorageProvider() === "s3") {
       const result = await s3Put(filePath, buffer, file.type);
       return { url: result.url };
     }
@@ -128,15 +130,15 @@ export async function uploadFile(
     // Default: local storage
     const result = await localPut(filePath, buffer);
     return { url: result.url };
-  } catch (error) {
-    console.error("Upload error:", error);
-    return { url: "", error: "Upload failed — storage service unavailable" };
+  } catch (error: any) {
+    console.error("Upload error:", error?.message, error?.Code, error?.$metadata);
+    return { url: "", error: error?.message || "Upload failed — storage service unavailable" };
   }
 }
 
 export async function deleteFile(url: string): Promise<void> {
   try {
-    if (STORAGE_PROVIDER === "s3") {
+    if (getStorageProvider() === "s3") {
       await s3Del(url);
       return;
     }

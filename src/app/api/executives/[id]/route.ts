@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
+import { deleteFile } from "@/lib/upload";
 
 // Admin PUT — update executive
 export async function PUT(
@@ -75,7 +76,9 @@ export async function DELETE(
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
+    const existing = await prisma.executive.findUnique({ where: { id: params.id } });
     await prisma.executive.delete({ where: { id: params.id } });
+    if (existing?.image) await deleteFile(existing.image);
 
     return NextResponse.json({ message: "Executive deleted" });
   } catch {

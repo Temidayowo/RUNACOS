@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
 import { eventSchema } from "@/lib/validations/content";
+import { deleteFile } from "@/lib/upload";
 import { slugify } from "@/lib/utils";
 import { sendBulkEmail, getMailingRecipients, buildContentEmail } from "@/lib/brevo";
 
@@ -99,7 +100,9 @@ export async function DELETE(
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
+    const existing = await prisma.event.findUnique({ where: { id: params.id } });
     await prisma.event.delete({ where: { id: params.id } });
+    if (existing?.coverImage) await deleteFile(existing.coverImage);
     return NextResponse.json({ message: "Event deleted" });
   } catch (error) {
     return NextResponse.json({ error: "Failed to delete event" }, { status: 500 });

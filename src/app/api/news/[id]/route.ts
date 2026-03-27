@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
 import { newsSchema } from "@/lib/validations/content";
+import { deleteFile } from "@/lib/upload";
 import { slugify } from "@/lib/utils";
 import { sendBulkEmail, getMailingRecipients, buildContentEmail } from "@/lib/brevo";
 
@@ -95,7 +96,9 @@ export async function DELETE(
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
+    const existing = await prisma.news.findUnique({ where: { id: params.id } });
     await prisma.news.delete({ where: { id: params.id } });
+    if (existing?.coverImage) await deleteFile(existing.coverImage);
     return NextResponse.json({ message: "News deleted" });
   } catch (error) {
     return NextResponse.json({ error: "Failed to delete news" }, { status: 500 });

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
+import { deleteFile } from "@/lib/upload";
 
 export async function GET(
   req: NextRequest,
@@ -36,9 +37,9 @@ export async function DELETE(
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    await prisma.member.delete({
-      where: { id: params.id },
-    });
+    const existing = await prisma.member.findUnique({ where: { id: params.id } });
+    await prisma.member.delete({ where: { id: params.id } });
+    if (existing?.passportUrl) await deleteFile(existing.passportUrl);
 
     return NextResponse.json({ message: "Member deleted successfully" });
   } catch (error) {

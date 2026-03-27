@@ -63,8 +63,9 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ data: member }, { status: 201 });
   } catch (error: any) {
     if (error.name === "ZodError") {
+      const detail = error.errors?.[0]?.message;
       return NextResponse.json(
-        { error: "Validation failed", details: error.errors },
+        { error: detail || "Validation failed", details: error.errors },
         { status: 400 }
       );
     }

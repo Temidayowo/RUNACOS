@@ -9,6 +9,7 @@ import {
   Wand2,
   ToggleLeft,
   ToggleRight,
+  Download,
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -34,7 +35,7 @@ export default function AdminAlumniPage() {
 
   const fetchData = () => {
     setLoading(true);
-    fetch("/api/alumni")
+    fetch("/api/alumni?admin=true")
       .then((res) => res.json())
       .then((data) => setMembers(data.data || []))
       .catch(() => toast.error("Failed to load data"))
@@ -99,6 +100,30 @@ export default function AdminAlumniPage() {
     return matchesSearch && matchesFilter;
   });
 
+  const exportCSV = () => {
+    const alumni = members.filter((m) => m.isAlumni);
+    const headers = ["Member ID", "First Name", "Last Name", "Email", "Matric Number", "Department", "Admission Year", "Class Of"];
+    const escape = (v: string) => `"${String(v).replace(/"/g, '""')}"`;
+    const rows = alumni.map((m) => [
+      escape(m.memberId),
+      escape(m.firstName),
+      escape(m.lastName),
+      escape(m.email),
+      escape(m.matricNumber),
+      escape(m.department || ""),
+      escape(m.admissionYear ? String(m.admissionYear) : ""),
+      escape(m.admissionYear ? String(m.admissionYear + 4) : ""),
+    ]);
+    const csv = [headers.join(","), ...rows.map((r) => r.join(","))].join("\n");
+    const blob = new Blob([csv], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `runacos-alumni-${new Date().toISOString().slice(0, 10)}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
   const alumniCount = members.filter((m) => m.isAlumni).length;
   const eligibleCount = members.filter((m) => m.eligible && !m.isAlumni).length;
 
@@ -112,14 +137,19 @@ export default function AdminAlumniPage() {
             {alumniCount} alumni &middot; {eligibleCount} eligible non-alumni
           </p>
         </div>
-        <motion.button
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
-          onClick={autoDetect}
-          className="btn-primary gap-2 text-sm"
-        >
-          <Wand2 className="h-4 w-4" /> Auto-Detect Alumni
-        </motion.button>
+        <div className="flex gap-2">
+          <button onClick={exportCSV} className="btn-secondary gap-2 text-sm">
+            <Download className="h-4 w-4" /> Export CSV
+          </button>
+          <motion.button
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={autoDetect}
+            className="btn-primary gap-2 text-sm"
+          >
+            <Wand2 className="h-4 w-4" /> Auto-Detect Alumni
+          </motion.button>
+        </div>
       </div>
 
       {/* Filters */}

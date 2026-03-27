@@ -21,7 +21,7 @@ export const DEPARTMENTS = [
 export const membershipRegistrationSchema = z.object({
   firstName: z.string().min(2, "First name must be at least 2 characters"),
   lastName: z.string().min(2, "Last name must be at least 2 characters"),
-  email: z.string().email("Invalid email address"),
+  email: z.string().email("Invalid email address").endsWith("@run.edu.ng", "Email must be a Redeemer's University address (@run.edu.ng)"),
   phone: z.string().min(10, "Phone number must be at least 10 digits"),
   matricNumber: z.string().min(5, "Invalid matric number"),
   level: z.enum(["100", "200", "300", "400", "500"], {
@@ -34,11 +34,11 @@ export const membershipRegistrationSchema = z.object({
   admissionYear: z.number().int().min(2000).max(new Date().getFullYear()),
   academicSession: z.string().optional(),
   semester: z.string().optional(),
-  passportUrl: z.string().url("Passport photo is required"),
+  passportUrl: z.string().min(1, "Passport photo is required"),
 });
 
 export const duplicateCheckSchema = z.object({
-  email: z.string().email().optional(),
+  email: z.string().email().endsWith("@run.edu.ng").optional(),
   matricNumber: z.string().optional(),
 });
 

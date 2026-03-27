@@ -1,10 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  Plus,
   Trash2,
   ArrowUp,
   ArrowDown,
@@ -283,12 +281,11 @@ export default function StaffAdmin() {
               {/* Photo */}
               <div className="relative h-48 bg-gradient-to-br from-navy-800 to-navy-600">
                 {staff.image ? (
-                  <Image
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
                     src={staff.image}
                     alt={staff.name}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 640px) 100vw, 300px"
+                    className="absolute inset-0 h-full w-full object-cover"
                   />
                 ) : (
                   <div className="flex h-full items-center justify-center">
@@ -419,12 +416,11 @@ export default function StaffAdmin() {
                   <div className="flex items-center gap-4">
                     <div className="relative h-20 w-20 rounded-full overflow-hidden bg-gradient-to-br from-navy-800 to-navy-600 shrink-0">
                       {form.image ? (
-                        <Image
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img
                           src={form.image}
                           alt="Preview"
-                          fill
-                          className="object-cover"
-                          sizes="80px"
+                          className="absolute inset-0 h-full w-full object-cover"
                         />
                       ) : (
                         <div className="flex h-full items-center justify-center">
